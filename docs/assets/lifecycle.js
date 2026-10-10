@@ -8,6 +8,8 @@
 //   decision  the question this step answers
 //   how       how we decide (thresholds read from the pipeline's meta)
 //   screen    the page that shows this step, plus an anchor on that page
+//   jd        jd_mapping.json step names this lifecycle step demonstrates
+//   why       decision-log entries (decisions.json ids) behind this step
 //   sentence  this account's real values, as one plain-English sentence
 
 const LIFECYCLE = (function () {
@@ -38,6 +40,8 @@ const LIFECYCLE = (function () {
       {
         name: "CRM Data",
         type: "data",
+        jd: ["Data comes in"],
+        why: [],
         what: "A nightly extract pulls Salesforce Account, Contract and Opportunity fields for every account.",
         decision: "None yet. This is the raw record every later decision is built on.",
         how: "Commit, consumption to date, contract dates and open pipeline are taken as-is, with nothing filtered out.",
@@ -50,6 +54,8 @@ const LIFECYCLE = (function () {
       {
         name: "Usage Signals",
         type: "data",
+        jd: ["Data comes in", "Clean and combine"],
+        why: ["windows"],
         what: "Product telemetry is joined on: usage trend, recent spikes, developer activity and SA touchpoints.",
         decision: "None yet. These are the signals the score will weigh.",
         how: "Usage growth compares the last 90 days with the 90 before. The spike ratio compares the last 7 days with the 4-week average.",
@@ -62,6 +68,8 @@ const LIFECYCLE = (function () {
       {
         name: "Propensity Score",
         type: "decision",
+        jd: ["Propensity score"],
+        why: ["weights"],
         what: "Each account gets a 0–100 score for how likely it is to expand if we invest technical time.",
         decision: "How likely is this account to grow with our help?",
         how: `Each signal becomes a percentile against all ${total} accounts, then is weighted: usage growth ${pct(w.usage_growth)}, ` +
@@ -72,26 +80,30 @@ const LIFECYCLE = (function () {
           `${a.account_name} scores ${a.propensity_score}/100; its strongest signals are ${andList(a.top_reasons.map(lowerFirst))}.`,
       },
       {
-        name: "Headroom & Flags",
+        name: "Pool of Funds & Flags",
         type: "decision",
+        jd: ["Pool of funds", "Expected value", "Flags"],
+        why: ["pool-of-funds", "flags"],
         what: "Size what is at stake, weight it by likelihood, and raise flags that need action now.",
         decision: "How much is at stake, and is anything urgent?",
-        how: `Headroom = unconsumed commit + open pipeline. Expected value = score / 100 × headroom. ` +
+        how: `Pool of funds = unused commit + open pipeline. Expected value = score / 100 × pool of funds. ` +
           `Flags: Commit at Risk (25%+ into the contract and burning below ${pct(t.commit_at_risk_max_pace)} of pace), ` +
           `Renewal Window (≤ ${t.renewal_window_days} days), Usage Spike (≥ ${t.usage_spike_ratio}× normal), ` +
           `New Developers (≥ ${t.new_developers_min} in 30 days).`,
         screen: ["prioritization.html", "#selected"],
         sentence: (a) =>
-          `Headroom is ${usd(a.headroom_usd)} (${usd(a.unconsumed_commit_usd)} unused commit + ${usd(a.open_pipeline_usd)} open pipeline), ` +
+          `The pool of funds is ${usd(a.pool_of_funds_usd)} (${GTM.poolBreakdown(a)}), ` +
           `worth ${usd(a.expected_value_usd)} in expected value at a score of ${a.propensity_score}; ` +
           `${a.flags.length ? `flags raised: ${andList(a.flags)}` : "no flags raised"}.`,
       },
       {
         name: "Prioritize & Route",
         type: "decision",
+        jd: ["Prioritization matrix", "Capacity (headcount)"],
+        why: ["quadrants", "capacity"],
         what: "Rank every account by expected value, place it in a quadrant, and check it against SA/FDE capacity.",
         decision: "Which engagement motion does this account get?",
-        how: `Score ≥ ${t.score_high} and headroom ≥ ${usd(t.headroom_high)} set the quadrant. Capacity covers the top ${t.capacity_top_n} ` +
+        how: `Score ≥ ${t.score_high} and pool of funds ≥ ${usd(t.pool_of_funds_high)} set the quadrant. Capacity covers the top ${t.capacity_top_n} ` +
           "by expected value. FDE Deep Engagement and Strategic Bets need capacity; the other quadrants use scaled motions.",
         screen: ["prioritization.html", "#matrix"],
         sentence: (a) =>
@@ -101,6 +113,8 @@ const LIFECYCLE = (function () {
       {
         name: "Engage & Onsite",
         type: "action",
+        jd: ["Engagement tracker", "Onsite planner"],
+        why: [],
         what: "Open a tracked engagement with one goal, one owner, a status and a next step. Plan an onsite where a technical decision is stuck.",
         decision: "Who owns it, and what happens next?",
         how: "Accounts on a dedicated motion get a tracked engagement. Onsites are reserved for FDE Deep Engagement accounts with a clear technical decision to make.",
@@ -118,6 +132,8 @@ const LIFECYCLE = (function () {
       {
         name: "Program & PS Offer",
         type: "action",
+        jd: ["Program playbook", "PS offer"],
+        why: ["flags"],
         what: "Scale what works: a data-triggered SA program for flagged accounts, and a packaged services offer where hands-on delivery is needed.",
         decision: "Does it need a program, a paid services package, or neither?",
         how: `Commit at Risk triggers the ${content.program.name} (led by the FDE/SA instead when the account is inside capacity). ` +
@@ -125,7 +141,9 @@ const LIFECYCLE = (function () {
           `Assess under ${usd(t.ps_assess_below)}, Migrate under ${usd(t.ps_migrate_below)}, Scale above.`,
         screen: ["programs.html", "#selected"],
         sentence: (a) => {
-          const program = a.program
+          const program = a.holdout
+            ? `Burning commit at ${pct(a.burn_pace)} of pace, ${a.account_name} is flagged Commit at Risk but was randomly picked for the holdout, so it is measured, not enrolled`
+            : a.program
             ? `Burning commit at ${pct(a.burn_pace)} of pace, ${a.account_name} is flagged Commit at Risk and gets ${a.program === content.program.name ? "the " : ""}${a.program}`
             : `${a.account_name} is not flagged Commit at Risk, so no burn-recovery program applies`;
           const tier = offer.tiers.find((x) => x.tier === a.ps_recommended_tier);
@@ -138,17 +156,21 @@ const LIFECYCLE = (function () {
       {
         name: "Measure & Write-back",
         type: "action",
+        jd: ["Executive view", "Measure and learn", "Hand off to an owner"],
+        why: ["holdout"],
         what: "Push every decision back to Salesforce and prove the time paid off.",
         decision: "Did our time create revenue we would not have had otherwise?",
         how: "Score, reasons, rank, quadrant, flags, motion and PS tier are written to Account fields. Impact is measured against a randomized holdout of similar accounts, so only incremental lift counts as ROI.",
-        screen: ["prioritization.html", "#kpis"],
+        screen: ["executive.html", "#measure"],
         sentence: (a) => {
           const metric = a.program
             ? `burn pace (now ${pct(a.burn_pace)}) recovering above 90%`
             : `usage growth (now ${a.usage_growth_90d_pct >= 0 ? "+" : ""}${a.usage_growth_90d_pct}%) and expansion at renewal`;
           return `We write score ${a.propensity_score}, rank #${a.priority_rank}, quadrant (${a.quadrant}) and ` +
             `flags (${a.flags.length ? a.flags.join(", ") : "none"}) to ${a.account_name}'s Salesforce record, ` +
-            `then track ${metric} against a holdout of similar accounts.`;
+            (a.holdout
+              ? `then use its ${metric.split(" (")[0]} as the baseline the enrolled accounts are compared against.`
+              : `then track ${metric} against a holdout of similar accounts.`);
         },
       },
     ];

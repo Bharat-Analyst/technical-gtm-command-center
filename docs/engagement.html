@@ -12,39 +12,35 @@
   <header class="site-header">
     <div class="inner">
       <a class="brand" href="index.html">Technical GTM Command Center</a>
-      <nav aria-label="Main">
-        <ul>
-          <li><a href="index.html">Lifecycle Tour</a></li>
-          <li><a href="prioritization.html">Prioritization</a></li>
-          <li><a href="engagement.html" aria-current="page">Engagement &amp; Onsite</a></li>
-          <li><a href="programs.html">Programs &amp; PS Offer</a></li>
-        </ul>
-      </nav>
+      <nav aria-label="Main" id="nav"></nav>
     </div>
   </header>
 
   <main>
     <span class="responsibility">Strategic customer engagement · Technical onsites</span>
     <h1>Engagement &amp; onsite</h1>
-    <p class="lede">This page shows how I'd run strategic customer engagements: each top account has one goal, one owner, a visible status and a next step, and onsites are planned to a measurable outcome.</p>
+    <p class="lede">This page shows how we could run strategic customer engagements: each top account has one goal, one owner, a visible status, its blockers and a next step, and onsites are planned to a measurable outcome.</p>
 
     <section class="card callout" id="selected" style="margin-bottom:12px"></section>
 
     <div class="grid grid-3" id="summary"></div>
+    <p class="howto"><strong>How to read this:</strong> engagement health at a glance. Each card counts active engagements by the owner's weekly status.</p>
 
     <h2>Engagement tracker</h2>
     <div class="table-wrap">
       <table>
         <thead><tr>
-          <th>Account</th><th>Goal</th><th>Owner</th><th>Status</th><th>Next step</th>
-          <th class="num">Rank</th><th>Quadrant</th><th class="num">Expected value</th>
+          <th><span data-term="account">Account</span></th><th><span data-term="goal">Goal</span></th><th><span data-term="owner">Owner</span></th>
+          <th><span data-term="status">Status</span></th><th><span data-term="blocker">Blocker</span></th><th><span data-term="next_step">Next step</span></th>
+          <th class="num"><span data-term="rank">Rank</span></th><th><span data-term="quadrant">Quadrant</span></th><th class="num"><span data-term="expected_value">Expected value</span></th>
         </tr></thead>
         <tbody id="tracker"></tbody>
       </table>
     </div>
-    <p class="muted small">Rank, quadrant and expected value are joined live from the scoring pipeline output.</p>
+    <p class="howto"><strong>How to read this:</strong> one row per active engagement. Read across: what we're trying to achieve, who owns it, what's in the way, and what happens next. Rank, quadrant and expected value come straight from the scoring pipeline.</p>
 
     <h2 id="onsite">Northwind Commerce onsite plan</h2>
+    <p class="howto" style="margin:-4px 0 12px"><strong>How to read this:</strong> the plan follows one visit from intake to measurement, in the order the work happens.</p>
     <div id="onsite-plan"></div>
   </main>
 
@@ -55,7 +51,7 @@
   <script>
     (async function () {
       let accounts, content;
-      try { [accounts, content] = await Promise.all([GTM.load("accounts"), GTM.load("content")]); }
+      try { ({ accounts, content } = await GTM.init("engagement.html")); }
       catch (err) { GTM.showError(document.querySelector("main"), err); return; }
 
       const byName = Object.fromEntries(accounts.accounts.map((a) => [a.account_name, a]));
@@ -87,33 +83,34 @@
           <td>${GTM.esc(e.goal)}</td>
           <td>${GTM.esc(e.owner)}</td>
           <td>${GTM.status(e.status)}</td>
+          <td>${e.blocker && e.blocker !== "None" ? GTM.esc(e.blocker) : '<span class="muted">None</span>'}</td>
           <td>${GTM.esc(e.next_step)}</td>
           <td class="num">${a ? a.priority_rank : "—"}</td>
-          <td>${a ? GTM.esc(a.quadrant) : "—"}</td>
+          <td>${a ? GTM.term(a.quadrant) : "—"}</td>
           <td class="num">${a ? GTM.usd(a.expected_value_usd) : "—"}</td>
         </tr>`;
       }).join("");
 
       const o = content.onsite;
       const list = (items, tag = "ul") => `<${tag} class="tight">${items.map((i) => `<li>${GTM.esc(i)}</li>`).join("")}</${tag}>`;
+      // Phases follow the onsite from intake to measurement.
+      const phase = (n, title, body) => `<div class="card"><h3><span class="muted">${n}.</span> ${title}</h3>${body}</div>`;
       document.getElementById("onsite-plan").innerHTML = `
         <div class="card" style="margin-bottom:12px">
-          <h3>Goal</h3>
-          <p style="margin:0 0 8px">${GTM.esc(o.goal)}</p>
-          <p class="muted small" style="margin:0">${GTM.esc(o.date)}</p>
+          <h3>${GTM.term("goal")}</h3>
+          <p style="margin:0">${GTM.esc(o.goal)}</p>
         </div>
         <div class="grid grid-2">
-          <div class="card"><h3>Agenda</h3>${list(o.agenda, "ol")}</div>
-          <div class="card">
-            <h3>Attendees</h3>
-            <p class="small muted" style="margin:0 0 4px">Customer</p>${list(o.attendees.customer)}
-            <p class="small muted" style="margin:10px 0 4px">Our team</p>${list(o.attendees.our_team)}
-          </div>
-          <div class="card"><h3>Prep checklist</h3>${list(o.prep_checklist)}</div>
-          <div class="card"><h3>Follow-up actions</h3>${list(o.follow_ups)}</div>
+          ${phase(1, "Intake", `<p style="margin:0">${GTM.esc(o.intake)}</p>`)}
+          ${phase(2, "Agenda design", list(o.agenda, "ol"))}
+          ${phase(3, "Staffing", `<p class="small muted" style="margin:0 0 4px">Customer</p>${list(o.attendees.customer)}
+            <p class="small muted" style="margin:10px 0 4px">Our team</p>${list(o.attendees.our_team)}`)}
+          ${phase(4, "Prep", list(o.prep_checklist))}
+          ${phase(5, "Execution", `<p style="margin:0 0 4px"><strong>${GTM.esc(o.date)}</strong></p><p style="margin:0">${GTM.esc(o.execution)}</p>`)}
+          ${phase(6, "Follow-up", list(o.follow_ups))}
         </div>
         <div class="card metric" style="margin-top:12px">
-          <h3>Success metric</h3>
+          <h3><span class="muted">7.</span> Measurement: success metric</h3>
           <p style="margin:0">${GTM.esc(o.success_metric)}</p>
         </div>`;
       GTM.scrollToHash();

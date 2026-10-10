@@ -12,7 +12,7 @@ Personal project. **Not affiliated with Cloudflare.** All data is synthetic.
 ## Role responsibilities → modules (every module must map to one)
 | # | Responsibility | Module / output |
 |---|----------------|-----------------|
-| 1 | Prioritization & visibility | Propensity × headroom matrix, account flags, SA/FDE capacity view |
+| 1 | Prioritization & visibility | Propensity × pool of funds matrix, account flags, SA/FDE capacity view |
 | 2 | Strategic customer engagement | Engagement tracker (stages, owners, next steps, health) |
 | 3 | Technical onsites | Onsite planning model (who goes, agenda, expected outcome, cost) |
 | 4 | Technical programs | Repeatable proactive SA program playbook (triggers → plays → exit criteria) |
@@ -54,11 +54,13 @@ Each page should show where Northwind sits at that stage.
 
 ## Current files
 - `generate_data.py` → `data/raw/accounts.csv` (synthetic, seed 42, 499 random + 4 planted featured accounts)
-- `pipeline.py` → scorecard, headroom/EV, flags, quadrants, capacity; writes
+- `pipeline.py` → scorecard, pool of funds/EV, holdout, flags, quadrants, capacity; writes
   `data/processed/account_scores.csv`, `data/output/salesforce_writeback.csv`,
   `docs/data/accounts.json`, and updates only the count fields in `docs/data/content.json`
 - `docs/data/content.json` — hand-edited copy (owner edits it; never overwrite wording)
 - `docs/*.html` + `docs/assets/` — static site; preview with `python3 -m http.server 8000 -d docs`
 - `docs/assets/lifecycle.js` — the 8 lifecycle steps + per-account sentences, shared by all pages
 - Cross-page state is URL-only: `?account=<slug>&step=<1-8>` (helpers in `docs/assets/common.js`)
+- `docs/data/jd_mapping.json` (JD keyword mapping, user-supplied wording — don't reword), `glossary.json` (ⓘ tooltips), `decisions.json` (Decision Log); `{placeholders}` in glossary/decisions are filled from accounts.json meta
+- Wording: collaborative ("we could", "possibly we can"), never "I'd"; "pool of funds" not "headroom"
 - Featured accounts (one per quadrant): Northwind Commerce, Contoso Media, Fabrikam Health, Tailspin Games

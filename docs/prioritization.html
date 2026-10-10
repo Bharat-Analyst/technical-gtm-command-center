@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Account Prioritization</title>
-  <meta name="description" content="Propensity × headroom matrix, flags and SA/FDE capacity for 503 synthetic accounts.">
+  <meta name="description" content="Propensity × pool of funds matrix, flags and SA/FDE capacity for 503 synthetic accounts.">
   <link rel="stylesheet" href="assets/style.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/plotly.js/2.35.3/plotly.min.js"></script>
 </head>
@@ -13,38 +13,34 @@
   <header class="site-header">
     <div class="inner">
       <a class="brand" href="index.html">Technical GTM Command Center</a>
-      <nav aria-label="Main">
-        <ul>
-          <li><a href="index.html">Lifecycle Tour</a></li>
-          <li><a href="prioritization.html" aria-current="page">Prioritization</a></li>
-          <li><a href="engagement.html">Engagement &amp; Onsite</a></li>
-          <li><a href="programs.html">Programs &amp; PS Offer</a></li>
-        </ul>
-      </nav>
+      <nav aria-label="Main" id="nav"></nav>
     </div>
   </header>
 
   <main>
     <span class="responsibility">Prioritization &amp; visibility · Leadership visibility</span>
     <h1>Account prioritization</h1>
-    <p class="lede">This page shows how I'd decide where SA and FDE time goes: every account scored on propensity and headroom, flagged, and ranked against real capacity.</p>
+    <p class="lede">This page shows how we could decide where SA and FDE time goes: every account scored on propensity and pool of funds, flagged, and ranked against real capacity.</p>
 
-    <div class="controls card" style="margin-bottom:12px">
-      <label for="capacity">Capacity: cover the top
-        <input type="range" id="capacity" min="5" max="100" step="5" value="30">
-        <strong id="capacity-out">30</strong> accounts
-      </label>
-      <span class="muted small">Drag to see what more (or less) headcount would cover.</span>
+    <div class="controls card" style="margin-bottom:12px;display:block">
+      <div class="controls" style="margin:0">
+        <label for="capacity"><span data-term="capacity">Capacity</span>: cover the top
+          <input type="range" id="capacity" min="5" max="100" step="5" value="30">
+          <strong id="capacity-out">30</strong> accounts
+        </label>
+        <span id="why-capacity"></span>
+      </div>
+      <p class="howto"><strong>How to read this:</strong> drag to change how many accounts the team can cover. The cards, chart and table update to show what more (or less) headcount would reach.</p>
     </div>
 
     <section class="card callout" id="selected" style="margin-bottom:12px"></section>
 
     <div class="grid grid-4" id="kpis"></div>
 
-    <h2>Propensity × headroom</h2>
+    <h2>Propensity × pool of funds</h2>
     <div class="card" id="matrix">
-      <div id="scatter" class="chart" role="img" aria-label="Scatter plot of propensity score versus headroom for every account, divided into four quadrants. Northwind Commerce is highlighted in the top-right FDE Deep Engagement quadrant."></div>
-      <p class="muted small" style="margin:8px 0 0">Headroom uses a log scale so small and large accounts both stay visible. Dashed lines are the quadrant cut-offs. The ranked table below has every value.</p>
+      <div id="scatter" class="chart" role="img" aria-label="Scatter plot of propensity score versus pool of funds for every account, divided into four quadrants. The selected account is highlighted."></div>
+      <p class="howto"><strong>How to read this:</strong> each dot is an account. Further right = more likely to grow; higher = more money to unlock (log scale). Dashed lines split the four quadrants; blue dots fit current capacity. <span id="why-matrix"></span></p>
     </div>
 
     <h2>Ranked accounts</h2>
@@ -63,12 +59,20 @@
     <div class="table-wrap">
       <table>
         <thead><tr>
-          <th class="num">Rank</th><th>Account</th><th>Quadrant</th><th class="num">Score</th>
-          <th class="num">Headroom</th><th class="num">Expected value</th><th>Flags</th><th>Top reasons</th><th>Coverage</th>
+          <th class="num"><span data-term="rank">Rank</span></th>
+          <th><span data-term="account">Account</span></th>
+          <th><span data-term="quadrant">Quadrant</span></th>
+          <th class="num"><span data-term="propensity_score">Score</span></th>
+          <th class="num"><span data-term="pool_of_funds">Pool of funds</span></th>
+          <th class="num"><span data-term="expected_value">Expected value</span></th>
+          <th><span data-term="flags">Flags</span></th>
+          <th><span data-term="top_reasons">Top reasons</span></th>
+          <th><span data-term="coverage">Coverage</span></th>
         </tr></thead>
         <tbody id="rows"></tbody>
       </table>
     </div>
+    <p class="howto"><strong>How to read this:</strong> accounts are sorted by expected value, so the top rows are worth the most time. Pool of funds shows its breakdown underneath; the reasons say why each score is high or low. <span id="why-table"></span></p>
     <p class="small" style="display:flex;gap:12px;align-items:center;flex-wrap:wrap">
       <span class="muted" id="row-count"></span>
       <button class="btn" id="more" type="button">Show 50 more</button>
@@ -81,7 +85,7 @@
   <script>
     (async function () {
       let data;
-      try { data = await GTM.load("accounts"); }
+      try { ({ accounts: data } = await GTM.init("prioritization.html")); }
       catch (err) { GTM.showError(document.querySelector("main"), err); return; }
 
       const accounts = data.accounts;           // already sorted by Expected Value (rank 1 first)
@@ -96,31 +100,36 @@
       // Show enough table rows that the selected account is visible.
       let shown = Math.max(50, Math.ceil(selected.priority_rank / 50) * 50);
 
+      document.getElementById("why-capacity").innerHTML = GTM.why("capacity");
+      document.getElementById("why-matrix").innerHTML = GTM.why("quadrants");
+      document.getElementById("why-table").innerHTML = GTM.why("pool-of-funds") + GTM.why("flags");
+
       // ---------- Selected account card (raw data → score → routing) ----------
       const fact = (label, value) => `<div><dt>${label}</dt><dd>${value}</dd></div>`;
       const a = selected;
+      const win = data.meta.signal_windows_days;
       document.getElementById("selected").innerHTML = `
         <span class="responsibility" style="margin:0">Selected account</span>
         <h3 style="font-size:18px">${GTM.esc(a.account_name)} <span class="muted small" style="font-weight:400">${GTM.esc(a.segment)} · ${GTM.esc(a.industry)} · ${GTM.esc(a.region)}</span></h3>
         <div>${GTM.chips([a.quadrant, ...a.flags])}</div>
         <dl class="facts">
-          ${fact("Annual commit", GTM.usd(a.annual_commit_usd))}
-          ${fact("Consumed", `${GTM.usd(a.commit_consumed_usd)} (${GTM.pct(a.burn_pace)} of pace)`)}
-          ${fact("Open pipeline", GTM.usd(a.open_pipeline_usd))}
-          ${fact("Usage growth, 90d", `${a.usage_growth_90d_pct >= 0 ? "+" : ""}${a.usage_growth_90d_pct}%`)}
-          ${fact("New developers, 30d", `${a.new_developers_30d} of ${a.active_developers}`)}
-          ${fact("SA meetings, 90d", a.sa_meetings_90d)}
-          ${fact("Propensity score", `${a.propensity_score}/100`)}
-          ${fact("Headroom", GTM.usd(a.headroom_usd))}
-          ${fact("Expected value", GTM.usd(a.expected_value_usd))}
-          ${fact("Priority rank", `#${a.priority_rank} of ${accounts.length}`)}
+          ${fact(GTM.term("annual_commit"), GTM.usd(a.annual_commit_usd))}
+          ${fact(GTM.term("consumed"), `${GTM.usd(a.commit_consumed_usd)} (${GTM.pct(a.burn_pace)} of pace)`)}
+          ${fact(GTM.term("open_pipeline"), GTM.usd(a.open_pipeline_usd))}
+          ${fact(GTM.term("usage_growth", `Usage growth, ${win.usage_growth}d`), `${a.usage_growth_90d_pct >= 0 ? "+" : ""}${a.usage_growth_90d_pct}%`)}
+          ${fact(GTM.term("new_developers", `New developers, ${win.new_developers}d`), `${a.new_developers_30d} of ${a.active_developers}`)}
+          ${fact(GTM.term("sa_meetings", `SA meetings, ${win.engagement}d`), a.sa_meetings_90d)}
+          ${fact(GTM.term("propensity_score"), `${a.propensity_score}/100`)}
+          ${fact(GTM.term("pool_of_funds"), `${GTM.usd(a.pool_of_funds_usd)}<span class="breakdown">${GTM.poolBreakdown(a)}</span>`)}
+          ${fact(GTM.term("expected_value"), GTM.usd(a.expected_value_usd))}
+          ${fact(GTM.term("rank", "Priority rank"), `#${a.priority_rank} of ${accounts.length}`)}
         </dl>
-        <p class="small" style="margin:12px 0 4px"><strong>Why:</strong> ${a.top_reasons.map(GTM.esc).join(" · ")}</p>
-        <p class="small" style="margin:0"><strong>Motion:</strong> ${GTM.esc(a.motion)}</p>`;
+        <p class="small" style="margin:12px 0 4px"><strong>${GTM.term("top_reasons")}:</strong> ${a.top_reasons.map(GTM.esc).join(" · ")}${GTM.why("weights")}${GTM.why("windows")}</p>
+        <p class="small" style="margin:0"><strong>${GTM.term("motion")}:</strong> ${GTM.esc(a.motion)}</p>`;
 
       // ---------- KPI cards (react to the capacity slider) ----------
       const totalEV = accounts.reduce((s, a) => s + a.expected_value_usd, 0);
-      const totalHeadroom = accounts.reduce((s, a) => s + a.headroom_usd, 0);
+      const sum = (rows, k) => rows.reduce((s, a) => s + a[k], 0);
       const atRisk = accounts.filter((a) => a.flags.includes("Commit at Risk"));
 
       function renderKpis() {
@@ -131,22 +140,23 @@
         const card = (label, value, sub) =>
           `<div class="card kpi"><div class="label">${label}</div><div class="value">${value}</div><div class="sub">${sub}</div></div>`;
         document.getElementById("kpis").innerHTML = [
-          card("Accounts scored", accounts.length, `${GTM.usd(totalHeadroom)} total headroom`),
-          card("Expected value covered", GTM.usd(coveredEV), `${GTM.pct(coveredEV / totalEV)} of total with ${capacity} accounts (${GTM.pct(capacity / accounts.length)} of book)`),
-          card("FDE Deep Engagement in capacity", `${fde}`, `of ${accounts.filter((a) => a.quadrant === "FDE Deep Engagement").length} high/high accounts`),
-          card("Commit at Risk", atRisk.length, `${riskCovered} covered · ${atRisk.length - riskCovered} need the scaled program`),
+          card(GTM.term("pool_of_funds", "Total pool of funds"), GTM.usd(sum(accounts, "pool_of_funds_usd")),
+            `${GTM.usd(sum(accounts, "unconsumed_commit_usd"))} unused commit + ${GTM.usd(sum(accounts, "open_pipeline_usd"))} open pipeline, across ${accounts.length} accounts`),
+          card(GTM.term("ev_covered"), GTM.usd(coveredEV), `${GTM.pct(coveredEV / totalEV)} of total with ${capacity} accounts (${GTM.pct(capacity / accounts.length)} of accounts)`),
+          card(GTM.term("fde_deep_engagement", "FDE Deep Engagement in capacity"), `${fde}`, `of ${accounts.filter((a) => a.quadrant === "FDE Deep Engagement").length} high/high accounts`),
+          card(GTM.term("commit_at_risk"), atRisk.length, `${riskCovered} covered · ${atRisk.length - riskCovered} need the scaled program`),
         ].join("");
       }
 
-      // ---------- Scatter: score vs headroom ----------
-      const MIN_Y = 1000; // accounts with ~$0 headroom are drawn on the floor of the log axis
+      // ---------- Scatter: score vs pool of funds ----------
+      const MIN_Y = 1000; // accounts with ~$0 pool of funds are drawn on the floor of the log axis
       function trace(rows, name, color, size, extra = {}) {
         return {
           type: "scatter", mode: "markers", name,
           x: rows.map((a) => a.propensity_score),
-          y: rows.map((a) => Math.max(a.headroom_usd, MIN_Y)),
-          customdata: rows.map((a) => [a.account_name, GTM.usd(a.headroom_usd), GTM.usd(a.expected_value_usd), a.priority_rank, a.quadrant]),
-          hovertemplate: "<b>%{customdata[0]}</b><br>Score %{x} · Headroom %{customdata[1]}<br>Expected value %{customdata[2]} · Rank #%{customdata[3]}<br>%{customdata[4]}<extra></extra>",
+          y: rows.map((a) => Math.max(a.pool_of_funds_usd, MIN_Y)),
+          customdata: rows.map((a) => [a.account_name, GTM.usd(a.pool_of_funds_usd), GTM.usd(a.unconsumed_commit_usd), GTM.usd(a.open_pipeline_usd), GTM.usd(a.expected_value_usd), a.priority_rank, a.quadrant]),
+          hovertemplate: "<b>%{customdata[0]}</b><br>Score %{x} · Pool of funds %{customdata[1]}<br>(%{customdata[2]} unused commit + %{customdata[3]} open pipeline)<br>Expected value %{customdata[4]} · Rank #%{customdata[5]}<br>%{customdata[6]}<extra></extra>",
           marker: { color, size, line: { color: GTM.colors().surface, width: 1 } },
           ...extra,
         };
@@ -155,18 +165,20 @@
       function renderScatter() {
         const c = GTM.colors();
         const others = accounts.filter((a) => a.slug !== selected.slug);
-        const nw = selected;
+        const sel = selected;
         const traces = [
           trace(others.filter((a) => a.priority_rank > capacity), "Outside capacity", c.out, 8, { marker: { color: c.out, size: 8, opacity: 0.7, line: { color: c.surface, width: 1 } } }),
           trace(others.filter((a) => a.priority_rank <= capacity), `In capacity (top ${capacity})`, c.accent, 9),
-          trace([nw], nw.account_name, c.highlight, 15, { marker: { color: c.highlight, size: 15, line: { color: c.surface, width: 2 } } }),
+          trace([sel], sel.account_name, c.highlight, 15, { marker: { color: c.highlight, size: 15, line: { color: c.surface, width: 2 } } }),
         ];
-        const corner = (x, y, text, xanchor, yanchor) => ({
-          x, y, xref: "x", yref: "paper", text, showarrow: false, xanchor, yanchor,
-          font: { size: narrow ? 10 : 12, color: c.muted },
-        });
         // Phones: legend moves below the plot so it can't collide with quadrant labels.
         const narrow = document.getElementById("scatter").clientWidth < 600;
+        const glossary = GTM.data.glossary;
+        // Quadrant labels carry the glossary definition as a hover tooltip.
+        const corner = (x, y, key, xanchor, yanchor) => ({
+          x, y, xref: "x", yref: "paper", text: `<b>${glossary[key].label}</b> ⓘ`, showarrow: false, xanchor, yanchor,
+          hovertext: GTM.fill(glossary[key].text), font: { size: narrow ? 10 : 12, color: c.muted },
+        });
         const layout = {
           paper_bgcolor: c.surface, plot_bgcolor: c.surface,
           font: { family: "system-ui, -apple-system, Segoe UI, sans-serif", color: c.text2, size: 12 },
@@ -175,21 +187,21 @@
           hoverlabel: { bgcolor: c.surface, bordercolor: c.axis, font: { color: c.text } },
           xaxis: { title: { text: "Propensity score", font: { color: c.muted } }, range: [0, 100], gridcolor: c.grid, zeroline: false, linecolor: c.axis, tickfont: { color: c.muted } },
           yaxis: {
-            title: { text: "Headroom", font: { color: c.muted } }, type: "log", range: [Math.log10(800), Math.log10(3e6)],
+            title: { text: "Pool of funds", font: { color: c.muted } }, type: "log", range: [Math.log10(800), Math.log10(3e6)],
             tickvals: [1e3, 1e4, 1e5, 1e6], ticktext: ["$1K", "$10K", "$100K", "$1M"],
             gridcolor: c.grid, zeroline: false, linecolor: c.axis, tickfont: { color: c.muted },
           },
           shapes: [
             { type: "line", x0: t.score_high, x1: t.score_high, yref: "paper", y0: 0, y1: 1, line: { color: c.axis, width: 1.5, dash: "dash" } },
             // Shapes use raw data values even on a log axis (annotations below need log10).
-            { type: "line", xref: "paper", x0: 0, x1: 1, y0: t.headroom_high, y1: t.headroom_high, line: { color: c.axis, width: 1.5, dash: "dash" } },
+            { type: "line", xref: "paper", x0: 0, x1: 1, y0: t.pool_of_funds_high, y1: t.pool_of_funds_high, line: { color: c.axis, width: 1.5, dash: "dash" } },
           ],
           annotations: [
-            corner(99, 0.99, "<b>FDE Deep Engagement</b>", "right", "top"),
-            corner(1, 0.99, "<b>Strategic Bet</b>", "left", "top"),
-            corner(99, 0.01, "<b>Scaled SA Program</b>", "right", "bottom"),
-            corner(1, 0.01, "<b>Digital</b>", "left", "bottom"),
-            { x: nw.propensity_score, y: Math.log10(nw.headroom_usd), text: GTM.esc(nw.account_name.split(" ")[0]), showarrow: true, arrowhead: 0, ax: -44, ay: narrow ? 30 : -28,
+            corner(99, 0.99, "fde_deep_engagement", "right", "top"),
+            corner(1, 0.99, "strategic_bet", "left", "top"),
+            corner(99, 0.01, "scaled_sa_program", "right", "bottom"),
+            corner(1, 0.01, "digital", "left", "bottom"),
+            { x: sel.propensity_score, y: Math.log10(Math.max(sel.pool_of_funds_usd, MIN_Y)), text: GTM.esc(sel.account_name.split(" ")[0]), showarrow: true, arrowhead: 0, ax: -44, ay: narrow ? 30 : -28,
               arrowcolor: c.text2, font: { size: 12, color: c.text } },
           ],
         };
@@ -219,9 +231,9 @@
           <tr class="${a.slug === selected.slug ? "is-selected" : ""}">
             <td class="num">${a.priority_rank}</td>
             <td><strong>${GTM.esc(a.account_name)}</strong><div class="muted small">${GTM.esc(a.segment)} · ${GTM.esc(a.region)}</div></td>
-            <td>${GTM.esc(a.quadrant)}</td>
+            <td>${GTM.term(a.quadrant)}</td>
             <td class="num">${a.propensity_score}</td>
-            <td class="num">${GTM.usd(a.headroom_usd)}</td>
+            <td class="num">${GTM.usd(a.pool_of_funds_usd)}<span class="breakdown">${GTM.usd(a.unconsumed_commit_usd)} + ${GTM.usd(a.open_pipeline_usd)}</span></td>
             <td class="num">${GTM.usd(a.expected_value_usd)}</td>
             <td>${a.flags.length ? GTM.chips(a.flags) : '<span class="muted">—</span>'}</td>
             <td><ul class="reasons">${a.top_reasons.map((r) => `<li>${GTM.esc(r)}</li>`).join("")}</ul></td>

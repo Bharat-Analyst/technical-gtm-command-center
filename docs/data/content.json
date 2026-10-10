@@ -5,6 +5,7 @@
       "goal": "Move checkout personalization to Workers; recover commit burn",
       "owner": "FDE: Priya Raman / SA: Marcus Lee",
       "status": "yellow",
+      "blocker": "Migration stalled on legacy checkout dependencies",
       "next_step": "Onsite architecture workshop, Oct 21"
     },
     {
@@ -12,6 +13,7 @@
       "goal": "Edge routing for real-time shipment tracking API",
       "owner": "FDE: Tomas Okafor",
       "status": "green",
+      "blocker": "None",
       "next_step": "Production cutover review, Oct 14"
     },
     {
@@ -19,6 +21,7 @@
       "goal": "Unblock stalled image pipeline migration",
       "owner": "SA: Hannah Cho",
       "status": "red",
+      "blocker": "Scope disagreement between platform and app teams",
       "next_step": "Exec sponsor call to reset scope"
     },
     {
@@ -26,6 +29,7 @@
       "goal": "Validate compliance pattern for edge data processing",
       "owner": "SA: Daniel Brooks",
       "status": "yellow",
+      "blocker": "Waiting on data residency sign-off",
       "next_step": "Security review with CISO team"
     },
     {
@@ -33,6 +37,7 @@
       "goal": "Scale API gateway to 3 new regions",
       "owner": "FDE: Priya Raman",
       "status": "green",
+      "blocker": "None",
       "next_step": "Load test results readout"
     },
     {
@@ -40,6 +45,7 @@
       "goal": "Onboard 2 new dev teams to serverless platform",
       "owner": "SA: Marcus Lee",
       "status": "green",
+      "blocker": "None",
       "next_step": "Developer enablement session"
     },
     {
@@ -47,6 +53,7 @@
       "goal": "Prove ROI of edge caching for market data feeds",
       "owner": "SA: Hannah Cho",
       "status": "yellow",
+      "blocker": "Benchmark environment not ready",
       "next_step": "Share benchmark results"
     },
     {
@@ -54,13 +61,16 @@
       "goal": "Reference architecture for IoT telemetry ingestion",
       "owner": "FDE: Tomas Okafor",
       "status": "green",
+      "blocker": "None",
       "next_step": "Architecture sign-off"
     }
   ],
   "onsite": {
     "account": "Northwind Commerce",
+    "intake": "VP Engineering asked for help after the checkout migration stalled; qualified because it is FDE Deep Engagement and Commit at Risk.",
     "goal": "Agree a plan to move checkout personalization to Workers within 60 days",
     "date": "Oct 21, 2026 (full day, customer HQ)",
+    "execution": "Full day at customer HQ: morning design, afternoon hands-on build, exec readout at 16:00.",
     "agenda": [
       "09:00  Business context: checkout conversion goals and commit status",
       "09:45  Current architecture walkthrough (customer-led)",
@@ -113,7 +123,15 @@
     "success_metric": "60% of enrolled accounts back above 90% burn pace within 90 days",
     "eligible_accounts": 45,
     "eligible_outside_capacity": 40,
-    "eligible_unconsumed_commit_usd": 8677300
+    "eligible_unconsumed_commit_usd": 8677300,
+    "handoff": {
+      "owner": "Scaled SA team lead owns the program; GTM Strategy keeps the measurement.",
+      "ready_when": [
+        "Holdout comparison shows lift for two cycles in a row",
+        "Playbook, templates and enrollment are documented and automated",
+        "Owner has the headcount and a quarterly review on the calendar"
+      ]
+    }
   },
   "ps_offer": {
     "name": "Workers Migration Accelerator",

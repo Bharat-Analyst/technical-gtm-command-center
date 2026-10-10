@@ -1,0 +1,51 @@
+[
+  {
+    "id": "weights",
+    "title": "Scorecard weights",
+    "decision": "Score = usage growth {w_usage} + new developers {w_newdev} + SA engagement {w_eng} + commit burn {w_burn}, each measured as a percentile against all accounts.",
+    "why": "Usage growth is the clearest sign a customer is already moving work onto the platform, so it counts most.",
+    "possibly": "Possibly we can replace hand-set weights with a model trained on which accounts actually grew."
+  },
+  {
+    "id": "windows",
+    "title": "90-day window",
+    "decision": "Usage growth and SA meetings look back {win_usage} days; new developers look back {win_newdev} days.",
+    "why": "A quarter smooths out weekly noise but still reflects today. New teams show up fast, so a month catches them early.",
+    "possibly": "Possibly we can test 30, 60 and 90-day windows and keep the one that best predicts growth."
+  },
+  {
+    "id": "pool-of-funds",
+    "title": "Pool of funds formula",
+    "decision": "Pool of funds = unused commit + open pipeline. Expected value = score ÷ 100 × pool of funds.",
+    "why": "Unused commit protects the renewal and open deals are new revenue; together they are the money our help could unlock.",
+    "possibly": "Possibly we can add forecast usage growth, not just today's gaps."
+  },
+  {
+    "id": "capacity",
+    "title": "Capacity",
+    "decision": "The team can actively cover the top {capacity} accounts by expected value.",
+    "why": "Headcount is fixed, so dedicated help goes where expected value is highest; everyone else gets a scaled motion.",
+    "possibly": "Possibly we can set capacity from real SA/FDE hours per engagement instead of a flat count."
+  },
+  {
+    "id": "flags",
+    "title": "Flag thresholds",
+    "decision": "Commit at Risk under {car_pace} of pace (after 25% of the term); Renewal Window ≤ {renewal_days} days; Usage Spike ≥ {spike}×; New Developers ≥ {newdev_min} in {win_newdev} days.",
+    "why": "Each flag is a \"why now\" signal tied to an action: recover burn, prepare the renewal, support a launch, or onboard a new team.",
+    "possibly": "Possibly we can tune each threshold so it fires only as often as the team can act on it each week."
+  },
+  {
+    "id": "quadrants",
+    "title": "Quadrant cut-offs",
+    "decision": "High score = {score_high}+; high value = pool of funds of {pool_high}+. Together they pick one of four motions.",
+    "why": "Splitting likelihood from size stops big-but-unlikely and small-but-likely accounts from getting the same help.",
+    "possibly": "Possibly we can revisit the cut-offs each quarter as capacity and the customer base change."
+  },
+  {
+    "id": "holdout",
+    "title": "Holdout",
+    "decision": "{holdout_share} of Commit Burn Sprint accounts are picked at random, measured, but not enrolled.",
+    "why": "Comparing helped vs. similar unhelped customers shows the program's real lift, not growth that would have happened anyway.",
+    "possibly": "Possibly we can rotate the holdout each cycle so no customer goes without help for long."
+  }
+]

@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Decision Log</title>
+  <meta name="description" content="Each key modelling decision in the prototype: what we decided, why, and what we could explore next. Synthetic data.">
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+  <div class="banner" role="note">Synthetic data. Personal project, not affiliated with Cloudflare.</div>
+  <header class="site-header">
+    <div class="inner">
+      <a class="brand" href="index.html">Technical GTM Command Center</a>
+      <nav aria-label="Main" id="nav"></nav>
+    </div>
+  </header>
+
+  <main>
+    <span class="responsibility">Prioritize work and inform decisions</span>
+    <h1>Decision log</h1>
+    <p class="lede">This page records each key judgment call in the prototype, so anyone can see what we decided, why, and what we could try next.</p>
+
+    <div id="entries" class="grid" style="gap:12px"></div>
+  </main>
+
+  <footer>Synthetic data generated with a fixed seed. All numbers are read from the pipeline output.</footer>
+
+  <script src="assets/common.js"></script>
+  <script>
+    (async function () {
+      let decisions;
+      try { ({ decisions } = await GTM.init("decisions.html")); }
+      catch (err) { GTM.showError(document.querySelector("main"), err); return; }
+
+      // Where each decision is used, so the log links back to the pages.
+      const usedOn = {
+        "weights": [["prioritization.html#selected", "Prioritization"], ["index.html?step=3", "Lifecycle step 3"]],
+        "windows": [["prioritization.html#selected", "Prioritization"], ["index.html?step=2", "Lifecycle step 2"]],
+        "pool-of-funds": [["prioritization.html", "Prioritization"], ["executive.html", "Executive view"], ["index.html?step=4", "Lifecycle step 4"]],
+        "capacity": [["prioritization.html", "Prioritization"], ["executive.html", "Executive view"], ["index.html?step=5", "Lifecycle step 5"]],
+        "flags": [["prioritization.html", "Prioritization"], ["programs.html", "Programs & PS"], ["index.html?step=4", "Lifecycle step 4"]],
+        "quadrants": [["prioritization.html#matrix", "Prioritization"], ["executive.html", "Executive view"], ["index.html?step=5", "Lifecycle step 5"]],
+        "holdout": [["executive.html#measure", "Executive view"], ["programs.html", "Programs & PS"], ["index.html?step=8", "Lifecycle step 8"]],
+      };
+
+      document.getElementById("entries").innerHTML = decisions.map((d) => `
+        <article class="card" id="${d.id}">
+          <h2 style="margin:0 0 10px;font-size:17px">${GTM.esc(d.title)}</h2>
+          <dl class="step-panel" style="margin:0">
+            <div><dt>Decision</dt><dd style="margin:2px 0 10px">${GTM.esc(GTM.fill(d.decision))}</dd></div>
+            <div><dt>Why</dt><dd style="margin:2px 0 10px">${GTM.esc(d.why)}</dd></div>
+            <div><dt>Possibly we can</dt><dd style="margin:2px 0 10px">${GTM.esc(GTM.fill(d.possibly))}</dd></div>
+          </dl>
+          <p class="small muted" style="margin:0">Used on: ${(usedOn[d.id] || []).map(([href, label]) => `<a href="${href}">${label}</a>`).join(" · ")}</p>
+        </article>`).join("");
+
+      GTM.scrollToHash();
+    })();
+  </script>
+</body>
+</html>

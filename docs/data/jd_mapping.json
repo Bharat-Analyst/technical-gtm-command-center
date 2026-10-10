@@ -1,0 +1,92 @@
+[
+  {
+    "step": "Data comes in",
+    "explanation": "We pull customer info from Salesforce and product usage",
+    "jd_keywords": ["Salesforce CRM, BigQuery, CRM data"],
+    "page": "Methodology"
+  },
+  {
+    "step": "Clean and combine",
+    "explanation": "We fix messy data and put each customer in one row",
+    "jd_keywords": ["Partner with Revenue Engineering, Data"],
+    "page": "Methodology"
+  },
+  {
+    "step": "Propensity score",
+    "explanation": "0–100 score for how likely a customer is to grow soon",
+    "jd_keywords": ["account propensity", "identify the right customer opportunities"],
+    "page": "Prioritization"
+  },
+  {
+    "step": "Pool of funds",
+    "explanation": "Money available to unlock: unused commit plus open deals",
+    "jd_keywords": ["technical revenue pipeline", "accelerate consumption"],
+    "page": "Prioritization"
+  },
+  {
+    "step": "Expected value",
+    "explanation": "Score × pool of funds: which customers are worth the most time",
+    "jd_keywords": ["investment ROI", "prioritize work and inform decisions"],
+    "page": "Prioritization"
+  },
+  {
+    "step": "Flags",
+    "explanation": "\"Why now\" alerts like unused commit or an upcoming renewal",
+    "jd_keywords": ["blockers", "upcoming opportunities"],
+    "page": "Prioritization"
+  },
+  {
+    "step": "Prioritization matrix",
+    "explanation": "Four boxes that decide the type of help each customer gets",
+    "jd_keywords": ["SA/FDE prioritization, resourcing, and account coverage"],
+    "page": "Prioritization"
+  },
+  {
+    "step": "Capacity (headcount)",
+    "explanation": "The team can only support so many customers; top accounts get dedicated help",
+    "jd_keywords": ["resourcing needs", "staffing"],
+    "page": "Prioritization"
+  },
+  {
+    "step": "Engagement tracker",
+    "explanation": "One list of active work: goal, owner, status, blockers, next step",
+    "jd_keywords": ["technical engagement tracker... blockers, and outcomes"],
+    "page": "Engagement and onsite"
+  },
+  {
+    "step": "Onsite planner",
+    "explanation": "How we plan a customer visit from intake to follow-up",
+    "jd_keywords": ["intake, agenda design, staffing, prep, execution, follow-up, measurement"],
+    "page": "Engagement and onsite"
+  },
+  {
+    "step": "Program playbook",
+    "explanation": "Help that works for many customers becomes a repeatable program",
+    "jd_keywords": ["repeatable playbooks, operating rhythms, and ownership models"],
+    "page": "Programs and PS offer"
+  },
+  {
+    "step": "PS offer",
+    "explanation": "Common technical help packaged into a paid service with tiers",
+    "jd_keywords": ["pricing, packaging, business cases, rollout plans"],
+    "page": "Programs and PS offer"
+  },
+  {
+    "step": "Executive view",
+    "explanation": "Leaders see money in play, coverage, engagement health, ROI",
+    "jd_keywords": ["technical revenue pipeline, engagement health, account propensity, investment ROI"],
+    "page": "Executive view"
+  },
+  {
+    "step": "Measure and learn",
+    "explanation": "Compare helped vs similar unhelped customers to prove impact",
+    "jd_keywords": ["feedback loops", "measurable programs"],
+    "page": "Executive view"
+  },
+  {
+    "step": "Hand off to an owner",
+    "explanation": "Once proven and measured, a team owns the program",
+    "jd_keywords": ["measurable and ready for durable ownership"],
+    "page": "Programs and PS offer"
+  }
+]

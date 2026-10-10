@@ -4,11 +4,11 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Methodology</title>
-  <meta name="description" content="How the prototype is built: data flow from Salesforce and product usage, and how each part maps to the role. Synthetic data.">
+  <meta name="description" content="How the prototype is built: data flow from Salesforce and product usage, and how each part maps to the role.">
   <link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
-  <div class="banner" role="note">Synthetic data. Personal project, not affiliated with Cloudflare.</div>
+  <div class="banner" role="note">Personal project, not affiliated with Cloudflare.</div>
   <header class="site-header">
     <div class="inner">
       <a class="brand" href="index.html">Technical GTM Command Center</a>
@@ -31,7 +31,7 @@
       <table>
         <thead><tr><th><span data-term="layer">Layer</span></th><th><span data-term="file">File</span></th><th><span data-term="holds">What it holds</span></th></tr></thead>
         <tbody>
-          <tr><td>Raw</td><td><code>data/raw/accounts.csv</code></td><td>One extract of Salesforce fields and product usage per account (synthetic, seed 42)</td></tr>
+          <tr><td>Raw</td><td><code>data/raw/accounts.csv</code></td><td>One extract of Salesforce fields and product usage per account (generated with a fixed seed, so every run matches)</td></tr>
           <tr><td>Processed</td><td><code>data/processed/account_scores.csv</code></td><td>Each customer in one row with score, pool of funds, flags, quadrant and rank</td></tr>
           <tr><td>Output</td><td><code>data/output/salesforce_writeback.csv</code></td><td>The fields we'd push back to Salesforce (<code>GTM_*__c</code>)</td></tr>
           <tr><td>Site</td><td><code>docs/data/accounts.json</code></td><td>What every page on this site reads, so numbers match everywhere</td></tr>
@@ -53,7 +53,7 @@
     <div class="card"><ul class="tight" id="opportunities-list"></ul></div>
   </main>
 
-  <footer>Synthetic data generated with a fixed seed. All company and person names are fictional.</footer>
+  <footer>All company and person names are fictional.</footer>
 
   <script src="assets/common.js"></script>
   <script>

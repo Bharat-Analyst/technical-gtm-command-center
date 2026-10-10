@@ -37,7 +37,8 @@ Each page should show where Northwind sits at that stage.
   pinned version, no build tools) that reads **precomputed JSON** in `docs/data/`.
   Hosted on GitHub Pages (serve from `/docs` on `main`).
 - **All company names fictional.** No Cloudflare logos, colors-as-branding, or trademarks.
-- **Every page** shows the banner: `Synthetic data. Personal project, not affiliated with Cloudflare.`
+- **Every page** shows the banner: `Personal project, not affiliated with Cloudflare.`
+  (Owner decision 2026-10-10: don't label data as synthetic on the site; the owner states it themselves.)
 
 ## Code style
 - Simple, readable code. Small functions. Prefer clarity over cleverness.

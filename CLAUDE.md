@@ -70,6 +70,6 @@ Each page should show where Northwind sits at that stage.
   Top reasons, Alerts (flags), Team capacity (capacity/headcount), New builders (new developers), Days to renewal (renewal window),
   Type of help (quadrant), Help plan (motion). Keep "Propensity score" and "Pool of funds" exactly; never "headroom".
 - Types of help: Deep engagement (SA + FDE), Scaled SA programs, Strategic Bet, Digital / self-serve (names live in pipeline.py)
-- Pages: index (Lifecycle), prioritization, engagement, programs, executive, decisions (Decision Log), questions. No Methodology page.
+- Pages: index (Lifecycle), prioritization, engagement, programs, executive, decisions (Decision Log). No Methodology or Questions page; faq.json feeds the inline "?" items only.
 - `validate.py` runs last in the pipeline; it must pass. `data/raw/overrides.csv` holds logged type-of-help overrides.
 - Featured accounts (one per quadrant): Northwind Commerce, Contoso Media, Fabrikam Health, Tailspin Games

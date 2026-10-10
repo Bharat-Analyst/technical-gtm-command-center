@@ -11,7 +11,6 @@ const PAGES = [
   { file: "programs.html", nav: "Programs & PS", role: "Programs and PS offer" },
   { file: "executive.html", nav: "Executive", role: "Executive view" },
   { file: "decisions.html", nav: "Decision Log", role: "Decision log" },
-  { file: "questions.html", nav: "Questions", role: "Questions" },
 ];
 
 const GTM = {
@@ -141,7 +140,7 @@ const GTM = {
     const items = ids.map((id) => GTM.data.faq.find((q) => q.id === id)).filter(Boolean);
     return `<div class="faq-mini">${items.map((q) => `
       <details><summary><span class="q-mark" aria-hidden="true">?</span>${GTM.esc(q.question)}</summary>
-        <p>${GTM.esc(GTM.fill(q.answer))} <a href="questions.html#${q.id}">All questions</a></p>
+        <p>${GTM.esc(GTM.fill(q.answer))}</p>
       </details>`).join("")}</div>`;
   },
   // Fill every element marked <div data-faq="id1,id2"></div>.

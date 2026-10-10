@@ -42,7 +42,7 @@ pipeline.py           → data/processed/account_scores.csv      scored table
                       → data/output/salesforce_writeback.csv   fields pushed back to Salesforce (GTM_*__c)
                       → docs/data/accounts.json               read by every page
 validate.py           (last pipeline step) recomputes every number from raw data and fails loudly on any mismatch
-docs/data/*.json      content, glossary (ⓘ tooltips), decisions (Decision Log), faq (Questions), jd_mapping
+docs/data/*.json      content, glossary (ⓘ tooltips), decisions (Decision Log), faq (inline "?" items), jd_mapping
 docs/                 static site (HTML/CSS/JS + Plotly.js), hosted on GitHub Pages
 ```
 
@@ -50,7 +50,7 @@ Python 3.11 + pandas. No database, no build tools.
 
 ### Pages
 
-Lifecycle · Prioritization · Engagement · Programs & PS · Executive · Decision Log · Questions.
+Lifecycle · Prioritization · Engagement · Programs & PS · Executive · Decision Log.
 Every metric, column and term has an ⓘ from one shared glossary; every chart, slider and table has a "How to read this" caption; "Why:" links point to the Decision Log; and 2–3 common questions sit next to the chart or table they explain.
 
 ### How pages share state

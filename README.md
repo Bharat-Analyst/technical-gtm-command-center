@@ -4,11 +4,11 @@
 
 Solutions Architects and Forward Deployed Engineers are a scarce resource, and their time often goes to whoever asks loudest rather than where it moves revenue most.
 This project is a working command center that scores every account on propensity and headroom, flags risk and opportunity, routes each account to the right engagement motion, and packages repeatable programs and services.
-It shows how technical GTM capacity can be run as a ranked, measurable investment that leadership can see and defend, followed end to end through one fictional customer, Northwind Commerce.
+It shows how technical GTM capacity can be run as a ranked, measurable investment that leadership can see and defend, with an interactive lifecycle tour that walks any account from CRM data to measured revenue.
 
 **Live demo:** _coming soon_ — `https://<github-username>.github.io/technical-gtm-command-center/`
 
-![Prioritization page: KPI cards and the propensity × headroom matrix with Northwind Commerce highlighted](docs/assets/screenshot.png)
+![Lifecycle tour: account picker, color-coded lifecycle steps, metric cards and the step detail for Northwind Commerce](docs/assets/screenshot.png)
 
 ## Job responsibility → page
 
@@ -19,7 +19,7 @@ It shows how technical GTM capacity can be run as a ranked, measurable investmen
 | Technical onsites | Northwind onsite plan: agenda, attendees, prep, follow-ups, success metric | Engagement & Onsite |
 | Technical programs | "Commit Burn Sprint" proactive SA playbook, triggered by a data flag | Programs & PS Offer |
 | Professional Services packaging | "Workers Migration Accelerator" 3-tier offer + business case | Programs & PS Offer |
-| Leadership visibility / ROI | KPI cards, Expected Value covered by capacity, measurement plan | Prioritization, Guided Tour (Measure step) |
+| Leadership visibility / ROI | KPI cards, Expected Value covered by capacity, holdout measurement plan | Prioritization, Lifecycle Tour (step 8) |
 
 ## How the score works
 
@@ -43,7 +43,16 @@ Then:
 
 All weights and thresholds are at the top of [`pipeline.py`](pipeline.py) so they can be debated and changed in one place.
 
-**Result for Northwind Commerce:** score 80, headroom $1.31M, Expected Value $1.05M, rank #2 of 500, FDE Deep Engagement, flagged Commit at Risk + New Developers.
+**Featured accounts** (one per quadrant, planted in the synthetic data; `pipeline.py` fails if any lands elsewhere):
+
+| Account | Score | Headroom | Rank | Quadrant | Motion |
+|---|---|---|---|---|---|
+| Northwind Commerce | 80 | $1.31M | #2 | FDE Deep Engagement | Dedicated FDE engagement; Commit at Risk |
+| Contoso Media | 92 | $79K | #171 | Scaled SA Program | Pooled office hours and templates |
+| Fabrikam Health | 36 | $1.28M | #23 | Strategic Bet | Targeted exec + SA discovery |
+| Tailspin Games | 30 | $10K | #472 | Digital | Docs, webinars, community |
+
+Contoso is the instructive one: the highest score of the four, but too little headroom to justify an FDE.
 
 ## How it's built
 
@@ -57,6 +66,14 @@ docs/                   static site (HTML/CSS/JS + Plotly.js), hosted on GitHub 
 ```
 
 Python 3.11 + pandas. No database, no build tools. The folders mirror warehouse layers: raw → processed → output (write-back).
+
+### How pages share state
+
+The selected account and lifecycle step live in the URL, e.g. `prioritization.html?account=contoso-media&step=3#selected`. No cookies or browser storage, so any view can be bookmarked or shared.
+- `account` is a slug built in `pipeline.py` (`northwind-commerce`); a unique prefix like `northwind` also works.
+- Every page reads it on load, highlights that account, and adds it to the nav links so it follows you between pages.
+- `step` is present when you arrive from the lifecycle tour, and adds a "Back to lifecycle step N" link.
+- Routing decisions (motion, program, PS tier) are computed once in `pipeline.py`, and step sentences are built once in `docs/assets/lifecycle.js`, so every page describes an account the same way.
 
 ### Run it
 

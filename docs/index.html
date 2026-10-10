@@ -14,7 +14,7 @@
       <a class="brand" href="index.html">Technical GTM Command Center</a>
       <nav aria-label="Main">
         <ul>
-          <li><a href="index.html" aria-current="page">Guided Tour</a></li>
+          <li><a href="index.html" aria-current="page">Lifecycle Tour</a></li>
           <li><a href="prioritization.html">Prioritization</a></li>
           <li><a href="engagement.html">Engagement &amp; Onsite</a></li>
           <li><a href="programs.html">Programs &amp; PS Offer</a></li>
@@ -32,10 +32,27 @@
       It turns technical GTM capacity into a ranked, measurable investment that leadership can see and defend.
     </p>
 
-    <h2 id="tour-title">Follow one customer through the system</h2>
-    <p class="muted small" style="margin-top:-6px">Click any step, or use Next / Back. Northwind Commerce is a fictional retailer.</p>
-    <ol class="flow" id="flow" aria-labelledby="tour-title"></ol>
+    <h2 id="lifecycle-title">Walk an account through the lifecycle</h2>
 
+    <!-- 1. Account picker -->
+    <div class="card" style="margin-bottom:16px">
+      <h3>Pick an account</h3>
+      <p class="muted small" style="margin:-4px 0 10px">One featured account per quadrant, or search any account.</p>
+      <div class="picker" id="featured"></div>
+      <div class="search-row">
+        <label for="search" class="small muted">Search</label>
+        <input type="search" id="search" list="account-names" placeholder="Type an account name" autocomplete="off">
+        <datalist id="account-names"></datalist>
+        <span class="small muted" id="search-msg" role="status"></span>
+      </div>
+    </div>
+
+    <!-- 2. Lifecycle steps -->
+    <div class="legend" id="legend"></div>
+    <ol class="steps" id="steps" aria-labelledby="lifecycle-title"></ol>
+
+    <!-- 3. Metric cards + step detail -->
+    <div class="grid grid-metrics" id="metrics" style="margin-bottom:12px"></div>
     <section class="card step-panel" id="panel" aria-live="polite"></section>
 
     <h2>Job responsibility → where to see it</h2>
@@ -48,7 +65,7 @@
           <tr><td>Technical onsites</td><td>Northwind onsite plan: agenda, attendees, prep, follow-ups, metric</td><td><a href="engagement.html#onsite">Engagement &amp; Onsite</a></td></tr>
           <tr><td>Technical programs</td><td>"Commit Burn Sprint" proactive SA playbook, triggered from data</td><td><a href="programs.html">Programs &amp; PS Offer</a></td></tr>
           <tr><td>Professional Services packaging</td><td>"Workers Migration Accelerator" tiers + business case</td><td><a href="programs.html#ps">Programs &amp; PS Offer</a></td></tr>
-          <tr><td>Leadership visibility / ROI</td><td>KPI cards, Expected Value covered by capacity, measurement plan</td><td><a href="prioritization.html">Prioritization</a> · <a href="#" data-step-link="6">Measure step</a></td></tr>
+          <tr><td>Leadership visibility / ROI</td><td>KPI cards, expected value covered by capacity, holdout measurement plan</td><td><a href="prioritization.html#kpis">Prioritization</a> · lifecycle step 8</td></tr>
         </tbody>
       </table>
     </div>
@@ -57,134 +74,116 @@
   <footer>Synthetic data generated with a fixed seed. All company and person names are fictional.</footer>
 
   <script src="assets/common.js"></script>
+  <script src="assets/lifecycle.js"></script>
   <script>
     (async function () {
       const panel = document.getElementById("panel");
       let accounts, content;
-      try {
-        [accounts, content] = await Promise.all([GTM.load("accounts"), GTM.load("content")]);
-      } catch (err) { GTM.showError(panel, err); return; }
+      try { [accounts, content] = await Promise.all([GTM.load("accounts"), GTM.load("content")]); }
+      catch (err) { GTM.showError(panel, err); return; }
 
-      const nw = accounts.accounts.find((a) => a.account_name === "Northwind Commerce");
-      const t = accounts.meta.thresholds;
-      const eng = content.engagements.find((e) => e.account === "Northwind Commerce");
-      const migrate = content.ps_offer.tiers.find((x) => x.tier === "Migrate");
-      const total = accounts.accounts.length;
-      const li = (items) => `<ul class="tight">${items.map((i) => `<li>${i}</li>`).join("")}</ul>`;
+      const all = accounts.accounts;
+      const steps = LIFECYCLE.steps({ accounts, content });
+      const featured = accounts.meta.featured.map((n) => all.find((a) => a.account_name === n));
 
-      // Each step: what happens, the logic behind it, and Northwind's data at that point.
-      const steps = [
-        {
-          name: "CRM Data",
-          what: `A nightly extract of ${total} accounts: Salesforce Account, Contract and Opportunity fields joined with product usage telemetry.`,
-          logic: "Raw fields only — commit, consumption, pipeline, usage trend, developer counts, SA meetings. No judgment applied yet.",
-          northwind: li([
-            `Annual commit ${GTM.usd(nw.annual_commit_usd)}, consumed ${GTM.usd(nw.commit_consumed_usd)} — ${GTM.pct(nw.contract_elapsed_share)} through the contract`,
-            `Open expansion pipeline ${GTM.usd(nw.open_pipeline_usd)}`,
-            `Usage ${nw.usage_growth_90d_pct > 0 ? "+" : ""}${nw.usage_growth_90d_pct}% in 90 days · ${nw.new_developers_30d} new developers in 30 days · ${nw.sa_meetings_90d} SA meetings in 90 days`,
-          ]),
-        },
-        {
-          name: "Score",
-          what: "Every account gets a 0–100 propensity score: how likely it is to expand if we invest technical time.",
-          logic: `Weighted scorecard on percentiles vs. all accounts: usage growth ${GTM.pct(accounts.meta.weights.usage_growth)}, new developers ${GTM.pct(accounts.meta.weights.new_developers)}, engagement ${GTM.pct(accounts.meta.weights.engagement)}, commit burn ${GTM.pct(accounts.meta.weights.commit_burn)}. The three biggest contributors become plain-English reasons a seller can repeat.`,
-          northwind: `<strong>Score ${nw.propensity_score}</strong>${li(nw.top_reasons)}`,
-        },
-        {
-          name: "Headroom & Flags",
-          what: "Size what is at stake, weight it by likelihood, and raise flags that need action now.",
-          logic: `Headroom = unconsumed commit + open pipeline. Expected Value = score/100 × headroom. Commit at Risk = 25%+ into contract and burning below ${GTM.pct(t.commit_at_risk_max_pace)} of expected pace.`,
-          northwind: li([
-            `Headroom <strong>${GTM.usd(nw.headroom_usd)}</strong> = ${GTM.usd(nw.unconsumed_commit_usd)} unconsumed commit + ${GTM.usd(nw.open_pipeline_usd)} pipeline`,
-            `Expected Value <strong>${GTM.usd(nw.expected_value_usd)}</strong>`,
-            `Burning commit at ${GTM.pct(nw.burn_pace)} of expected pace`,
-            `Flags: ${GTM.chips(nw.flags)}`,
-          ]),
-        },
-        {
-          name: "Prioritize",
-          what: `Rank all accounts by Expected Value and place each in a quadrant that decides the engagement motion. Current capacity covers the top ${t.capacity_top_n}.`,
-          logic: `High score = ${t.score_high}+. High value = ${GTM.usd(t.headroom_high)}+ headroom. High/high → FDE Deep Engagement; high score/low value → Scaled SA Program; low score/high value → Strategic Bet; low/low → Digital.`,
-          northwind: li([
-            `Rank <strong>#${nw.priority_rank} of ${total}</strong> — ${nw.in_capacity ? "inside" : "outside"} capacity`,
-            `Quadrant: <strong>${GTM.esc(nw.quadrant)}</strong>`,
-            `Why: strong signals and a large commit gap — the case where hands-on FDE work pays back most`,
-          ]),
-          link: ["prioritization.html", "See the matrix"],
-        },
-        {
-          name: "Engage & Onsite",
-          what: "Open a tracked engagement with a named owner, a status and one next step, then plan an onsite to unblock the stalled workload.",
-          logic: "Every in-capacity account has exactly one goal and one next step. Onsites are reserved for FDE Deep Engagement accounts with a clear technical decision to make.",
-          northwind: li([
-            `Goal: ${GTM.esc(eng.goal)}`,
-            `Owner: ${GTM.esc(eng.owner)} · ${GTM.status(eng.status)}`,
-            `Next step: ${GTM.esc(eng.next_step)}`,
-            `Onsite success metric: ${GTM.esc(content.onsite.success_metric)}`,
-          ]),
-          link: ["engagement.html", "See tracker and onsite plan"],
-        },
-        {
-          name: "Program & PS Offer",
-          what: "Scale what works: a repeatable SA program for every flagged account, and a packaged services offer for accounts that need hands-on delivery.",
-          logic: `The "${GTM.esc(content.program.name)}" auto-enrolls every Commit at Risk account (${content.program.eligible_accounts} today, ${content.program.eligible_outside_capacity} of them outside FDE capacity). Accounts that need more get the "${GTM.esc(content.ps_offer.name)}".`,
-          northwind: li([
-            `Inside FDE capacity, so it gets direct FDE coverage rather than the pooled sprint`,
-            `Proposed: ${GTM.esc(migrate.tier)} tier — ${GTM.esc(migrate.scope.toLowerCase())}, ${GTM.esc(migrate.duration)}, ${GTM.usd(migrate.price_usd)} indicative`,
-          ]),
-          link: ["programs.html", "See playbook and offer"],
-        },
-        {
-          name: "Measure",
-          what: "Prove the time was worth it: did covered accounts recover burn and expand more than similar accounts we did not cover?",
-          logic: "Leadership view tracks Expected Value covered, flags resolved, and burn pace recovery. True ROI needs a holdout: randomly leave some eligible accounts untreated and compare outcomes, so we credit only the incremental lift (see README next steps).",
-          northwind: li([
-            `Today: burn pace ${GTM.pct(nw.burn_pace)}, score ${nw.propensity_score}`,
-            `Target: ${GTM.esc(content.onsite.success_metric)}`,
-            `Written back to Salesforce: score, reasons, headroom, EV, rank, quadrant, flags, capacity`,
-          ]),
-        },
-      ];
+      // ---------- State, read from and written to the URL ----------
+      // ?account=<slug>&step=<1-8>. replaceState keeps the URL shareable
+      // without adding a browser-history entry for every click.
+      const p = GTM.params();
+      let account = GTM.findAccount(all, p.get("account")) || featured[0];
+      let step = Math.min(Math.max(Number(p.get("step")) || 1, 1), steps.length) - 1;
 
-      const flow = document.getElementById("flow");
-      flow.innerHTML = steps.map((s, i) =>
-        `<li><button type="button" data-i="${i}"><span class="n">${i + 1}</span>${s.name}</button></li>`).join("");
-
-      let current = 0;
-      function show(i) {
-        current = i;
-        const s = steps[i];
-        flow.querySelectorAll("button").forEach((b, j) => {
-          if (j === i) b.setAttribute("aria-current", "step");
-          else b.removeAttribute("aria-current");
-        });
-        panel.innerHTML = `
-          <h2>Step ${i + 1} of ${steps.length}: ${s.name}</h2>
-          <dl>
-            <div><dt>What happens</dt><dd>${s.what}</dd></div>
-            <div><dt>The logic</dt><dd>${s.logic}</dd></div>
-            <div class="nw-box"><dt>Northwind Commerce at this step</dt><dd>${s.northwind}</dd></div>
-          </dl>
-          ${s.link ? `<p class="small" style="margin:14px 0 0"><a href="${s.link[0]}">${s.link[1]} →</a></p>` : ""}
-          <div class="step-nav">
-            <button class="btn" id="back" ${i === 0 ? "disabled" : ""}>← Back</button>
-            <span class="muted small">${i + 1} / ${steps.length}</span>
-            <button class="btn btn-primary" id="next" ${i === steps.length - 1 ? "disabled" : ""}>Next →</button>
-          </div>`;
-        document.getElementById("back").onclick = () => show(current - 1);
-        document.getElementById("next").onclick = () => show(current + 1);
+      function syncUrl() {
+        history.replaceState(null, "", GTM.link("index.html", account.slug, step + 1));
+        GTM.carryAccountInNav(account.slug);
       }
 
-      flow.addEventListener("click", (e) => {
-        const b = e.target.closest("button[data-i]");
-        if (b) show(Number(b.dataset.i));
+      // ---------- Account picker ----------
+      const featuredEl = document.getElementById("featured");
+      featuredEl.innerHTML = featured.map((a) =>
+        `<button type="button" class="featured" data-slug="${a.slug}" aria-pressed="false">${GTM.esc(a.account_name)}<span>${GTM.esc(a.quadrant)}</span></button>`).join("");
+      featuredEl.addEventListener("click", (e) => {
+        const b = e.target.closest("button[data-slug]");
+        if (b) selectAccount(GTM.findAccount(all, b.dataset.slug));
       });
-      document.querySelectorAll("[data-step-link]").forEach((a) => a.addEventListener("click", (e) => {
-        e.preventDefault();
-        show(Number(a.dataset.stepLink));
-        flow.scrollIntoView({ behavior: "smooth" });
-      }));
-      show(0);
+
+      const search = document.getElementById("search");
+      const msg = document.getElementById("search-msg");
+      document.getElementById("account-names").innerHTML =
+        [...all].sort((a, b) => a.account_name.localeCompare(b.account_name))
+          .map((a) => `<option value="${GTM.esc(a.account_name)}"></option>`).join("");
+      function trySearch() {
+        const q = search.value.trim().toLowerCase();
+        if (!q) { msg.textContent = ""; return; }
+        const exact = all.find((a) => a.account_name.toLowerCase() === q);
+        const partial = all.filter((a) => a.account_name.toLowerCase().includes(q));
+        const hit = exact || (partial.length === 1 ? partial[0] : null);
+        if (hit) { selectAccount(hit); search.value = ""; msg.textContent = `Showing ${hit.account_name}`; }
+        else msg.textContent = partial.length ? `${partial.length} matches, keep typing or pick from the list` : "No account with that name";
+      }
+      search.addEventListener("change", trySearch);
+      search.addEventListener("keydown", (e) => { if (e.key === "Enter") trySearch(); });
+
+      // ---------- Step blocks + legend ----------
+      document.getElementById("legend").innerHTML = Object.entries(LIFECYCLE.STEP_TYPES).map(([k, label]) =>
+        `<span class="type-${k}"><span class="sw" style="background:var(--c)"></span>${label}</span>`).join("");
+      const stepsEl = document.getElementById("steps");
+      stepsEl.innerHTML = steps.map((s, i) => `
+        <li><button type="button" class="type-${s.type}" data-i="${i}">
+          <span class="num">${i + 1}</span> <span class="ty">${LIFECYCLE.STEP_TYPES[s.type]}</span>
+          <span class="nm">${s.name}</span>
+        </button></li>`).join("");
+      stepsEl.addEventListener("click", (e) => {
+        const b = e.target.closest("button[data-i]");
+        if (b) { step = Number(b.dataset.i); render(); }
+      });
+
+      // ---------- Rendering ----------
+      function selectAccount(a) { if (a) { account = a; render(); } }
+
+      function render() {
+        syncUrl();
+        featuredEl.querySelectorAll("button").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.slug === account.slug)));
+        stepsEl.querySelectorAll("button").forEach((b, i) => {
+          if (i === step) b.setAttribute("aria-current", "step"); else b.removeAttribute("aria-current");
+        });
+
+        const a = account;
+        const card = (label, value, sub) =>
+          `<div class="card kpi"><div class="label">${label}</div><div class="value">${value}</div><div class="sub">${sub}</div></div>`;
+        document.getElementById("metrics").innerHTML = [
+          card("Propensity", `${a.propensity_score}<span class="muted small">/100</span>`, a.top_reasons[0]),
+          card("Headroom", GTM.usd(a.headroom_usd), `${GTM.usd(a.unconsumed_commit_usd)} unused commit + ${GTM.usd(a.open_pipeline_usd)} pipeline`),
+          card("Expected value", GTM.usd(a.expected_value_usd), `Rank #${a.priority_rank} of ${all.length}`),
+          card("Quadrant", `<span style="font-size:20px">${GTM.esc(a.quadrant)}</span>`, a.in_capacity ? "Inside capacity" : "Outside capacity"),
+        ].join("");
+
+        const s = steps[step];
+        const [page, hash] = s.screen;
+        panel.innerHTML = `
+          <span class="ty small type-${s.type}" style="color:var(--c);font-weight:600;text-transform:uppercase;letter-spacing:.03em">${LIFECYCLE.STEP_TYPES[s.type]}</span>
+          <h2 style="margin-top:2px">Step ${step + 1} of ${steps.length}: ${s.name}</h2>
+          <dl>
+            <div><dt>What happens</dt><dd>${s.what}</dd></div>
+            <div><dt>The decision</dt><dd>${s.decision}</dd></div>
+            <div><dt>How we decide</dt><dd>${s.how}</dd></div>
+            <div class="nw-box"><dt>${GTM.esc(a.account_name)} at this step</dt><dd><p class="sentence">${GTM.esc(s.sentence(a))}</p></dd></div>
+          </dl>
+          <div class="panel-actions">
+            <div class="group">
+              <button class="btn" type="button" id="back">← Back</button>
+              <span class="muted small">${step + 1} / ${steps.length}</span>
+              <button class="btn" type="button" id="next">Next →</button>
+            </div>
+            <a class="btn btn-primary" style="text-decoration:none" href="${GTM.link(page, a.slug, step + 1, hash)}">Open screen →</a>
+          </div>`;
+        // Back / Next loop around: after step 8 comes step 1.
+        // The panel is redrawn, so put keyboard focus back on the pressed button.
+        document.getElementById("back").onclick = () => { step = (step - 1 + steps.length) % steps.length; render(); document.getElementById("back").focus(); };
+        document.getElementById("next").onclick = () => { step = (step + 1) % steps.length; render(); document.getElementById("next").focus(); };
+      }
+
+      render();
     })();
   </script>
 </body>

@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Account Prioritization</title>
-  <meta name="description" content="Propensity × headroom matrix, flags and SA/FDE capacity for 500 synthetic accounts.">
+  <meta name="description" content="Propensity × headroom matrix, flags and SA/FDE capacity for 503 synthetic accounts.">
   <link rel="stylesheet" href="assets/style.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/plotly.js/2.35.3/plotly.min.js"></script>
 </head>
@@ -15,7 +15,7 @@
       <a class="brand" href="index.html">Technical GTM Command Center</a>
       <nav aria-label="Main">
         <ul>
-          <li><a href="index.html">Guided Tour</a></li>
+          <li><a href="index.html">Lifecycle Tour</a></li>
           <li><a href="prioritization.html" aria-current="page">Prioritization</a></li>
           <li><a href="engagement.html">Engagement &amp; Onsite</a></li>
           <li><a href="programs.html">Programs &amp; PS Offer</a></li>
@@ -37,10 +37,12 @@
       <span class="muted small">Drag to see what more (or less) headcount would cover.</span>
     </div>
 
+    <section class="card callout" id="selected" style="margin-bottom:12px"></section>
+
     <div class="grid grid-4" id="kpis"></div>
 
     <h2>Propensity × headroom</h2>
-    <div class="card">
+    <div class="card" id="matrix">
       <div id="scatter" class="chart" role="img" aria-label="Scatter plot of propensity score versus headroom for every account, divided into four quadrants. Northwind Commerce is highlighted in the top-right FDE Deep Engagement quadrant."></div>
       <p class="muted small" style="margin:8px 0 0">Headroom uses a log scale so small and large accounts both stay visible. Dashed lines are the quadrant cut-offs. The ranked table below has every value.</p>
     </div>
@@ -84,10 +86,37 @@
 
       const accounts = data.accounts;           // already sorted by Expected Value (rank 1 first)
       const t = data.meta.thresholds;
-      const NW = "Northwind Commerce";
+      // Selected account from ?account=… (defaults to Northwind). Highlighted in the
+      // chart, the table and the detail card.
+      const selected = GTM.selectedAccount(accounts);
+      GTM.carryAccountInNav(selected.slug);
+      GTM.backToLifecycle(selected);
       const slider = document.getElementById("capacity");
       let capacity = Number(slider.value);
-      let shown = 50;
+      // Show enough table rows that the selected account is visible.
+      let shown = Math.max(50, Math.ceil(selected.priority_rank / 50) * 50);
+
+      // ---------- Selected account card (raw data → score → routing) ----------
+      const fact = (label, value) => `<div><dt>${label}</dt><dd>${value}</dd></div>`;
+      const a = selected;
+      document.getElementById("selected").innerHTML = `
+        <span class="responsibility" style="margin:0">Selected account</span>
+        <h3 style="font-size:18px">${GTM.esc(a.account_name)} <span class="muted small" style="font-weight:400">${GTM.esc(a.segment)} · ${GTM.esc(a.industry)} · ${GTM.esc(a.region)}</span></h3>
+        <div>${GTM.chips([a.quadrant, ...a.flags])}</div>
+        <dl class="facts">
+          ${fact("Annual commit", GTM.usd(a.annual_commit_usd))}
+          ${fact("Consumed", `${GTM.usd(a.commit_consumed_usd)} (${GTM.pct(a.burn_pace)} of pace)`)}
+          ${fact("Open pipeline", GTM.usd(a.open_pipeline_usd))}
+          ${fact("Usage growth, 90d", `${a.usage_growth_90d_pct >= 0 ? "+" : ""}${a.usage_growth_90d_pct}%`)}
+          ${fact("New developers, 30d", `${a.new_developers_30d} of ${a.active_developers}`)}
+          ${fact("SA meetings, 90d", a.sa_meetings_90d)}
+          ${fact("Propensity score", `${a.propensity_score}/100`)}
+          ${fact("Headroom", GTM.usd(a.headroom_usd))}
+          ${fact("Expected value", GTM.usd(a.expected_value_usd))}
+          ${fact("Priority rank", `#${a.priority_rank} of ${accounts.length}`)}
+        </dl>
+        <p class="small" style="margin:12px 0 4px"><strong>Why:</strong> ${a.top_reasons.map(GTM.esc).join(" · ")}</p>
+        <p class="small" style="margin:0"><strong>Motion:</strong> ${GTM.esc(a.motion)}</p>`;
 
       // ---------- KPI cards (react to the capacity slider) ----------
       const totalEV = accounts.reduce((s, a) => s + a.expected_value_usd, 0);
@@ -125,12 +154,12 @@
 
       function renderScatter() {
         const c = GTM.colors();
-        const others = accounts.filter((a) => a.account_name !== NW);
-        const nw = accounts.find((a) => a.account_name === NW);
+        const others = accounts.filter((a) => a.slug !== selected.slug);
+        const nw = selected;
         const traces = [
           trace(others.filter((a) => a.priority_rank > capacity), "Outside capacity", c.out, 8, { marker: { color: c.out, size: 8, opacity: 0.7, line: { color: c.surface, width: 1 } } }),
           trace(others.filter((a) => a.priority_rank <= capacity), `In capacity (top ${capacity})`, c.accent, 9),
-          trace([nw], NW, c.highlight, 15, { marker: { color: c.highlight, size: 15, line: { color: c.surface, width: 2 } } }),
+          trace([nw], nw.account_name, c.highlight, 15, { marker: { color: c.highlight, size: 15, line: { color: c.surface, width: 2 } } }),
         ];
         const corner = (x, y, text, xanchor, yanchor) => ({
           x, y, xref: "x", yref: "paper", text, showarrow: false, xanchor, yanchor,
@@ -160,7 +189,7 @@
             corner(1, 0.99, "<b>Strategic Bet</b>", "left", "top"),
             corner(99, 0.01, "<b>Scaled SA Program</b>", "right", "bottom"),
             corner(1, 0.01, "<b>Digital</b>", "left", "bottom"),
-            { x: nw.propensity_score, y: Math.log10(nw.headroom_usd), text: "Northwind", showarrow: true, arrowhead: 0, ax: -44, ay: narrow ? 30 : -28,
+            { x: nw.propensity_score, y: Math.log10(nw.headroom_usd), text: GTM.esc(nw.account_name.split(" ")[0]), showarrow: true, arrowhead: 0, ax: -44, ay: narrow ? 30 : -28,
               arrowcolor: c.text2, font: { size: 12, color: c.text } },
           ],
         };
@@ -187,7 +216,7 @@
       function renderTable() {
         const rows = filtered();
         document.getElementById("rows").innerHTML = rows.slice(0, shown).map((a) => `
-          <tr class="${a.account_name === NW ? "is-northwind" : ""}">
+          <tr class="${a.slug === selected.slug ? "is-selected" : ""}">
             <td class="num">${a.priority_rank}</td>
             <td><strong>${GTM.esc(a.account_name)}</strong><div class="muted small">${GTM.esc(a.segment)} · ${GTM.esc(a.region)}</div></td>
             <td>${GTM.esc(a.quadrant)}</td>
@@ -218,6 +247,7 @@
       window.addEventListener("resize", () => { clearTimeout(resizeTimer); resizeTimer = setTimeout(renderScatter, 200); });
 
       renderAll();
+      GTM.scrollToHash();
     })();
   </script>
 </body>

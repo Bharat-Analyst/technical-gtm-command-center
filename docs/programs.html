@@ -14,7 +14,7 @@
       <a class="brand" href="index.html">Technical GTM Command Center</a>
       <nav aria-label="Main">
         <ul>
-          <li><a href="index.html">Guided Tour</a></li>
+          <li><a href="index.html">Lifecycle Tour</a></li>
           <li><a href="prioritization.html">Prioritization</a></li>
           <li><a href="engagement.html">Engagement &amp; Onsite</a></li>
           <li><a href="programs.html" aria-current="page">Programs &amp; PS Offer</a></li>
@@ -28,6 +28,8 @@
     <h1>Programs &amp; PS offer</h1>
     <p class="lede">This page shows how I'd scale technical engagement beyond what individual SAs can cover: a data-triggered program playbook, and a packaged services offer with a business case.</p>
 
+    <section class="card callout" id="selected" style="margin-bottom:12px"></section>
+
     <h2 id="program-title">Program playbook</h2>
     <div id="program"></div>
 
@@ -38,6 +40,7 @@
   <footer>Synthetic data generated with a fixed seed. Prices are indicative and for illustration only.</footer>
 
   <script src="assets/common.js"></script>
+  <script src="assets/lifecycle.js"></script>
   <script>
     (async function () {
       let accounts, content;
@@ -45,6 +48,16 @@
       catch (err) { GTM.showError(document.querySelector("main"), err); return; }
 
       const p = content.program;
+
+      // Selected account from ?account=… (defaults to Northwind).
+      const selected = GTM.selectedAccount(accounts.accounts);
+      GTM.carryAccountInNav(selected.slug);
+      GTM.backToLifecycle(selected);
+      const programStep = LIFECYCLE.steps({ accounts, content })[6]; // "Program & PS Offer"
+      document.getElementById("selected").innerHTML = `
+        <span class="responsibility" style="margin:0">Selected account</span>
+        <h3 style="font-size:18px">${GTM.esc(selected.account_name)} <span class="muted small" style="font-weight:400">${GTM.esc(selected.quadrant)} · rank #${selected.priority_rank}</span></h3>
+        <p style="margin:0">${GTM.esc(programStep.sentence(selected))}</p>`;
       const list = (items, tag = "ul") => `<${tag} class="tight">${items.map((i) => `<li>${GTM.esc(i)}</li>`).join("")}</${tag}>`;
       const kpi = (label, value, sub) => `<div class="card kpi"><div class="label">${label}</div><div class="value">${value}</div><div class="sub">${sub}</div></div>`;
 
@@ -74,13 +87,13 @@
         <h3 style="margin-top:20px">First enrollment wave: top 10 eligible by unconsumed commit</h3>
         <div class="table-wrap">
           <table>
-            <thead><tr><th>Account</th><th>Segment</th><th class="num">Burn pace</th><th class="num">Unconsumed commit</th><th class="num">Days to renewal</th><th>Coverage</th></tr></thead>
+            <thead><tr><th>Account</th><th>Segment</th><th class="num">Burn pace</th><th class="num">Unconsumed commit</th><th class="num">Days to renewal</th><th>Program</th></tr></thead>
             <tbody>${eligible.slice(0, 10).map((a) => `
-              <tr class="${a.account_name === "Northwind Commerce" ? "is-northwind" : ""}">
+              <tr class="${a.slug === selected.slug ? "is-selected" : ""}">
                 <td><strong>${GTM.esc(a.account_name)}</strong></td><td>${GTM.esc(a.segment)}</td>
                 <td class="num">${GTM.pct(a.burn_pace)}</td><td class="num">${GTM.usd(a.unconsumed_commit_usd)}</td>
                 <td class="num">${a.days_to_renewal}</td>
-                <td>${a.in_capacity ? "FDE (top 30)" : "Sprint"}</td>
+                <td>${GTM.esc(a.program)}</td>
               </tr>`).join("")}
             </tbody>
           </table>
@@ -119,6 +132,7 @@
           </table>
         </div>
         <div class="card" style="margin-top:12px"><h3>Assumptions</h3>${list(o.business_case_notes)}</div>`;
+      GTM.scrollToHash();
     })();
   </script>
 </body>

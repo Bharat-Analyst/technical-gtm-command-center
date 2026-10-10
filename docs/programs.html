@@ -62,7 +62,7 @@
       // Largest eligible accounts by unconsumed commit — the first enrollment wave.
       const eligible = all
         .filter((a) => a.flags.includes("Commit at Risk"))
-        .sort((a, b) => b.unconsumed_commit_usd - a.unconsumed_commit_usd);
+        .sort((a, b) => b.unused_commit - a.unused_commit);
       const holdoutCount = all.filter((a) => a.holdout).length;
 
       document.getElementById("program-title").textContent = `Program playbook: ${p.name}`;
@@ -70,7 +70,7 @@
         <div class="grid grid-3" style="margin-bottom:4px">
           ${kpi("Eligible accounts today", p.eligible_accounts, `triggered by the ${GTM.term("commit_at_risk")} flag ${GTM.why("flags")}`)}
           ${kpi("Outside FDE capacity", p.eligible_outside_capacity, `only reachable through a scaled program; ${holdoutCount} held out to measure impact ${GTM.why("holdout")}`)}
-          ${kpi(GTM.term("unused_commit", "Unused commit at stake"), GTM.usd(p.eligible_unconsumed_commit_usd), "across eligible accounts")}
+          ${kpi(GTM.term("unused_commit", "Unused commit at stake"), GTM.usd(p.eligible_unused_commit), "across eligible accounts")}
         </div>
         ${howto("the program finds its own customers: every account with the Commit at Risk flag qualifies, and most of them are beyond what FDEs alone can reach.")}
         <div class="grid grid-2" style="margin-top:12px">
@@ -94,7 +94,7 @@
             <tbody>${eligible.slice(0, 10).map((a) => `
               <tr class="${a.slug === selected.slug ? "is-selected" : ""}">
                 <td><strong>${GTM.esc(a.account_name)}</strong></td><td>${GTM.esc(a.segment)}</td>
-                <td class="num">${GTM.pct(a.burn_pace)}</td><td class="num">${GTM.usd(a.unconsumed_commit_usd)}</td>
+                <td class="num">${GTM.pct(a.burn_pace)}</td><td class="num">${GTM.usd(a.unused_commit)}</td>
                 <td class="num">${a.days_to_renewal}</td>
                 <td>${GTM.esc(a.program)}</td>
               </tr>`).join("")}

@@ -123,7 +123,6 @@
     "success_metric": "60% of enrolled accounts back above 90% burn pace within 90 days",
     "eligible_accounts": 45,
     "eligible_outside_capacity": 40,
-    "eligible_unconsumed_commit_usd": 8677300,
     "handoff": {
       "owner": "Scaled SA team lead owns the program; GTM Strategy keeps the measurement.",
       "ready_when": [
@@ -131,7 +130,8 @@
         "Playbook, templates and enrollment are documented and automated",
         "Owner has the headcount and a quarterly review on the calendar"
       ]
-    }
+    },
+    "eligible_unused_commit": 8677300
   },
   "ps_offer": {
     "name": "Workers Migration Accelerator",

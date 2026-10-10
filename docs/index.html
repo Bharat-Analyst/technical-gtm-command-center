@@ -156,7 +156,7 @@
           `<div class="card kpi"><div class="label">${label}</div><div class="value">${value}</div><div class="sub">${sub}</div></div>`;
         document.getElementById("metrics").innerHTML = [
           card(GTM.term("propensity_score"), `${a.propensity_score}<span class="muted small">/100</span>`, `${GTM.esc(a.top_reasons[0])} ${GTM.why("weights")}`),
-          card(GTM.term("pool_of_funds"), GTM.usd(a.pool_of_funds_usd), `${GTM.poolBreakdown(a)} ${GTM.why("pool-of-funds")}`),
+          card(GTM.term("pool_of_funds"), GTM.usd(a.pool_of_funds), `${GTM.poolBreakdown(a)} ${GTM.why("pool-of-funds")}`),
           card(GTM.term("expected_value"), GTM.usd(a.expected_value_usd), `Rank #${a.priority_rank} of ${all.length}`),
           card(GTM.term("quadrant"), `<span style="font-size:20px">${GTM.term(a.quadrant)}</span>`, `${a.in_capacity ? "Inside capacity" : "Outside capacity"} ${GTM.why("quadrants")}`),
         ].join("");

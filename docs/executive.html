@@ -74,14 +74,14 @@
       const card = (label, value, sub) =>
         `<div class="card kpi"><div class="label">${label}</div><div class="value">${value}</div><div class="sub">${sub}</div></div>`;
       document.getElementById("kpis").innerHTML = [
-        card(GTM.term("money_in_play"), GTM.usd(sum(all, "pool_of_funds_usd")),
-          `${GTM.usd(sum(all, "unconsumed_commit_usd"))} unused commit + ${GTM.usd(sum(all, "open_pipeline_usd"))} open pipeline`),
+        card(GTM.term("money_in_play"), GTM.usd(sum(all, "pool_of_funds")),
+          `${GTM.usd(sum(all, "unused_commit"))} unused commit + ${GTM.usd(sum(all, "open_pipeline_usd"))} open pipeline`),
         card(GTM.term("ev_covered", "Coverage"), GTM.pct(evCovered / evTotal),
           `of expected value (${GTM.usd(evCovered)}) reached by covering the top ${t.capacity_top_n} of ${all.length} accounts`),
         card(GTM.term("engagement_health"), `${health("green")} of ${eng.length}`,
           `on track · ${health("yellow")} at risk · ${health("red")} blocked`),
         card(GTM.term("propensity_score", "High-propensity accounts"), highProp.length,
-          `score ${t.score_high}+, holding ${GTM.usd(sum(highProp, "pool_of_funds_usd"))} pool of funds`),
+          `score ${t.score_high}+, holding ${GTM.usd(sum(highProp, "pool_of_funds"))} pool of funds`),
       ].join("");
 
       // ---------- Pool of funds by quadrant ----------
@@ -90,8 +90,8 @@
         const rows = all.filter((a) => a.quadrant === q);
         return {
           q, rows,
-          unused: sum(rows, "unconsumed_commit_usd"), pipe: sum(rows, "open_pipeline_usd"),
-          pool: sum(rows, "pool_of_funds_usd"), ev: sum(rows, "expected_value_usd"),
+          unused: sum(rows, "unused_commit"), pipe: sum(rows, "open_pipeline_usd"),
+          pool: sum(rows, "pool_of_funds"), ev: sum(rows, "expected_value_usd"),
           inCap: rows.filter((a) => a.in_capacity).length,
           motions: [...new Set(rows.map((a) => a.motion))],
         };
@@ -144,8 +144,8 @@
       const row = (label, rows) => `<tr>
         <td>${label}</td><td class="num">${rows.length}</td>
         <td class="num">${GTM.pct(avg(rows, "burn_pace"))}</td>
-        <td class="num">${GTM.usd(avg(rows, "unconsumed_commit_usd"))}</td>
-        <td class="num">${GTM.usd(sum(rows, "unconsumed_commit_usd"))}</td></tr>`;
+        <td class="num">${GTM.usd(avg(rows, "unused_commit"))}</td>
+        <td class="num">${GTM.usd(sum(rows, "unused_commit"))}</td></tr>`;
       document.getElementById("measure-body").innerHTML = `
         <p style="margin:0 0 10px">${GTM.fill("{holdout_share}")} of ${content.program.name} accounts are picked at random and measured, but not enrolled. ${GTM.why("holdout")}</p>
         <div class="table-wrap">

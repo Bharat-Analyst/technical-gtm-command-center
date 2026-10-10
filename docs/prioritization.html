@@ -120,7 +120,7 @@
           ${fact(GTM.term("new_developers", `New developers, ${win.new_developers}d`), `${a.new_developers_30d} of ${a.active_developers}`)}
           ${fact(GTM.term("sa_meetings", `SA meetings, ${win.engagement}d`), a.sa_meetings_90d)}
           ${fact(GTM.term("propensity_score"), `${a.propensity_score}/100`)}
-          ${fact(GTM.term("pool_of_funds"), `${GTM.usd(a.pool_of_funds_usd)}<span class="breakdown">${GTM.poolBreakdown(a)}</span>`)}
+          ${fact(GTM.term("pool_of_funds"), `${GTM.usd(a.pool_of_funds)}<span class="breakdown">${GTM.poolBreakdown(a)}</span>`)}
           ${fact(GTM.term("expected_value"), GTM.usd(a.expected_value_usd))}
           ${fact(GTM.term("rank", "Priority rank"), `#${a.priority_rank} of ${accounts.length}`)}
         </dl>
@@ -140,8 +140,8 @@
         const card = (label, value, sub) =>
           `<div class="card kpi"><div class="label">${label}</div><div class="value">${value}</div><div class="sub">${sub}</div></div>`;
         document.getElementById("kpis").innerHTML = [
-          card(GTM.term("pool_of_funds", "Total pool of funds"), GTM.usd(sum(accounts, "pool_of_funds_usd")),
-            `${GTM.usd(sum(accounts, "unconsumed_commit_usd"))} unused commit + ${GTM.usd(sum(accounts, "open_pipeline_usd"))} open pipeline, across ${accounts.length} accounts`),
+          card(GTM.term("pool_of_funds", "Total pool of funds"), GTM.usd(sum(accounts, "pool_of_funds")),
+            `${GTM.usd(sum(accounts, "unused_commit"))} unused commit + ${GTM.usd(sum(accounts, "open_pipeline_usd"))} open pipeline, across ${accounts.length} accounts`),
           card(GTM.term("ev_covered"), GTM.usd(coveredEV), `${GTM.pct(coveredEV / totalEV)} of total with ${capacity} accounts (${GTM.pct(capacity / accounts.length)} of accounts)`),
           card(GTM.term("fde_deep_engagement", "FDE Deep Engagement in capacity"), `${fde}`, `of ${accounts.filter((a) => a.quadrant === "FDE Deep Engagement").length} high/high accounts`),
           card(GTM.term("commit_at_risk"), atRisk.length, `${riskCovered} covered · ${atRisk.length - riskCovered} need the scaled program`),
@@ -154,8 +154,8 @@
         return {
           type: "scatter", mode: "markers", name,
           x: rows.map((a) => a.propensity_score),
-          y: rows.map((a) => Math.max(a.pool_of_funds_usd, MIN_Y)),
-          customdata: rows.map((a) => [a.account_name, GTM.usd(a.pool_of_funds_usd), GTM.usd(a.unconsumed_commit_usd), GTM.usd(a.open_pipeline_usd), GTM.usd(a.expected_value_usd), a.priority_rank, a.quadrant]),
+          y: rows.map((a) => Math.max(a.pool_of_funds, MIN_Y)),
+          customdata: rows.map((a) => [a.account_name, GTM.usd(a.pool_of_funds), GTM.usd(a.unused_commit), GTM.usd(a.open_pipeline_usd), GTM.usd(a.expected_value_usd), a.priority_rank, a.quadrant]),
           hovertemplate: "<b>%{customdata[0]}</b><br>Score %{x} · Pool of funds %{customdata[1]}<br>(%{customdata[2]} unused commit + %{customdata[3]} open pipeline)<br>Expected value %{customdata[4]} · Rank #%{customdata[5]}<br>%{customdata[6]}<extra></extra>",
           marker: { color, size, line: { color: GTM.colors().surface, width: 1 } },
           ...extra,
@@ -201,7 +201,7 @@
             corner(1, 0.99, "strategic_bet", "left", "top"),
             corner(99, 0.01, "scaled_sa_program", "right", "bottom"),
             corner(1, 0.01, "digital", "left", "bottom"),
-            { x: sel.propensity_score, y: Math.log10(Math.max(sel.pool_of_funds_usd, MIN_Y)), text: GTM.esc(sel.account_name.split(" ")[0]), showarrow: true, arrowhead: 0, ax: -44, ay: narrow ? 30 : -28,
+            { x: sel.propensity_score, y: Math.log10(Math.max(sel.pool_of_funds, MIN_Y)), text: GTM.esc(sel.account_name.split(" ")[0]), showarrow: true, arrowhead: 0, ax: -44, ay: narrow ? 30 : -28,
               arrowcolor: c.text2, font: { size: 12, color: c.text } },
           ],
         };
@@ -233,7 +233,7 @@
             <td><strong>${GTM.esc(a.account_name)}</strong><div class="muted small">${GTM.esc(a.segment)} · ${GTM.esc(a.region)}</div></td>
             <td>${GTM.term(a.quadrant)}</td>
             <td class="num">${a.propensity_score}</td>
-            <td class="num">${GTM.usd(a.pool_of_funds_usd)}<span class="breakdown">${GTM.usd(a.unconsumed_commit_usd)} + ${GTM.usd(a.open_pipeline_usd)}</span></td>
+            <td class="num">${GTM.usd(a.pool_of_funds)}<span class="breakdown">${GTM.usd(a.unused_commit)} + ${GTM.usd(a.open_pipeline_usd)}</span></td>
             <td class="num">${GTM.usd(a.expected_value_usd)}</td>
             <td>${a.flags.length ? GTM.chips(a.flags) : '<span class="muted">—</span>'}</td>
             <td><ul class="reasons">${a.top_reasons.map((r) => `<li>${GTM.esc(r)}</li>`).join("")}</ul></td>

@@ -92,7 +92,7 @@ const LIFECYCLE = (function () {
           `New Developers (≥ ${t.new_developers_min} in 30 days).`,
         screen: ["prioritization.html", "#selected"],
         sentence: (a) =>
-          `The pool of funds is ${usd(a.pool_of_funds_usd)} (${GTM.poolBreakdown(a)}), ` +
+          `The pool of funds is ${usd(a.pool_of_funds)} (${GTM.poolBreakdown(a)}), ` +
           `worth ${usd(a.expected_value_usd)} in expected value at a score of ${a.propensity_score}; ` +
           `${a.flags.length ? `flags raised: ${andList(a.flags)}` : "no flags raised"}.`,
       },

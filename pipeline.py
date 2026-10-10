@@ -58,6 +58,8 @@ COMMIT_AT_RISK_MIN_ELAPSED = 0.25  # too early in the contract to judge before 2
 COMMIT_AT_RISK_MAX_PACE = 0.70     # consuming <70% of expected pace → large unused commit at renewal
 RENEWAL_WINDOW_DAYS = 120          # ~1 quarter + prep time: when renewal decisions get made
 USAGE_SPIKE_RATIO = 1.5            # last 7 days ≥ 1.5× the 4-week average = something new launched
+USAGE_SPIKE_RECENT_DAYS = 7        # (these two windows match the telemetry columns)
+USAGE_SPIKE_BASELINE_DAYS = 28
 NEW_DEVELOPERS_MIN = 10            # ≥10 new developers in 30 days = a new team, not noise
 
 # Quadrant cut-offs.
@@ -143,8 +145,13 @@ def score_accounts(df: pd.DataFrame) -> pd.DataFrame:
 
 def describe_signal(name: str, row: pd.Series) -> str:
     """Plain-English sentence for one signal, with its real value."""
-    top_pct = max(1, round((1 - row[f"pctl_{name}"]) * 100))
-    rank_txt = f"top {top_pct}% of accounts"
+    # Above the median say "top X%"; below it say "bottom X%". ("Top 54%" for
+    # a weak signal reads as praise and would confuse a reader.)
+    pctl = row[f"pctl_{name}"]
+    if pctl >= 0.5:
+        rank_txt = f"top {max(1, round((1 - pctl) * 100))}% of accounts"
+    else:
+        rank_txt = f"bottom {max(1, round(pctl * 100))}% of accounts"
     if name == "usage_growth":
         return f"Usage {row['usage_growth_90d_pct']:+.0f}% over the last 90 days ({rank_txt})"
     if name == "new_developers":
@@ -167,14 +174,29 @@ def top_reasons(row: pd.Series) -> list[str]:
 # =============================================================================
 # 2. POOL OF FUNDS & EXPECTED VALUE
 # =============================================================================
+DAYS_PER_MONTH = 365 / 12
+
+
 def add_value(df: pd.DataFrame) -> pd.DataFrame:
     # Unconsumed commit: money the customer already agreed to spend but hasn't.
     # Helping them use it protects the renewal. Can't go below zero.
-    df["unconsumed_commit_usd"] = (df["annual_commit_usd"] - df["commit_consumed_usd"]).clip(lower=0)
+    df["unused_commit"] = (df["annual_commit_usd"] - df["commit_consumed_usd"]).clip(lower=0)
     # Pool of funds = money available to unlock: unused commit + open deals.
-    df["pool_of_funds_usd"] = df["unconsumed_commit_usd"] + df["open_pipeline_usd"]
+    df["pool_of_funds"] = df["unused_commit"] + df["open_pipeline_usd"]
+
+    # Burn measures. Burn RATE is dollars per month; burn PACE compares usage
+    # with the calendar (1.0 = on schedule to use exactly the commit).
+    days_elapsed = df["contract_elapsed_share"] * (pd.to_datetime(df["contract_end_date"]) - pd.to_datetime(df["contract_start_date"])).dt.days
+    months_elapsed = days_elapsed / DAYS_PER_MONTH
+    months_remaining = df["days_to_renewal"].clip(lower=0) / DAYS_PER_MONTH
+    df["burn_rate_monthly"] = (df["commit_consumed_usd"] / months_elapsed).round(0)
+    # What a straight-line customer would have used by today.
+    df["expected_consumed_to_date"] = (df["annual_commit_usd"] * df["contract_elapsed_share"]).round(0)
+    df["behind_pace_amount"] = (df["expected_consumed_to_date"] - df["commit_consumed_usd"]).clip(lower=0).round(0)
+    # Monthly spend needed from today to use the full commit by renewal.
+    df["required_monthly_burn"] = np.where(months_remaining > 0, df["unused_commit"] / months_remaining, df["unused_commit"]).round(0)
     # Expected Value = pool of funds weighted by how likely we are to realize it.
-    df["expected_value_usd"] = (df["propensity_score"] / 100 * df["pool_of_funds_usd"]).round(0)
+    df["expected_value_usd"] = (df["propensity_score"] / 100 * df["pool_of_funds"]).round(0)
     return df
 
 
@@ -202,7 +224,7 @@ def add_quadrant(df: pd.DataFrame) -> pd.DataFrame:
     # Value axis uses pool of funds (not Expected Value) so the two axes stay
     # independent: EV already contains the score.
     high_score = df["propensity_score"] >= SCORE_HIGH
-    high_value = df["pool_of_funds_usd"] >= POOL_OF_FUNDS_HIGH
+    high_value = df["pool_of_funds"] >= POOL_OF_FUNDS_HIGH
     df["quadrant"] = [QUADRANTS[(s, v)] for s, v in zip(high_score, high_value)]
     return df
 
@@ -236,7 +258,7 @@ def ps_tier_for(row: pd.Series) -> str | None:
     """Target buyers: Commit at Risk accounts first, then Strategic Bets."""
     if not (row["flag_commit_at_risk"] or row["quadrant"] == "Strategic Bet"):
         return None
-    gap = row["unconsumed_commit_usd"]
+    gap = row["unused_commit"]
     if gap < PS_ASSESS_BELOW:
         return "Assess"
     return "Migrate" if gap < PS_MIGRATE_BELOW else "Scale"
@@ -284,7 +306,7 @@ def export(df: pd.DataFrame) -> None:
         "Id": df["account_id"],
         "GTM_Propensity_Score__c": df["propensity_score"],
         "GTM_Top_Reasons__c": df["top_reasons"].str.join(" | "),
-        "GTM_Pool_Of_Funds__c": df["pool_of_funds_usd"].round(0),
+        "GTM_Pool_Of_Funds__c": df["pool_of_funds"].round(0),
         "GTM_Expected_Value__c": df["expected_value_usd"],
         "GTM_Priority_Rank__c": df["priority_rank"],
         "GTM_Quadrant__c": df["quadrant"],
@@ -301,7 +323,8 @@ def export(df: pd.DataFrame) -> None:
     # Website JSON: compact, rounded, only what the pages display.
     site_cols = [
         "account_id", "slug", "account_name", "industry", "region", "segment",
-        "propensity_score", "top_reasons", "pool_of_funds_usd", "unconsumed_commit_usd",
+        "propensity_score", "top_reasons", "pool_of_funds", "unused_commit",
+        "burn_rate_monthly", "expected_consumed_to_date", "behind_pace_amount", "required_monthly_burn",
         "open_pipeline_usd", "expected_value_usd", "flags", "quadrant",
         "priority_rank", "in_capacity", "annual_commit_usd", "commit_consumed_usd",
         "burn_pace", "contract_elapsed_share", "days_to_renewal",
@@ -310,7 +333,7 @@ def export(df: pd.DataFrame) -> None:
         "motion", "program", "ps_recommended_tier", "holdout",
     ]
     records = df[site_cols].round({"burn_pace": 2, "contract_elapsed_share": 2, "usage_spike_ratio": 2,
-                                   "pool_of_funds_usd": 0, "unconsumed_commit_usd": 0})
+                                   "pool_of_funds": 0, "unused_commit": 0})
     payload = {
         "meta": {
             "as_of_date": AS_OF_DATE.date().isoformat(),
@@ -319,6 +342,9 @@ def export(df: pd.DataFrame) -> None:
                 "score_high": SCORE_HIGH, "pool_of_funds_high": POOL_OF_FUNDS_HIGH,
                 "capacity_top_n": CAPACITY_TOP_N,
                 "commit_at_risk_max_pace": COMMIT_AT_RISK_MAX_PACE,
+                "commit_at_risk_min_elapsed": COMMIT_AT_RISK_MIN_ELAPSED,
+                "usage_spike_recent_days": USAGE_SPIKE_RECENT_DAYS,
+                "usage_spike_baseline_days": USAGE_SPIKE_BASELINE_DAYS,
                 "renewal_window_days": RENEWAL_WINDOW_DAYS,
                 "usage_spike_ratio": USAGE_SPIKE_RATIO,
                 "new_developers_min": NEW_DEVELOPERS_MIN,
@@ -352,7 +378,8 @@ def update_content_counts(df: pd.DataFrame) -> None:
     program["eligible_accounts"] = int(at_risk.sum())
     # Accounts flagged but outside top-N capacity: the ones only a scaled program reaches.
     program["eligible_outside_capacity"] = int((at_risk & ~df["in_capacity"]).sum())
-    program["eligible_unconsumed_commit_usd"] = int(df.loc[at_risk, "unconsumed_commit_usd"].sum())
+    program["eligible_unused_commit"] = int(df.loc[at_risk, "unused_commit"].sum())
+    program.pop("eligible_unconsumed_commit_usd", None)  # old name, replaced by the line above
     CONTENT_JSON.write_text(json.dumps(content, indent=2) + "\n")
 
 
@@ -379,13 +406,17 @@ def main() -> None:
     print("\nFeatured accounts:")
     for quadrant, name in FEATURED.items():
         a = df[df["account_name"] == name].iloc[0]
-        print(f"  {name:20s} score {a.propensity_score:3d} | pool ${a.pool_of_funds_usd:>10,.0f} | "
+        print(f"  {name:20s} score {a.propensity_score:3d} | pool ${a.pool_of_funds:>10,.0f} | "
               f"EV ${a.expected_value_usd:>10,.0f} | rank #{a.priority_rank:<3d} | {a.quadrant} | "
               f"flags: {', '.join(a['flags']) or '-'}")
         assert a.quadrant == quadrant, f"{name} should be {quadrant}, got {a.quadrant}"
     nw = df[df["account_name"] == "Northwind Commerce"].iloc[0]
     assert "Commit at Risk" in nw["flags"], "Northwind should be flagged Commit at Risk"
     print("  ✓ Story check passed")
+
+    # Last step: re-derive every number from the raw file and fail loudly on any mismatch.
+    import validate
+    validate.run()
 
 
 if __name__ == "__main__":

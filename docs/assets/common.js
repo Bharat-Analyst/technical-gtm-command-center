@@ -153,7 +153,7 @@ const GTM = {
 
   // Pool of funds is always shown with its breakdown.
   poolBreakdown(a) {
-    return `${GTM.usd(a.unconsumed_commit_usd)} unused commit + ${GTM.usd(a.open_pipeline_usd)} open pipeline`;
+    return `${GTM.usd(a.unused_commit)} unused commit + ${GTM.usd(a.open_pipeline_usd)} open pipeline`;
   },
 
   // Escape text before putting it into innerHTML.

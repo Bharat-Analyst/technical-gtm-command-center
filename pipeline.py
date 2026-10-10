@@ -13,7 +13,8 @@ Steps:
     3. Flags: Commit at Risk, Renewal Window, Usage Spike, New Developers
     4. Quadrant (who should own the account: FDE, SA program, etc.)
     5. Rank by Expected Value; the top N fit current SA/FDE capacity
-    6. Export
+    6. Routing: motion, program, recommended PS tier
+    7. Export
 """
 
 import json
@@ -61,12 +62,26 @@ HEADROOM_HIGH = 300_000            # dollar headroom big enough to justify FDE-l
 # How many accounts current SA/FDE headcount can actively cover.
 CAPACITY_TOP_N = 30
 
+# Professional Services tier by unconsumed commit: the bigger the stalled
+# spend, the bigger the migration it takes to recover it.
+PS_ASSESS_BELOW = 200_000          # small gap → 2-week assessment is enough
+PS_MIGRATE_BELOW = 1_000_000       # mid gap → migrate one production workload
+                                   # ≥ $1M → multi-workload "Scale" tier
+
 ROOT = Path(__file__).parent
 RAW = ROOT / "data" / "raw" / "accounts.csv"
 PROCESSED = ROOT / "data" / "processed" / "account_scores.csv"
 WRITEBACK = ROOT / "data" / "output" / "salesforce_writeback.csv"
 SITE_JSON = ROOT / "docs" / "data" / "accounts.json"
 CONTENT_JSON = ROOT / "docs" / "data" / "content.json"
+
+# One showcase account per quadrant, used by the lifecycle walkthrough.
+FEATURED = {
+    "FDE Deep Engagement": "Northwind Commerce",
+    "Scaled SA Program": "Contoso Media",
+    "Strategic Bet": "Fabrikam Health",
+    "Digital": "Tailspin Games",
+}
 
 QUADRANTS = {
     (True, True): "FDE Deep Engagement",   # likely to grow AND lots at stake
@@ -192,7 +207,45 @@ def add_rank(df: pd.DataFrame) -> pd.DataFrame:
 
 
 # =============================================================================
-# 6. EXPORT
+# 6. ROUTING — which motion, program and services offer each account gets
+# =============================================================================
+def motion_for(quadrant: str, in_capacity: bool) -> str:
+    """Engagement motion. Capacity only matters for the two high-touch motions."""
+    if quadrant == "FDE Deep Engagement":
+        return "Dedicated FDE engagement" if in_capacity else "FDE waitlist, Scaled SA Program meanwhile"
+    if quadrant == "Strategic Bet":
+        return "Targeted exec + SA discovery" if in_capacity else "Account team-led, SA on request"
+    if quadrant == "Scaled SA Program":
+        return "Scaled SA Program (pooled office hours and templates)"
+    return "Digital (docs, webinars, community)"
+
+
+def ps_tier_for(row: pd.Series) -> str | None:
+    """Target buyers: Commit at Risk accounts first, then Strategic Bets."""
+    if not (row["flag_commit_at_risk"] or row["quadrant"] == "Strategic Bet"):
+        return None
+    gap = row["unconsumed_commit_usd"]
+    if gap < PS_ASSESS_BELOW:
+        return "Assess"
+    return "Migrate" if gap < PS_MIGRATE_BELOW else "Scale"
+
+
+def add_routing(df: pd.DataFrame) -> pd.DataFrame:
+    df["motion"] = [motion_for(q, c) for q, c in zip(df["quadrant"], df["in_capacity"])]
+    # Commit Burn Sprint covers every Commit at Risk account. Ones inside
+    # capacity get the same recovery work led directly by their FDE/SA.
+    df["program"] = np.select(
+        [df["flag_commit_at_risk"] & df["in_capacity"], df["flag_commit_at_risk"]],
+        ["FDE-led burn recovery", "Commit Burn Sprint"], default=None)
+    df["ps_recommended_tier"] = df.apply(ps_tier_for, axis=1)
+    # URL-friendly id for links between pages, e.g. ?account=northwind-commerce
+    df["slug"] = df["account_name"].str.lower().str.replace(r"[^a-z0-9]+", "-", regex=True).str.strip("-")
+    assert df["slug"].is_unique, "Account slugs must be unique"
+    return df
+
+
+# =============================================================================
+# 7. EXPORT
 # =============================================================================
 def export(df: pd.DataFrame) -> None:
     for p in (PROCESSED, WRITEBACK, SITE_JSON):
@@ -216,20 +269,25 @@ def export(df: pd.DataFrame) -> None:
         "GTM_Quadrant__c": df["quadrant"],
         "GTM_Flags__c": df["flags"].str.join(";"),
         "GTM_In_Capacity__c": df["in_capacity"],
+        "GTM_Motion__c": df["motion"],
+        "GTM_Program__c": df["program"],
+        "GTM_PS_Recommendation__c": df["ps_recommended_tier"],
         "GTM_Scored_Date__c": AS_OF_DATE.date().isoformat(),
     })
     writeback.to_csv(WRITEBACK, index=False)
 
     # Website JSON: compact, rounded, only what the pages display.
     site_cols = [
-        "account_id", "account_name", "industry", "region", "segment",
+        "account_id", "slug", "account_name", "industry", "region", "segment",
         "propensity_score", "top_reasons", "headroom_usd", "unconsumed_commit_usd",
         "open_pipeline_usd", "expected_value_usd", "flags", "quadrant",
         "priority_rank", "in_capacity", "annual_commit_usd", "commit_consumed_usd",
         "burn_pace", "contract_elapsed_share", "days_to_renewal",
-        "usage_growth_90d_pct", "new_developers_30d", "sa_meetings_90d",
+        "usage_growth_90d_pct", "usage_spike_ratio", "active_developers",
+        "new_developers_30d", "sa_meetings_90d", "contract_end_date",
+        "motion", "program", "ps_recommended_tier",
     ]
-    records = df[site_cols].round({"burn_pace": 2, "contract_elapsed_share": 2,
+    records = df[site_cols].round({"burn_pace": 2, "contract_elapsed_share": 2, "usage_spike_ratio": 2,
                                    "headroom_usd": 0, "unconsumed_commit_usd": 0})
     payload = {
         "meta": {
@@ -242,7 +300,9 @@ def export(df: pd.DataFrame) -> None:
                 "renewal_window_days": RENEWAL_WINDOW_DAYS,
                 "usage_spike_ratio": USAGE_SPIKE_RATIO,
                 "new_developers_min": NEW_DEVELOPERS_MIN,
+                "ps_assess_below": PS_ASSESS_BELOW, "ps_migrate_below": PS_MIGRATE_BELOW,
             },
+            "featured": [FEATURED[q] for q in QUADRANTS.values()],
         },
         "accounts": json.loads(records.to_json(orient="records")),
     }
@@ -276,6 +336,7 @@ def main() -> None:
     df = add_flags(df)
     df = add_quadrant(df)
     df = add_rank(df)
+    df = add_routing(df)
     export(df)
 
     # --- Console summary ----------------------------------------------------
@@ -285,15 +346,16 @@ def main() -> None:
     for f in ["Commit at Risk", "Renewal Window", "Usage Spike", "New Developers"]:
         print(f"  {f:16s} {df['flags'].apply(lambda x: f in x).sum()}")
 
+    # Story checks: each featured account must land in its intended quadrant.
+    print("\nFeatured accounts:")
+    for quadrant, name in FEATURED.items():
+        a = df[df["account_name"] == name].iloc[0]
+        print(f"  {name:20s} score {a.propensity_score:3d} | headroom ${a.headroom_usd:>10,.0f} | "
+              f"EV ${a.expected_value_usd:>10,.0f} | rank #{a.priority_rank:<3d} | {a.quadrant} | "
+              f"flags: {', '.join(a['flags']) or '-'}")
+        assert a.quadrant == quadrant, f"{name} should be {quadrant}, got {a.quadrant}"
     nw = df[df["account_name"] == "Northwind Commerce"].iloc[0]
-    print("\nNorthwind Commerce:")
-    print(f"  Score {nw.propensity_score} | Headroom ${nw.headroom_usd:,.0f} | "
-          f"EV ${nw.expected_value_usd:,.0f} | Rank #{nw.priority_rank} | In capacity: {nw.in_capacity}")
-    print(f"  Quadrant: {nw.quadrant} | Flags: {', '.join(nw['flags'])}")
-    for r in nw['top_reasons']:
-        print(f"   - {r}")
-    assert nw.quadrant == "FDE Deep Engagement", "Northwind should be FDE Deep Engagement"
-    assert "Commit at Risk" in nw['flags'], "Northwind should be flagged Commit at Risk"
+    assert "Commit at Risk" in nw["flags"], "Northwind should be flagged Commit at Risk"
     print("  ✓ Story check passed")
 
 

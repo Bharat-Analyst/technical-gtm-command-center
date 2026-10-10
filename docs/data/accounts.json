@@ -112,7 +112,7 @@
    "top_reasons": [
     "Usage +24% over the last 90 days (top 24% of accounts)",
     "7 new developers in the last 30 days (top 8% of accounts)",
-    "1 SA meetings in the last 90 days (top 52% of accounts)"
+    "1 SA meeting in the last 90 days (top 52% of accounts)"
    ],
    "headroom_usd": 1585000.0,
    "unconsumed_commit_usd": 819000.0,
@@ -261,7 +261,7 @@
    "propensity_score": 48,
    "top_reasons": [
     "3 SA meetings in the last 90 days (top 15% of accounts)",
-    "1 new developers in the last 30 days (top 54% of accounts)",
+    "1 new developer in the last 30 days (top 54% of accounts)",
     "Consuming commit at 99% of expected pace (top 50% of accounts)"
    ],
    "headroom_usd": 1632600.0,
@@ -847,8 +847,8 @@
    "segment": "Enterprise",
    "propensity_score": 36,
    "top_reasons": [
-    "1 new developers in the last 30 days (top 54% of accounts)",
-    "1 SA meetings in the last 90 days (top 52% of accounts)",
+    "1 new developer in the last 30 days (top 54% of accounts)",
+    "1 SA meeting in the last 90 days (top 52% of accounts)",
     "Usage -4% over the last 90 days (top 73% of accounts)"
    ],
    "headroom_usd": 1275000.0,
@@ -1072,7 +1072,7 @@
    "top_reasons": [
     "6 new developers in the last 30 days (top 11% of accounts)",
     "Usage -1% over the last 90 days (top 70% of accounts)",
-    "1 SA meetings in the last 90 days (top 52% of accounts)"
+    "1 SA meeting in the last 90 days (top 52% of accounts)"
    ],
    "headroom_usd": 903400.0,
    "unconsumed_commit_usd": 692400.0,
@@ -1149,7 +1149,7 @@
    "top_reasons": [
     "Usage +31% over the last 90 days (top 15% of accounts)",
     "3 new developers in the last 30 days (top 25% of accounts)",
-    "1 SA meetings in the last 90 days (top 52% of accounts)"
+    "1 SA meeting in the last 90 days (top 52% of accounts)"
    ],
    "headroom_usd": 595100.0,
    "unconsumed_commit_usd": 341100.0,
@@ -1257,7 +1257,7 @@
    "top_reasons": [
     "Usage +46% over the last 90 days (top 3% of accounts)",
     "7 SA meetings in the last 90 days (top 1% of accounts)",
-    "1 new developers in the last 30 days (top 54% of accounts)"
+    "1 new developer in the last 30 days (top 54% of accounts)"
    ],
    "headroom_usd": 552100.0,
    "unconsumed_commit_usd": 552100.0,
@@ -1592,7 +1592,7 @@
    "top_reasons": [
     "16 new developers in the last 30 days (top 1% of accounts)",
     "Usage +15% over the last 90 days (top 38% of accounts)",
-    "1 SA meetings in the last 90 days (top 52% of accounts)"
+    "1 SA meeting in the last 90 days (top 52% of accounts)"
    ],
    "headroom_usd": 544100.0,
    "unconsumed_commit_usd": 544100.0,
@@ -1968,8 +1968,8 @@
    "segment": "Enterprise",
    "propensity_score": 24,
    "top_reasons": [
-    "1 new developers in the last 30 days (top 54% of accounts)",
-    "1 SA meetings in the last 90 days (top 52% of accounts)",
+    "1 new developer in the last 30 days (top 54% of accounts)",
+    "1 SA meeting in the last 90 days (top 52% of accounts)",
     "Usage -25% over the last 90 days (top 93% of accounts)"
    ],
    "headroom_usd": 1130100.0,
@@ -2044,7 +2044,7 @@
    "top_reasons": [
     "5 new developers in the last 30 days (top 14% of accounts)",
     "Consuming commit at 118% of expected pace (top 18% of accounts)",
-    "1 SA meetings in the last 90 days (top 52% of accounts)"
+    "1 SA meeting in the last 90 days (top 52% of accounts)"
    ],
    "headroom_usd": 533000.0,
    "unconsumed_commit_usd": 0.0,
@@ -2341,7 +2341,7 @@
    "propensity_score": 34,
    "top_reasons": [
     "6 new developers in the last 30 days (top 11% of accounts)",
-    "1 SA meetings in the last 90 days (top 52% of accounts)",
+    "1 SA meeting in the last 90 days (top 52% of accounts)",
     "Consuming commit at 63% of expected pace (top 93% of accounts)"
    ],
    "headroom_usd": 671500.0,
@@ -2452,7 +2452,7 @@
    "top_reasons": [
     "Usage +13% over the last 90 days (top 43% of accounts)",
     "3 new developers in the last 30 days (top 25% of accounts)",
-    "1 SA meetings in the last 90 days (top 52% of accounts)"
+    "1 SA meeting in the last 90 days (top 52% of accounts)"
    ],
    "headroom_usd": 432800.0,
    "unconsumed_commit_usd": 232800.0,
@@ -2560,7 +2560,7 @@
    "top_reasons": [
     "7 new developers in the last 30 days (top 8% of accounts)",
     "Usage +14% over the last 90 days (top 41% of accounts)",
-    "1 SA meetings in the last 90 days (top 52% of accounts)"
+    "1 SA meeting in the last 90 days (top 52% of accounts)"
    ],
    "headroom_usd": 406400.0,
    "unconsumed_commit_usd": 406400.0,
@@ -2634,8 +2634,8 @@
    "propensity_score": 54,
    "top_reasons": [
     "Usage +36% over the last 90 days (top 10% of accounts)",
-    "1 new developers in the last 30 days (top 54% of accounts)",
-    "1 SA meetings in the last 90 days (top 52% of accounts)"
+    "1 new developer in the last 30 days (top 54% of accounts)",
+    "1 SA meeting in the last 90 days (top 52% of accounts)"
    ],
    "headroom_usd": 405200.0,
    "unconsumed_commit_usd": 405200.0,
@@ -2822,7 +2822,7 @@
    "top_reasons": [
     "Usage +24% over the last 90 days (top 23% of accounts)",
     "Consuming commit at 123% of expected pace (top 13% of accounts)",
-    "1 new developers in the last 30 days (top 54% of accounts)"
+    "1 new developer in the last 30 days (top 54% of accounts)"
    ],
    "headroom_usd": 309700.0,
    "unconsumed_commit_usd": 119700.0,
@@ -2931,8 +2931,8 @@
    "propensity_score": 57,
    "top_reasons": [
     "Usage +39% over the last 90 days (top 6% of accounts)",
-    "1 new developers in the last 30 days (top 54% of accounts)",
-    "1 SA meetings in the last 90 days (top 52% of accounts)"
+    "1 new developer in the last 30 days (top 54% of accounts)",
+    "1 SA meeting in the last 90 days (top 52% of accounts)"
    ],
    "headroom_usd": 343900.0,
    "unconsumed_commit_usd": 135900.0,
@@ -3297,7 +3297,7 @@
    "top_reasons": [
     "Usage +28% over the last 90 days (top 19% of accounts)",
     "3 SA meetings in the last 90 days (top 15% of accounts)",
-    "1 new developers in the last 30 days (top 54% of accounts)"
+    "1 new developer in the last 30 days (top 54% of accounts)"
    ],
    "headroom_usd": 275800.0,
    "unconsumed_commit_usd": 275800.0,
@@ -3629,7 +3629,7 @@
    "top_reasons": [
     "Consuming commit at 150% of expected pace (top 1% of accounts)",
     "Usage +3% over the last 90 days (top 61% of accounts)",
-    "1 new developers in the last 30 days (top 54% of accounts)"
+    "1 new developer in the last 30 days (top 54% of accounts)"
    ],
    "headroom_usd": 283900.0,
    "unconsumed_commit_usd": 283900.0,
@@ -3739,7 +3739,7 @@
    "top_reasons": [
     "9 new developers in the last 30 days (top 5% of accounts)",
     "Usage +11% over the last 90 days (top 46% of accounts)",
-    "1 SA meetings in the last 90 days (top 52% of accounts)"
+    "1 SA meeting in the last 90 days (top 52% of accounts)"
    ],
    "headroom_usd": 242000.0,
    "unconsumed_commit_usd": 242000.0,
@@ -3774,7 +3774,7 @@
    "propensity_score": 36,
    "top_reasons": [
     "Usage +11% over the last 90 days (top 46% of accounts)",
-    "1 SA meetings in the last 90 days (top 52% of accounts)",
+    "1 SA meeting in the last 90 days (top 52% of accounts)",
     "0 new developers in the last 30 days (top 83% of accounts)"
    ],
    "headroom_usd": 408900.0,
@@ -3811,7 +3811,7 @@
    "top_reasons": [
     "Usage +16% over the last 90 days (top 38% of accounts)",
     "2 SA meetings in the last 90 days (top 29% of accounts)",
-    "1 new developers in the last 30 days (top 54% of accounts)"
+    "1 new developer in the last 30 days (top 54% of accounts)"
    ],
    "headroom_usd": 281400.0,
    "unconsumed_commit_usd": 281400.0,
@@ -3847,7 +3847,7 @@
    "top_reasons": [
     "Usage +31% over the last 90 days (top 15% of accounts)",
     "Consuming commit at 107% of expected pace (top 34% of accounts)",
-    "1 SA meetings in the last 90 days (top 52% of accounts)"
+    "1 SA meeting in the last 90 days (top 52% of accounts)"
    ],
    "headroom_usd": 250200.0,
    "unconsumed_commit_usd": 97200.0,
@@ -3883,7 +3883,7 @@
    "top_reasons": [
     "Consuming commit at 126% of expected pace (top 11% of accounts)",
     "Usage +7% over the last 90 days (top 54% of accounts)",
-    "1 new developers in the last 30 days (top 54% of accounts)"
+    "1 new developer in the last 30 days (top 54% of accounts)"
    ],
    "headroom_usd": 255800.0,
    "unconsumed_commit_usd": 101800.0,
@@ -4109,7 +4109,7 @@
    "top_reasons": [
     "7 new developers in the last 30 days (top 8% of accounts)",
     "Usage +6% over the last 90 days (top 55% of accounts)",
-    "1 SA meetings in the last 90 days (top 52% of accounts)"
+    "1 SA meeting in the last 90 days (top 52% of accounts)"
    ],
    "headroom_usd": 246500.0,
    "unconsumed_commit_usd": 183500.0,
@@ -4146,8 +4146,8 @@
    "propensity_score": 44,
    "top_reasons": [
     "Consuming commit at 108% of expected pace (top 32% of accounts)",
-    "1 new developers in the last 30 days (top 54% of accounts)",
-    "1 SA meetings in the last 90 days (top 52% of accounts)"
+    "1 new developer in the last 30 days (top 54% of accounts)",
+    "1 SA meeting in the last 90 days (top 52% of accounts)"
    ],
    "headroom_usd": 279300.0,
    "unconsumed_commit_usd": 279300.0,
@@ -4183,7 +4183,7 @@
    "top_reasons": [
     "Consuming commit at 116% of expected pace (top 22% of accounts)",
     "Usage +1% over the last 90 days (top 64% of accounts)",
-    "1 new developers in the last 30 days (top 54% of accounts)"
+    "1 new developer in the last 30 days (top 54% of accounts)"
    ],
    "headroom_usd": 281000.0,
    "unconsumed_commit_usd": 124000.0,
@@ -4474,7 +4474,7 @@
    "propensity_score": 31,
    "top_reasons": [
     "3 SA meetings in the last 90 days (top 15% of accounts)",
-    "1 new developers in the last 30 days (top 54% of accounts)",
+    "1 new developer in the last 30 days (top 54% of accounts)",
     "Usage -26% over the last 90 days (top 93% of accounts)"
    ],
    "headroom_usd": 362800.0,
@@ -4586,7 +4586,7 @@
    "top_reasons": [
     "4 SA meetings in the last 90 days (top 7% of accounts)",
     "Consuming commit at 103% of expected pace (top 41% of accounts)",
-    "1 new developers in the last 30 days (top 54% of accounts)"
+    "1 new developer in the last 30 days (top 54% of accounts)"
    ],
    "headroom_usd": 218800.0,
    "unconsumed_commit_usd": 120800.0,
@@ -4621,7 +4621,7 @@
    "propensity_score": 50,
    "top_reasons": [
     "Usage +25% over the last 90 days (top 22% of accounts)",
-    "1 SA meetings in the last 90 days (top 52% of accounts)",
+    "1 SA meeting in the last 90 days (top 52% of accounts)",
     "Consuming commit at 96% of expected pace (top 54% of accounts)"
    ],
    "headroom_usd": 207500.0,
@@ -4658,7 +4658,7 @@
    "top_reasons": [
     "Usage +20% over the last 90 days (top 30% of accounts)",
     "Consuming commit at 121% of expected pace (top 15% of accounts)",
-    "1 new developers in the last 30 days (top 54% of accounts)"
+    "1 new developer in the last 30 days (top 54% of accounts)"
    ],
    "headroom_usd": 163200.0,
    "unconsumed_commit_usd": 27200.0,
@@ -4845,7 +4845,7 @@
    "top_reasons": [
     "2 SA meetings in the last 90 days (top 29% of accounts)",
     "Consuming commit at 103% of expected pace (top 42% of accounts)",
-    "1 new developers in the last 30 days (top 54% of accounts)"
+    "1 new developer in the last 30 days (top 54% of accounts)"
    ],
    "headroom_usd": 204100.0,
    "unconsumed_commit_usd": 2100.0,
@@ -4994,7 +4994,7 @@
    "propensity_score": 39,
    "top_reasons": [
     "4 new developers in the last 30 days (top 18% of accounts)",
-    "1 SA meetings in the last 90 days (top 52% of accounts)",
+    "1 SA meeting in the last 90 days (top 52% of accounts)",
     "Usage -12% over the last 90 days (top 86% of accounts)"
    ],
    "headroom_usd": 251200.0,
@@ -5033,7 +5033,7 @@
    "top_reasons": [
     "Usage +13% over the last 90 days (top 43% of accounts)",
     "2 new developers in the last 30 days (top 36% of accounts)",
-    "1 SA meetings in the last 90 days (top 52% of accounts)"
+    "1 SA meeting in the last 90 days (top 52% of accounts)"
    ],
    "headroom_usd": 182500.0,
    "unconsumed_commit_usd": 182500.0,
@@ -5069,7 +5069,7 @@
    "top_reasons": [
     "Consuming commit at 122% of expected pace (top 14% of accounts)",
     "2 new developers in the last 30 days (top 36% of accounts)",
-    "1 SA meetings in the last 90 days (top 52% of accounts)"
+    "1 SA meeting in the last 90 days (top 52% of accounts)"
    ],
    "headroom_usd": 187200.0,
    "unconsumed_commit_usd": 149200.0,
@@ -5104,8 +5104,8 @@
    "propensity_score": 47,
    "top_reasons": [
     "Consuming commit at 128% of expected pace (top 8% of accounts)",
-    "1 new developers in the last 30 days (top 54% of accounts)",
-    "1 SA meetings in the last 90 days (top 52% of accounts)"
+    "1 new developer in the last 30 days (top 54% of accounts)",
+    "1 SA meeting in the last 90 days (top 52% of accounts)"
    ],
    "headroom_usd": 198900.0,
    "unconsumed_commit_usd": 150900.0,
@@ -5176,7 +5176,7 @@
    "propensity_score": 32,
    "top_reasons": [
     "2 SA meetings in the last 90 days (top 29% of accounts)",
-    "1 new developers in the last 30 days (top 54% of accounts)",
+    "1 new developer in the last 30 days (top 54% of accounts)",
     "Usage -13% over the last 90 days (top 87% of accounts)"
    ],
    "headroom_usd": 286800.0,
@@ -5432,7 +5432,7 @@
    "propensity_score": 52,
    "top_reasons": [
     "Usage +22% over the last 90 days (top 27% of accounts)",
-    "1 new developers in the last 30 days (top 54% of accounts)",
+    "1 new developer in the last 30 days (top 54% of accounts)",
     "Consuming commit at 102% of expected pace (top 44% of accounts)"
    ],
    "headroom_usd": 173100.0,
@@ -5469,7 +5469,7 @@
    "top_reasons": [
     "3 SA meetings in the last 90 days (top 15% of accounts)",
     "Usage -0% over the last 90 days (top 67% of accounts)",
-    "1 new developers in the last 30 days (top 54% of accounts)"
+    "1 new developer in the last 30 days (top 54% of accounts)"
    ],
    "headroom_usd": 203500.0,
    "unconsumed_commit_usd": 203500.0,
@@ -5507,7 +5507,7 @@
    "top_reasons": [
     "Usage +36% over the last 90 days (top 9% of accounts)",
     "6 new developers in the last 30 days (top 11% of accounts)",
-    "1 SA meetings in the last 90 days (top 52% of accounts)"
+    "1 SA meeting in the last 90 days (top 52% of accounts)"
    ],
    "headroom_usd": 129500.0,
    "unconsumed_commit_usd": 89500.0,
@@ -5871,7 +5871,7 @@
    "top_reasons": [
     "2 SA meetings in the last 90 days (top 29% of accounts)",
     "Consuming commit at 110% of expected pace (top 31% of accounts)",
-    "1 new developers in the last 30 days (top 54% of accounts)"
+    "1 new developer in the last 30 days (top 54% of accounts)"
    ],
    "headroom_usd": 197200.0,
    "unconsumed_commit_usd": 54200.0,
@@ -5906,7 +5906,7 @@
    "propensity_score": 48,
    "top_reasons": [
     "Usage +24% over the last 90 days (top 25% of accounts)",
-    "1 new developers in the last 30 days (top 54% of accounts)",
+    "1 new developer in the last 30 days (top 54% of accounts)",
     "Consuming commit at 89% of expected pace (top 64% of accounts)"
    ],
    "headroom_usd": 174400.0,
@@ -6015,7 +6015,7 @@
    "top_reasons": [
     "Usage +37% over the last 90 days (top 9% of accounts)",
     "2 SA meetings in the last 90 days (top 29% of accounts)",
-    "1 new developers in the last 30 days (top 54% of accounts)"
+    "1 new developer in the last 30 days (top 54% of accounts)"
    ],
    "headroom_usd": 122200.0,
    "unconsumed_commit_usd": 49200.0,
@@ -6052,7 +6052,7 @@
    "propensity_score": 37,
    "top_reasons": [
     "Consuming commit at 143% of expected pace (top 3% of accounts)",
-    "1 SA meetings in the last 90 days (top 52% of accounts)",
+    "1 SA meeting in the last 90 days (top 52% of accounts)",
     "0 new developers in the last 30 days (top 83% of accounts)"
    ],
    "headroom_usd": 214900.0,
@@ -6089,7 +6089,7 @@
    "top_reasons": [
     "Usage +22% over the last 90 days (top 27% of accounts)",
     "3 new developers in the last 30 days (top 25% of accounts)",
-    "1 SA meetings in the last 90 days (top 52% of accounts)"
+    "1 SA meeting in the last 90 days (top 52% of accounts)"
    ],
    "headroom_usd": 139300.0,
    "unconsumed_commit_usd": 139300.0,
@@ -6492,7 +6492,7 @@
    "segment": "Mid-Market",
    "propensity_score": 43,
    "top_reasons": [
-    "1 new developers in the last 30 days (top 54% of accounts)",
+    "1 new developer in the last 30 days (top 54% of accounts)",
     "Usage -1% over the last 90 days (top 68% of accounts)",
     "Consuming commit at 102% of expected pace (top 44% of accounts)"
    ],
@@ -6565,8 +6565,8 @@
    "propensity_score": 50,
    "top_reasons": [
     "Usage +30% over the last 90 days (top 17% of accounts)",
-    "1 new developers in the last 30 days (top 54% of accounts)",
-    "1 SA meetings in the last 90 days (top 52% of accounts)"
+    "1 new developer in the last 30 days (top 54% of accounts)",
+    "1 SA meeting in the last 90 days (top 52% of accounts)"
    ],
    "headroom_usd": 134900.0,
    "unconsumed_commit_usd": 76900.0,
@@ -6603,7 +6603,7 @@
    "propensity_score": 50,
    "top_reasons": [
     "Usage +37% over the last 90 days (top 8% of accounts)",
-    "1 SA meetings in the last 90 days (top 52% of accounts)",
+    "1 SA meeting in the last 90 days (top 52% of accounts)",
     "0 new developers in the last 30 days (top 83% of accounts)"
    ],
    "headroom_usd": 134500.0,
@@ -6678,7 +6678,7 @@
    "top_reasons": [
     "Usage +19% over the last 90 days (top 32% of accounts)",
     "2 SA meetings in the last 90 days (top 29% of accounts)",
-    "1 new developers in the last 30 days (top 54% of accounts)"
+    "1 new developer in the last 30 days (top 54% of accounts)"
    ],
    "headroom_usd": 121100.0,
    "unconsumed_commit_usd": 121100.0,
@@ -6749,7 +6749,7 @@
    "propensity_score": 35,
    "top_reasons": [
     "3 new developers in the last 30 days (top 25% of accounts)",
-    "1 SA meetings in the last 90 days (top 52% of accounts)",
+    "1 SA meeting in the last 90 days (top 52% of accounts)",
     "Usage -14% over the last 90 days (top 87% of accounts)"
    ],
    "headroom_usd": 187400.0,
@@ -6786,7 +6786,7 @@
    "top_reasons": [
     "Usage +54% over the last 90 days (top 1% of accounts)",
     "Consuming commit at 108% of expected pace (top 33% of accounts)",
-    "1 new developers in the last 30 days (top 54% of accounts)"
+    "1 new developer in the last 30 days (top 54% of accounts)"
    ],
    "headroom_usd": 94700.0,
    "unconsumed_commit_usd": 94700.0,
@@ -6822,7 +6822,7 @@
    "top_reasons": [
     "5 new developers in the last 30 days (top 14% of accounts)",
     "Usage +5% over the last 90 days (top 57% of accounts)",
-    "1 SA meetings in the last 90 days (top 52% of accounts)"
+    "1 SA meeting in the last 90 days (top 52% of accounts)"
    ],
    "headroom_usd": 133400.0,
    "unconsumed_commit_usd": 133400.0,
@@ -6860,8 +6860,8 @@
    "segment": "Mid-Market",
    "propensity_score": 35,
    "top_reasons": [
-    "1 new developers in the last 30 days (top 54% of accounts)",
-    "1 SA meetings in the last 90 days (top 52% of accounts)",
+    "1 new developer in the last 30 days (top 54% of accounts)",
+    "1 SA meeting in the last 90 days (top 52% of accounts)",
     "Usage -7% over the last 90 days (top 78% of accounts)"
    ],
    "headroom_usd": 181900.0,
@@ -6900,7 +6900,7 @@
    "top_reasons": [
     "Usage +11% over the last 90 days (top 46% of accounts)",
     "4 SA meetings in the last 90 days (top 7% of accounts)",
-    "1 new developers in the last 30 days (top 54% of accounts)"
+    "1 new developer in the last 30 days (top 54% of accounts)"
    ],
    "headroom_usd": 112100.0,
    "unconsumed_commit_usd": 112100.0,
@@ -6936,7 +6936,7 @@
    "top_reasons": [
     "Usage +33% over the last 90 days (top 12% of accounts)",
     "3 new developers in the last 30 days (top 25% of accounts)",
-    "1 SA meetings in the last 90 days (top 52% of accounts)"
+    "1 SA meeting in the last 90 days (top 52% of accounts)"
    ],
    "headroom_usd": 97000.0,
    "unconsumed_commit_usd": 57000.0,
@@ -7048,7 +7048,7 @@
    "top_reasons": [
     "Usage +19% over the last 90 days (top 32% of accounts)",
     "3 SA meetings in the last 90 days (top 15% of accounts)",
-    "1 new developers in the last 30 days (top 54% of accounts)"
+    "1 new developer in the last 30 days (top 54% of accounts)"
    ],
    "headroom_usd": 112400.0,
    "unconsumed_commit_usd": 79400.0,
@@ -7084,7 +7084,7 @@
    "top_reasons": [
     "Usage +31% over the last 90 days (top 16% of accounts)",
     "2 SA meetings in the last 90 days (top 29% of accounts)",
-    "1 new developers in the last 30 days (top 54% of accounts)"
+    "1 new developer in the last 30 days (top 54% of accounts)"
    ],
    "headroom_usd": 96000.0,
    "unconsumed_commit_usd": 96000.0,
@@ -7155,7 +7155,7 @@
    "propensity_score": 42,
    "top_reasons": [
     "3 SA meetings in the last 90 days (top 15% of accounts)",
-    "1 new developers in the last 30 days (top 54% of accounts)",
+    "1 new developer in the last 30 days (top 54% of accounts)",
     "Consuming commit at 101% of expected pace (top 47% of accounts)"
    ],
    "headroom_usd": 144600.0,
@@ -7267,7 +7267,7 @@
    "top_reasons": [
     "Usage +8% over the last 90 days (top 52% of accounts)",
     "Consuming commit at 115% of expected pace (top 24% of accounts)",
-    "1 SA meetings in the last 90 days (top 52% of accounts)"
+    "1 SA meeting in the last 90 days (top 52% of accounts)"
    ],
    "headroom_usd": 128400.0,
    "unconsumed_commit_usd": 57400.0,
@@ -7377,7 +7377,7 @@
    "top_reasons": [
     "3 new developers in the last 30 days (top 25% of accounts)",
     "Consuming commit at 125% of expected pace (top 12% of accounts)",
-    "1 SA meetings in the last 90 days (top 52% of accounts)"
+    "1 SA meeting in the last 90 days (top 52% of accounts)"
    ],
    "headroom_usd": 108300.0,
    "unconsumed_commit_usd": 108300.0,
@@ -7413,7 +7413,7 @@
    "top_reasons": [
     "Usage +37% over the last 90 days (top 8% of accounts)",
     "2 SA meetings in the last 90 days (top 29% of accounts)",
-    "1 new developers in the last 30 days (top 54% of accounts)"
+    "1 new developer in the last 30 days (top 54% of accounts)"
    ],
    "headroom_usd": 89400.0,
    "unconsumed_commit_usd": 44400.0,
@@ -7449,7 +7449,7 @@
    "top_reasons": [
     "Usage +34% over the last 90 days (top 12% of accounts)",
     "Consuming commit at 114% of expected pace (top 25% of accounts)",
-    "1 new developers in the last 30 days (top 54% of accounts)"
+    "1 new developer in the last 30 days (top 54% of accounts)"
    ],
    "headroom_usd": 83700.0,
    "unconsumed_commit_usd": 83700.0,
@@ -7706,7 +7706,7 @@
    "top_reasons": [
     "Usage +8% over the last 90 days (top 50% of accounts)",
     "3 SA meetings in the last 90 days (top 15% of accounts)",
-    "1 new developers in the last 30 days (top 54% of accounts)"
+    "1 new developer in the last 30 days (top 54% of accounts)"
    ],
    "headroom_usd": 91800.0,
    "unconsumed_commit_usd": 68800.0,
@@ -7820,8 +7820,8 @@
    "propensity_score": 48,
    "top_reasons": [
     "Usage +21% over the last 90 days (top 28% of accounts)",
-    "1 new developers in the last 30 days (top 54% of accounts)",
-    "1 SA meetings in the last 90 days (top 52% of accounts)"
+    "1 new developer in the last 30 days (top 54% of accounts)",
+    "1 SA meeting in the last 90 days (top 52% of accounts)"
    ],
    "headroom_usd": 100900.0,
    "unconsumed_commit_usd": 48900.0,
@@ -7969,7 +7969,7 @@
    "propensity_score": 41,
    "top_reasons": [
     "Consuming commit at 132% of expected pace (top 6% of accounts)",
-    "1 SA meetings in the last 90 days (top 52% of accounts)",
+    "1 SA meeting in the last 90 days (top 52% of accounts)",
     "Usage -6% over the last 90 days (top 77% of accounts)"
    ],
    "headroom_usd": 114300.0,
@@ -8043,8 +8043,8 @@
    "propensity_score": 41,
    "top_reasons": [
     "Usage +0% over the last 90 days (top 66% of accounts)",
-    "1 new developers in the last 30 days (top 54% of accounts)",
-    "1 SA meetings in the last 90 days (top 52% of accounts)"
+    "1 new developer in the last 30 days (top 54% of accounts)",
+    "1 SA meeting in the last 90 days (top 52% of accounts)"
    ],
    "headroom_usd": 111400.0,
    "unconsumed_commit_usd": 83400.0,
@@ -8079,7 +8079,7 @@
    "propensity_score": 44,
    "top_reasons": [
     "3 SA meetings in the last 90 days (top 15% of accounts)",
-    "1 new developers in the last 30 days (top 54% of accounts)",
+    "1 new developer in the last 30 days (top 54% of accounts)",
     "Usage -4% over the last 90 days (top 74% of accounts)"
    ],
    "headroom_usd": 101500.0,
@@ -8152,7 +8152,7 @@
    "top_reasons": [
     "Usage +15% over the last 90 days (top 40% of accounts)",
     "Consuming commit at 157% of expected pace (top 1% of accounts)",
-    "1 SA meetings in the last 90 days (top 52% of accounts)"
+    "1 SA meeting in the last 90 days (top 52% of accounts)"
    ],
    "headroom_usd": 78000.0,
    "unconsumed_commit_usd": 0.0,
@@ -8300,7 +8300,7 @@
    "top_reasons": [
     "Usage +33% over the last 90 days (top 13% of accounts)",
     "Consuming commit at 137% of expected pace (top 5% of accounts)",
-    "1 new developers in the last 30 days (top 54% of accounts)"
+    "1 new developer in the last 30 days (top 54% of accounts)"
    ],
    "headroom_usd": 63100.0,
    "unconsumed_commit_usd": 35100.0,
@@ -8336,7 +8336,7 @@
    "top_reasons": [
     "2 new developers in the last 30 days (top 36% of accounts)",
     "Consuming commit at 108% of expected pace (top 33% of accounts)",
-    "1 SA meetings in the last 90 days (top 52% of accounts)"
+    "1 SA meeting in the last 90 days (top 52% of accounts)"
    ],
    "headroom_usd": 94600.0,
    "unconsumed_commit_usd": 94600.0,
@@ -8371,7 +8371,7 @@
    "propensity_score": 38,
    "top_reasons": [
     "8 new developers in the last 30 days (top 6% of accounts)",
-    "1 SA meetings in the last 90 days (top 52% of accounts)",
+    "1 SA meeting in the last 90 days (top 52% of accounts)",
     "Consuming commit at 81% of expected pace (top 76% of accounts)"
    ],
    "headroom_usd": 104400.0,
@@ -8556,7 +8556,7 @@
    "top_reasons": [
     "Usage +6% over the last 90 days (top 55% of accounts)",
     "2 SA meetings in the last 90 days (top 29% of accounts)",
-    "1 new developers in the last 30 days (top 54% of accounts)"
+    "1 new developer in the last 30 days (top 54% of accounts)"
    ],
    "headroom_usd": 82000.0,
    "unconsumed_commit_usd": 51000.0,
@@ -8593,7 +8593,7 @@
    "propensity_score": 49,
    "top_reasons": [
     "Usage +8% over the last 90 days (top 50% of accounts)",
-    "1 new developers in the last 30 days (top 54% of accounts)",
+    "1 new developer in the last 30 days (top 54% of accounts)",
     "Consuming commit at 101% of expected pace (top 47% of accounts)"
    ],
    "headroom_usd": 77500.0,
@@ -8629,7 +8629,7 @@
    "propensity_score": 43,
    "top_reasons": [
     "Usage +19% over the last 90 days (top 32% of accounts)",
-    "1 SA meetings in the last 90 days (top 52% of accounts)",
+    "1 SA meeting in the last 90 days (top 52% of accounts)",
     "Consuming commit at 84% of expected pace (top 72% of accounts)"
    ],
    "headroom_usd": 88300.0,
@@ -8666,7 +8666,7 @@
    "top_reasons": [
     "Usage +14% over the last 90 days (top 41% of accounts)",
     "Consuming commit at 107% of expected pace (top 34% of accounts)",
-    "1 new developers in the last 30 days (top 54% of accounts)"
+    "1 new developer in the last 30 days (top 54% of accounts)"
    ],
    "headroom_usd": 68500.0,
    "unconsumed_commit_usd": 36500.0,
@@ -8700,7 +8700,7 @@
    "segment": "Mid-Market",
    "propensity_score": 42,
    "top_reasons": [
-    "1 new developers in the last 30 days (top 54% of accounts)",
+    "1 new developer in the last 30 days (top 54% of accounts)",
     "Usage -1% over the last 90 days (top 68% of accounts)",
     "Consuming commit at 98% of expected pace (top 51% of accounts)"
    ],
@@ -8775,8 +8775,8 @@
    "propensity_score": 57,
    "top_reasons": [
     "Usage +30% over the last 90 days (top 17% of accounts)",
-    "1 new developers in the last 30 days (top 54% of accounts)",
-    "1 SA meetings in the last 90 days (top 52% of accounts)"
+    "1 new developer in the last 30 days (top 54% of accounts)",
+    "1 SA meeting in the last 90 days (top 52% of accounts)"
    ],
    "headroom_usd": 64500.0,
    "unconsumed_commit_usd": 34500.0,
@@ -8811,7 +8811,7 @@
    "propensity_score": 43,
    "top_reasons": [
     "2 new developers in the last 30 days (top 36% of accounts)",
-    "1 SA meetings in the last 90 days (top 52% of accounts)",
+    "1 SA meeting in the last 90 days (top 52% of accounts)",
     "Usage -4% over the last 90 days (top 74% of accounts)"
    ],
    "headroom_usd": 84700.0,
@@ -8922,7 +8922,7 @@
    "top_reasons": [
     "Usage +21% over the last 90 days (top 28% of accounts)",
     "Consuming commit at 131% of expected pace (top 7% of accounts)",
-    "1 SA meetings in the last 90 days (top 52% of accounts)"
+    "1 SA meeting in the last 90 days (top 52% of accounts)"
    ],
    "headroom_usd": 61200.0,
    "unconsumed_commit_usd": 35200.0,
@@ -9032,7 +9032,7 @@
    "top_reasons": [
     "4 SA meetings in the last 90 days (top 7% of accounts)",
     "Consuming commit at 117% of expected pace (top 19% of accounts)",
-    "1 new developers in the last 30 days (top 54% of accounts)"
+    "1 new developer in the last 30 days (top 54% of accounts)"
    ],
    "headroom_usd": 74300.0,
    "unconsumed_commit_usd": 74300.0,
@@ -9105,8 +9105,8 @@
    "propensity_score": 54,
    "top_reasons": [
     "Usage +29% over the last 90 days (top 18% of accounts)",
-    "1 new developers in the last 30 days (top 54% of accounts)",
-    "1 SA meetings in the last 90 days (top 52% of accounts)"
+    "1 new developer in the last 30 days (top 54% of accounts)",
+    "1 SA meeting in the last 90 days (top 52% of accounts)"
    ],
    "headroom_usd": 63200.0,
    "unconsumed_commit_usd": 63200.0,
@@ -9143,7 +9143,7 @@
    "propensity_score": 39,
    "top_reasons": [
     "4 new developers in the last 30 days (top 18% of accounts)",
-    "1 SA meetings in the last 90 days (top 52% of accounts)",
+    "1 SA meeting in the last 90 days (top 52% of accounts)",
     "Consuming commit at 88% of expected pace (top 64% of accounts)"
    ],
    "headroom_usd": 87400.0,
@@ -9180,7 +9180,7 @@
    "top_reasons": [
     "Usage +17% over the last 90 days (top 35% of accounts)",
     "Consuming commit at 121% of expected pace (top 15% of accounts)",
-    "1 SA meetings in the last 90 days (top 52% of accounts)"
+    "1 SA meeting in the last 90 days (top 52% of accounts)"
    ],
    "headroom_usd": 63600.0,
    "unconsumed_commit_usd": 42600.0,
@@ -9215,8 +9215,8 @@
    "propensity_score": 62,
    "top_reasons": [
     "Usage +34% over the last 90 days (top 11% of accounts)",
-    "1 new developers in the last 30 days (top 54% of accounts)",
-    "1 SA meetings in the last 90 days (top 52% of accounts)"
+    "1 new developer in the last 30 days (top 54% of accounts)",
+    "1 SA meeting in the last 90 days (top 52% of accounts)"
    ],
    "headroom_usd": 54300.0,
    "unconsumed_commit_usd": 40300.0,
@@ -9288,8 +9288,8 @@
    "segment": "Mid-Market",
    "propensity_score": 25,
    "top_reasons": [
-    "1 new developers in the last 30 days (top 54% of accounts)",
-    "1 SA meetings in the last 90 days (top 52% of accounts)",
+    "1 new developer in the last 30 days (top 54% of accounts)",
+    "1 SA meeting in the last 90 days (top 52% of accounts)",
     "Usage -24% over the last 90 days (top 92% of accounts)"
    ],
    "headroom_usd": 132800.0,
@@ -9399,7 +9399,7 @@
    "propensity_score": 29,
    "top_reasons": [
     "Consuming commit at 102% of expected pace (top 43% of accounts)",
-    "1 SA meetings in the last 90 days (top 52% of accounts)",
+    "1 SA meeting in the last 90 days (top 52% of accounts)",
     "Usage -14% over the last 90 days (top 88% of accounts)"
    ],
    "headroom_usd": 112100.0,
@@ -9436,7 +9436,7 @@
    "top_reasons": [
     "Usage +34% over the last 90 days (top 11% of accounts)",
     "2 new developers in the last 30 days (top 36% of accounts)",
-    "1 SA meetings in the last 90 days (top 52% of accounts)"
+    "1 SA meeting in the last 90 days (top 52% of accounts)"
    ],
    "headroom_usd": 50200.0,
    "unconsumed_commit_usd": 25200.0,
@@ -9473,7 +9473,7 @@
    "propensity_score": 42,
    "top_reasons": [
     "3 SA meetings in the last 90 days (top 15% of accounts)",
-    "1 new developers in the last 30 days (top 54% of accounts)",
+    "1 new developer in the last 30 days (top 54% of accounts)",
     "Usage -5% over the last 90 days (top 75% of accounts)"
    ],
    "headroom_usd": 74500.0,
@@ -9509,7 +9509,7 @@
    "propensity_score": 57,
    "top_reasons": [
     "Usage +63% over the last 90 days (top 1% of accounts)",
-    "1 SA meetings in the last 90 days (top 52% of accounts)",
+    "1 SA meeting in the last 90 days (top 52% of accounts)",
     "Consuming commit at 94% of expected pace (top 56% of accounts)"
    ],
    "headroom_usd": 54300.0,
@@ -9547,7 +9547,7 @@
    "propensity_score": 40,
    "top_reasons": [
     "6 new developers in the last 30 days (top 11% of accounts)",
-    "1 SA meetings in the last 90 days (top 52% of accounts)",
+    "1 SA meeting in the last 90 days (top 52% of accounts)",
     "Usage -12% over the last 90 days (top 85% of accounts)"
    ],
    "headroom_usd": 76300.0,
@@ -9583,7 +9583,7 @@
    "propensity_score": 27,
    "top_reasons": [
     "Usage +1% over the last 90 days (top 65% of accounts)",
-    "1 SA meetings in the last 90 days (top 52% of accounts)",
+    "1 SA meeting in the last 90 days (top 52% of accounts)",
     "0 new developers in the last 30 days (top 83% of accounts)"
    ],
    "headroom_usd": 112000.0,
@@ -9659,7 +9659,7 @@
    "propensity_score": 42,
    "top_reasons": [
     "Usage +12% over the last 90 days (top 44% of accounts)",
-    "1 SA meetings in the last 90 days (top 52% of accounts)",
+    "1 SA meeting in the last 90 days (top 52% of accounts)",
     "Consuming commit at 93% of expected pace (top 58% of accounts)"
    ],
    "headroom_usd": 71500.0,
@@ -9695,7 +9695,7 @@
    "propensity_score": 35,
    "top_reasons": [
     "2 new developers in the last 30 days (top 36% of accounts)",
-    "1 SA meetings in the last 90 days (top 52% of accounts)",
+    "1 SA meeting in the last 90 days (top 52% of accounts)",
     "Consuming commit at 91% of expected pace (top 61% of accounts)"
    ],
    "headroom_usd": 84600.0,
@@ -9731,7 +9731,7 @@
    "propensity_score": 48,
    "top_reasons": [
     "Usage +36% over the last 90 days (top 10% of accounts)",
-    "1 new developers in the last 30 days (top 54% of accounts)",
+    "1 new developer in the last 30 days (top 54% of accounts)",
     "0 SA meetings in the last 90 days (top 83% of accounts)"
    ],
    "headroom_usd": 60300.0,
@@ -9768,7 +9768,7 @@
    "top_reasons": [
     "Usage +39% over the last 90 days (top 7% of accounts)",
     "Consuming commit at 102% of expected pace (top 45% of accounts)",
-    "1 SA meetings in the last 90 days (top 52% of accounts)"
+    "1 SA meeting in the last 90 days (top 52% of accounts)"
    ],
    "headroom_usd": 49600.0,
    "unconsumed_commit_usd": 21600.0,
@@ -9880,7 +9880,7 @@
    "top_reasons": [
     "Consuming commit at 127% of expected pace (top 10% of accounts)",
     "2 new developers in the last 30 days (top 36% of accounts)",
-    "1 SA meetings in the last 90 days (top 52% of accounts)"
+    "1 SA meeting in the last 90 days (top 52% of accounts)"
    ],
    "headroom_usd": 55700.0,
    "unconsumed_commit_usd": 23700.0,
@@ -9916,7 +9916,7 @@
    "top_reasons": [
     "Usage +22% over the last 90 days (top 27% of accounts)",
     "2 new developers in the last 30 days (top 36% of accounts)",
-    "1 SA meetings in the last 90 days (top 52% of accounts)"
+    "1 SA meeting in the last 90 days (top 52% of accounts)"
    ],
    "headroom_usd": 50800.0,
    "unconsumed_commit_usd": 50800.0,
@@ -9952,8 +9952,8 @@
    "segment": "Mid-Market",
    "propensity_score": 33,
    "top_reasons": [
-    "1 new developers in the last 30 days (top 54% of accounts)",
-    "1 SA meetings in the last 90 days (top 52% of accounts)",
+    "1 new developer in the last 30 days (top 54% of accounts)",
+    "1 SA meeting in the last 90 days (top 52% of accounts)",
     "Usage -4% over the last 90 days (top 74% of accounts)"
    ],
    "headroom_usd": 82200.0,
@@ -10098,7 +10098,7 @@
    "top_reasons": [
     "Usage +59% over the last 90 days (top 1% of accounts)",
     "Consuming commit at 104% of expected pace (top 40% of accounts)",
-    "1 new developers in the last 30 days (top 54% of accounts)"
+    "1 new developer in the last 30 days (top 54% of accounts)"
    ],
    "headroom_usd": 40600.0,
    "unconsumed_commit_usd": 40600.0,
@@ -10242,7 +10242,7 @@
    "top_reasons": [
     "5 new developers in the last 30 days (top 14% of accounts)",
     "Usage -1% over the last 90 days (top 69% of accounts)",
-    "1 SA meetings in the last 90 days (top 52% of accounts)"
+    "1 SA meeting in the last 90 days (top 52% of accounts)"
    ],
    "headroom_usd": 53200.0,
    "unconsumed_commit_usd": 53200.0,
@@ -10316,8 +10316,8 @@
    "segment": "Commercial",
    "propensity_score": 29,
    "top_reasons": [
-    "1 new developers in the last 30 days (top 54% of accounts)",
-    "1 SA meetings in the last 90 days (top 52% of accounts)",
+    "1 new developer in the last 30 days (top 54% of accounts)",
+    "1 SA meeting in the last 90 days (top 52% of accounts)",
     "Consuming commit at 77% of expected pace (top 80% of accounts)"
    ],
    "headroom_usd": 83900.0,
@@ -10356,7 +10356,7 @@
    "top_reasons": [
     "Usage +7% over the last 90 days (top 54% of accounts)",
     "Consuming commit at 108% of expected pace (top 32% of accounts)",
-    "1 new developers in the last 30 days (top 54% of accounts)"
+    "1 new developer in the last 30 days (top 54% of accounts)"
    ],
    "headroom_usd": 47500.0,
    "unconsumed_commit_usd": 33500.0,
@@ -10427,7 +10427,7 @@
    "propensity_score": 41,
    "top_reasons": [
     "4 SA meetings in the last 90 days (top 7% of accounts)",
-    "1 new developers in the last 30 days (top 54% of accounts)",
+    "1 new developer in the last 30 days (top 54% of accounts)",
     "Usage -5% over the last 90 days (top 75% of accounts)"
    ],
    "headroom_usd": 58500.0,
@@ -10539,7 +10539,7 @@
    "propensity_score": 63,
    "top_reasons": [
     "Usage +35% over the last 90 days (top 10% of accounts)",
-    "1 new developers in the last 30 days (top 54% of accounts)",
+    "1 new developer in the last 30 days (top 54% of accounts)",
     "Consuming commit at 100% of expected pace (top 49% of accounts)"
    ],
    "headroom_usd": 37600.0,
@@ -10647,8 +10647,8 @@
    "propensity_score": 48,
    "top_reasons": [
     "Usage +24% over the last 90 days (top 23% of accounts)",
-    "1 new developers in the last 30 days (top 54% of accounts)",
-    "1 SA meetings in the last 90 days (top 52% of accounts)"
+    "1 new developer in the last 30 days (top 54% of accounts)",
+    "1 SA meeting in the last 90 days (top 52% of accounts)"
    ],
    "headroom_usd": 48300.0,
    "unconsumed_commit_usd": 48300.0,
@@ -10686,7 +10686,7 @@
    "propensity_score": 38,
    "top_reasons": [
     "3 new developers in the last 30 days (top 25% of accounts)",
-    "1 SA meetings in the last 90 days (top 52% of accounts)",
+    "1 SA meeting in the last 90 days (top 52% of accounts)",
     "Consuming commit at 84% of expected pace (top 71% of accounts)"
    ],
    "headroom_usd": 60900.0,
@@ -10722,7 +10722,7 @@
    "propensity_score": 43,
    "top_reasons": [
     "Usage +11% over the last 90 days (top 46% of accounts)",
-    "1 new developers in the last 30 days (top 54% of accounts)",
+    "1 new developer in the last 30 days (top 54% of accounts)",
     "Consuming commit at 97% of expected pace (top 53% of accounts)"
    ],
    "headroom_usd": 53500.0,
@@ -10905,7 +10905,7 @@
    "top_reasons": [
     "Usage -1% over the last 90 days (top 68% of accounts)",
     "Consuming commit at 99% of expected pace (top 51% of accounts)",
-    "1 SA meetings in the last 90 days (top 52% of accounts)"
+    "1 SA meeting in the last 90 days (top 52% of accounts)"
    ],
    "headroom_usd": 61000.0,
    "unconsumed_commit_usd": 36000.0,
@@ -10940,7 +10940,7 @@
    "propensity_score": 40,
    "top_reasons": [
     "Consuming commit at 111% of expected pace (top 29% of accounts)",
-    "1 new developers in the last 30 days (top 54% of accounts)",
+    "1 new developer in the last 30 days (top 54% of accounts)",
     "Usage -2% over the last 90 days (top 70% of accounts)"
    ],
    "headroom_usd": 53300.0,
@@ -10976,7 +10976,7 @@
    "propensity_score": 35,
    "top_reasons": [
     "Usage +8% over the last 90 days (top 51% of accounts)",
-    "1 SA meetings in the last 90 days (top 52% of accounts)",
+    "1 SA meeting in the last 90 days (top 52% of accounts)",
     "Consuming commit at 80% of expected pace (top 77% of accounts)"
    ],
    "headroom_usd": 60900.0,
@@ -11015,7 +11015,7 @@
    "top_reasons": [
     "Usage +8% over the last 90 days (top 52% of accounts)",
     "Consuming commit at 110% of expected pace (top 30% of accounts)",
-    "1 SA meetings in the last 90 days (top 52% of accounts)"
+    "1 SA meeting in the last 90 days (top 52% of accounts)"
    ],
    "headroom_usd": 47100.0,
    "unconsumed_commit_usd": 31100.0,
@@ -11050,7 +11050,7 @@
    "propensity_score": 50,
    "top_reasons": [
     "Usage +32% over the last 90 days (top 14% of accounts)",
-    "1 SA meetings in the last 90 days (top 52% of accounts)",
+    "1 SA meeting in the last 90 days (top 52% of accounts)",
     "Consuming commit at 86% of expected pace (top 67% of accounts)"
    ],
    "headroom_usd": 42000.0,
@@ -11087,7 +11087,7 @@
    "top_reasons": [
     "Usage +18% over the last 90 days (top 32% of accounts)",
     "Consuming commit at 122% of expected pace (top 15% of accounts)",
-    "1 new developers in the last 30 days (top 54% of accounts)"
+    "1 new developer in the last 30 days (top 54% of accounts)"
    ],
    "headroom_usd": 37400.0,
    "unconsumed_commit_usd": 9400.0,
@@ -11159,7 +11159,7 @@
    "top_reasons": [
     "Usage +54% over the last 90 days (top 1% of accounts)",
     "2 new developers in the last 30 days (top 36% of accounts)",
-    "1 SA meetings in the last 90 days (top 52% of accounts)"
+    "1 SA meeting in the last 90 days (top 52% of accounts)"
    ],
    "headroom_usd": 33100.0,
    "unconsumed_commit_usd": 33100.0,
@@ -11309,7 +11309,7 @@
    "propensity_score": 36,
    "top_reasons": [
     "3 new developers in the last 30 days (top 25% of accounts)",
-    "1 SA meetings in the last 90 days (top 52% of accounts)",
+    "1 SA meeting in the last 90 days (top 52% of accounts)",
     "Consuming commit at 87% of expected pace (top 67% of accounts)"
    ],
    "headroom_usd": 54900.0,
@@ -11418,7 +11418,7 @@
    "segment": "Mid-Market",
    "propensity_score": 24,
    "top_reasons": [
-    "1 SA meetings in the last 90 days (top 52% of accounts)",
+    "1 SA meeting in the last 90 days (top 52% of accounts)",
     "Consuming commit at 90% of expected pace (top 62% of accounts)",
     "0 new developers in the last 30 days (top 83% of accounts)"
    ],
@@ -11572,7 +11572,7 @@
    "propensity_score": 45,
    "top_reasons": [
     "Usage +18% over the last 90 days (top 33% of accounts)",
-    "1 new developers in the last 30 days (top 54% of accounts)",
+    "1 new developer in the last 30 days (top 54% of accounts)",
     "Consuming commit at 88% of expected pace (top 65% of accounts)"
    ],
    "headroom_usd": 41400.0,
@@ -11646,7 +11646,7 @@
    "propensity_score": 48,
    "top_reasons": [
     "Usage +25% over the last 90 days (top 22% of accounts)",
-    "1 new developers in the last 30 days (top 54% of accounts)",
+    "1 new developer in the last 30 days (top 54% of accounts)",
     "Consuming commit at 85% of expected pace (top 70% of accounts)"
    ],
    "headroom_usd": 38300.0,
@@ -11681,7 +11681,7 @@
    "segment": "Commercial",
    "propensity_score": 34,
    "top_reasons": [
-    "1 new developers in the last 30 days (top 54% of accounts)",
+    "1 new developer in the last 30 days (top 54% of accounts)",
     "Consuming commit at 101% of expected pace (top 46% of accounts)",
     "Usage -6% over the last 90 days (top 75% of accounts)"
    ],
@@ -11718,7 +11718,7 @@
    "propensity_score": 30,
    "top_reasons": [
     "Usage +2% over the last 90 days (top 63% of accounts)",
-    "1 new developers in the last 30 days (top 54% of accounts)",
+    "1 new developer in the last 30 days (top 54% of accounts)",
     "0 SA meetings in the last 90 days (top 83% of accounts)"
    ],
    "headroom_usd": 60900.0,
@@ -11791,7 +11791,7 @@
    "top_reasons": [
     "Usage +16% over the last 90 days (top 37% of accounts)",
     "Consuming commit at 114% of expected pace (top 25% of accounts)",
-    "1 new developers in the last 30 days (top 54% of accounts)"
+    "1 new developer in the last 30 days (top 54% of accounts)"
    ],
    "headroom_usd": 34700.0,
    "unconsumed_commit_usd": 24700.0,
@@ -11971,7 +11971,7 @@
    "segment": "Commercial",
    "propensity_score": 24,
    "top_reasons": [
-    "1 new developers in the last 30 days (top 54% of accounts)",
+    "1 new developer in the last 30 days (top 54% of accounts)",
     "Consuming commit at 82% of expected pace (top 73% of accounts)",
     "Usage -16% over the last 90 days (top 88% of accounts)"
    ],
@@ -12081,7 +12081,7 @@
    "top_reasons": [
     "Usage +17% over the last 90 days (top 36% of accounts)",
     "Consuming commit at 153% of expected pace (top 1% of accounts)",
-    "1 new developers in the last 30 days (top 54% of accounts)"
+    "1 new developer in the last 30 days (top 54% of accounts)"
    ],
    "headroom_usd": 26300.0,
    "unconsumed_commit_usd": 26300.0,
@@ -12116,8 +12116,8 @@
    "propensity_score": 39,
    "top_reasons": [
     "Usage +4% over the last 90 days (top 60% of accounts)",
-    "1 new developers in the last 30 days (top 54% of accounts)",
-    "1 SA meetings in the last 90 days (top 52% of accounts)"
+    "1 new developer in the last 30 days (top 54% of accounts)",
+    "1 SA meeting in the last 90 days (top 52% of accounts)"
    ],
    "headroom_usd": 42000.0,
    "unconsumed_commit_usd": 42000.0,
@@ -12152,7 +12152,7 @@
    "propensity_score": 54,
    "top_reasons": [
     "Usage +60% over the last 90 days (top 1% of accounts)",
-    "1 SA meetings in the last 90 days (top 52% of accounts)",
+    "1 SA meeting in the last 90 days (top 52% of accounts)",
     "Consuming commit at 81% of expected pace (top 74% of accounts)"
    ],
    "headroom_usd": 29800.0,
@@ -12225,8 +12225,8 @@
    "segment": "Commercial",
    "propensity_score": 34,
    "top_reasons": [
-    "1 new developers in the last 30 days (top 54% of accounts)",
-    "1 SA meetings in the last 90 days (top 52% of accounts)",
+    "1 new developer in the last 30 days (top 54% of accounts)",
+    "1 SA meeting in the last 90 days (top 52% of accounts)",
     "Usage -6% over the last 90 days (top 76% of accounts)"
    ],
    "headroom_usd": 45500.0,
@@ -12262,8 +12262,8 @@
    "propensity_score": 51,
    "top_reasons": [
     "Usage +14% over the last 90 days (top 41% of accounts)",
-    "1 new developers in the last 30 days (top 54% of accounts)",
-    "1 SA meetings in the last 90 days (top 52% of accounts)"
+    "1 new developer in the last 30 days (top 54% of accounts)",
+    "1 SA meeting in the last 90 days (top 52% of accounts)"
    ],
    "headroom_usd": 30300.0,
    "unconsumed_commit_usd": 5300.0,
@@ -12338,7 +12338,7 @@
    "propensity_score": 29,
    "top_reasons": [
     "Usage +2% over the last 90 days (top 63% of accounts)",
-    "1 new developers in the last 30 days (top 54% of accounts)",
+    "1 new developer in the last 30 days (top 54% of accounts)",
     "0 SA meetings in the last 90 days (top 83% of accounts)"
    ],
    "headroom_usd": 52100.0,
@@ -12414,7 +12414,7 @@
    "propensity_score": 44,
    "top_reasons": [
     "Consuming commit at 148% of expected pace (top 2% of accounts)",
-    "1 new developers in the last 30 days (top 54% of accounts)",
+    "1 new developer in the last 30 days (top 54% of accounts)",
     "Usage -4% over the last 90 days (top 73% of accounts)"
    ],
    "headroom_usd": 34100.0,
@@ -12449,7 +12449,7 @@
    "segment": "Commercial",
    "propensity_score": 29,
    "top_reasons": [
-    "1 new developers in the last 30 days (top 54% of accounts)",
+    "1 new developer in the last 30 days (top 54% of accounts)",
     "Consuming commit at 103% of expected pace (top 42% of accounts)",
     "0 SA meetings in the last 90 days (top 83% of accounts)"
    ],
@@ -12487,7 +12487,7 @@
    "top_reasons": [
     "Usage +26% over the last 90 days (top 22% of accounts)",
     "Consuming commit at 116% of expected pace (top 22% of accounts)",
-    "1 SA meetings in the last 90 days (top 52% of accounts)"
+    "1 SA meeting in the last 90 days (top 52% of accounts)"
    ],
    "headroom_usd": 25900.0,
    "unconsumed_commit_usd": 25900.0,
@@ -12523,7 +12523,7 @@
    "top_reasons": [
     "3 new developers in the last 30 days (top 25% of accounts)",
     "Usage -3% over the last 90 days (top 71% of accounts)",
-    "1 SA meetings in the last 90 days (top 52% of accounts)"
+    "1 SA meeting in the last 90 days (top 52% of accounts)"
    ],
    "headroom_usd": 34200.0,
    "unconsumed_commit_usd": 34200.0,
@@ -12560,8 +12560,8 @@
    "propensity_score": 42,
    "top_reasons": [
     "Usage +7% over the last 90 days (top 53% of accounts)",
-    "1 new developers in the last 30 days (top 54% of accounts)",
-    "1 SA meetings in the last 90 days (top 52% of accounts)"
+    "1 new developer in the last 30 days (top 54% of accounts)",
+    "1 SA meeting in the last 90 days (top 52% of accounts)"
    ],
    "headroom_usd": 34500.0,
    "unconsumed_commit_usd": 34500.0,
@@ -12598,7 +12598,7 @@
    "propensity_score": 46,
    "top_reasons": [
     "Consuming commit at 111% of expected pace (top 29% of accounts)",
-    "1 new developers in the last 30 days (top 54% of accounts)",
+    "1 new developer in the last 30 days (top 54% of accounts)",
     "Usage -1% over the last 90 days (top 68% of accounts)"
    ],
    "headroom_usd": 31400.0,
@@ -12636,8 +12636,8 @@
    "propensity_score": 40,
    "top_reasons": [
     "Consuming commit at 127% of expected pace (top 9% of accounts)",
-    "1 new developers in the last 30 days (top 54% of accounts)",
-    "1 SA meetings in the last 90 days (top 52% of accounts)"
+    "1 new developer in the last 30 days (top 54% of accounts)",
+    "1 SA meeting in the last 90 days (top 52% of accounts)"
    ],
    "headroom_usd": 36100.0,
    "unconsumed_commit_usd": 36100.0,
@@ -12783,7 +12783,7 @@
    "propensity_score": 39,
    "top_reasons": [
     "Consuming commit at 135% of expected pace (top 6% of accounts)",
-    "1 SA meetings in the last 90 days (top 52% of accounts)",
+    "1 SA meeting in the last 90 days (top 52% of accounts)",
     "Usage -10% over the last 90 days (top 82% of accounts)"
    ],
    "headroom_usd": 35000.0,
@@ -12821,7 +12821,7 @@
    "propensity_score": 37,
    "top_reasons": [
     "Consuming commit at 112% of expected pace (top 28% of accounts)",
-    "1 new developers in the last 30 days (top 54% of accounts)",
+    "1 new developer in the last 30 days (top 54% of accounts)",
     "Usage -6% over the last 90 days (top 77% of accounts)"
    ],
    "headroom_usd": 36800.0,
@@ -12859,7 +12859,7 @@
    "propensity_score": 41,
    "top_reasons": [
     "Consuming commit at 125% of expected pace (top 11% of accounts)",
-    "1 new developers in the last 30 days (top 54% of accounts)",
+    "1 new developer in the last 30 days (top 54% of accounts)",
     "Usage -7% over the last 90 days (top 77% of accounts)"
    ],
    "headroom_usd": 33100.0,
@@ -12972,7 +12972,7 @@
    "top_reasons": [
     "Usage +29% over the last 90 days (top 18% of accounts)",
     "Consuming commit at 106% of expected pace (top 35% of accounts)",
-    "1 SA meetings in the last 90 days (top 52% of accounts)"
+    "1 SA meeting in the last 90 days (top 52% of accounts)"
    ],
    "headroom_usd": 24000.0,
    "unconsumed_commit_usd": 0.0,
@@ -13008,8 +13008,8 @@
    "segment": "Commercial",
    "propensity_score": 38,
    "top_reasons": [
-    "1 new developers in the last 30 days (top 54% of accounts)",
-    "1 SA meetings in the last 90 days (top 52% of accounts)",
+    "1 new developer in the last 30 days (top 54% of accounts)",
+    "1 SA meeting in the last 90 days (top 52% of accounts)",
     "Usage -5% over the last 90 days (top 75% of accounts)"
    ],
    "headroom_usd": 34800.0,
@@ -13044,7 +13044,7 @@
    "segment": "Mid-Market",
    "propensity_score": 21,
    "top_reasons": [
-    "1 new developers in the last 30 days (top 54% of accounts)",
+    "1 new developer in the last 30 days (top 54% of accounts)",
     "0 SA meetings in the last 90 days (top 83% of accounts)",
     "Usage -23% over the last 90 days (top 91% of accounts)"
    ],
@@ -13119,7 +13119,7 @@
    "propensity_score": 55,
    "top_reasons": [
     "Usage +42% over the last 90 days (top 5% of accounts)",
-    "1 SA meetings in the last 90 days (top 52% of accounts)",
+    "1 SA meeting in the last 90 days (top 52% of accounts)",
     "Consuming commit at 92% of expected pace (top 59% of accounts)"
    ],
    "headroom_usd": 23200.0,
@@ -13156,7 +13156,7 @@
    "segment": "Commercial",
    "propensity_score": 27,
    "top_reasons": [
-    "1 new developers in the last 30 days (top 54% of accounts)",
+    "1 new developer in the last 30 days (top 54% of accounts)",
     "Usage -5% over the last 90 days (top 75% of accounts)",
     "0 SA meetings in the last 90 days (top 83% of accounts)"
    ],
@@ -13193,7 +13193,7 @@
    "propensity_score": 31,
    "top_reasons": [
     "Usage +4% over the last 90 days (top 58% of accounts)",
-    "1 SA meetings in the last 90 days (top 52% of accounts)",
+    "1 SA meeting in the last 90 days (top 52% of accounts)",
     "0 new developers in the last 30 days (top 83% of accounts)"
    ],
    "headroom_usd": 40500.0,
@@ -13304,7 +13304,7 @@
    "top_reasons": [
     "Usage +27% over the last 90 days (top 20% of accounts)",
     "Consuming commit at 126% of expected pace (top 10% of accounts)",
-    "1 new developers in the last 30 days (top 54% of accounts)"
+    "1 new developer in the last 30 days (top 54% of accounts)"
    ],
    "headroom_usd": 20200.0,
    "unconsumed_commit_usd": 20200.0,
@@ -13375,7 +13375,7 @@
    "propensity_score": 24,
    "top_reasons": [
     "Usage -2% over the last 90 days (top 71% of accounts)",
-    "1 SA meetings in the last 90 days (top 52% of accounts)",
+    "1 SA meeting in the last 90 days (top 52% of accounts)",
     "0 new developers in the last 30 days (top 83% of accounts)"
    ],
    "headroom_usd": 50700.0,
@@ -13411,7 +13411,7 @@
    "propensity_score": 59,
    "top_reasons": [
     "Usage +47% over the last 90 days (top 3% of accounts)",
-    "1 new developers in the last 30 days (top 54% of accounts)",
+    "1 new developer in the last 30 days (top 54% of accounts)",
     "Consuming commit at 100% of expected pace (top 49% of accounts)"
    ],
    "headroom_usd": 20600.0,
@@ -13449,7 +13449,7 @@
    "propensity_score": 41,
    "top_reasons": [
     "Usage +7% over the last 90 days (top 54% of accounts)",
-    "1 new developers in the last 30 days (top 54% of accounts)",
+    "1 new developer in the last 30 days (top 54% of accounts)",
     "Consuming commit at 101% of expected pace (top 48% of accounts)"
    ],
    "headroom_usd": 29600.0,
@@ -13523,7 +13523,7 @@
    "propensity_score": 36,
    "top_reasons": [
     "Consuming commit at 160% of expected pace (top 1% of accounts)",
-    "1 new developers in the last 30 days (top 54% of accounts)",
+    "1 new developer in the last 30 days (top 54% of accounts)",
     "0 SA meetings in the last 90 days (top 83% of accounts)"
    ],
    "headroom_usd": 33000.0,
@@ -13743,7 +13743,7 @@
    "propensity_score": 43,
    "top_reasons": [
     "Consuming commit at 105% of expected pace (top 38% of accounts)",
-    "1 new developers in the last 30 days (top 54% of accounts)",
+    "1 new developer in the last 30 days (top 54% of accounts)",
     "Usage -3% over the last 90 days (top 72% of accounts)"
    ],
    "headroom_usd": 27200.0,
@@ -13779,7 +13779,7 @@
    "propensity_score": 36,
    "top_reasons": [
     "Consuming commit at 112% of expected pace (top 27% of accounts)",
-    "1 SA meetings in the last 90 days (top 52% of accounts)",
+    "1 SA meeting in the last 90 days (top 52% of accounts)",
     "Usage -8% over the last 90 days (top 79% of accounts)"
    ],
    "headroom_usd": 31800.0,
@@ -13816,7 +13816,7 @@
    "top_reasons": [
     "Consuming commit at 124% of expected pace (top 12% of accounts)",
     "Usage +2% over the last 90 days (top 63% of accounts)",
-    "1 new developers in the last 30 days (top 54% of accounts)"
+    "1 new developer in the last 30 days (top 54% of accounts)"
    ],
    "headroom_usd": 25300.0,
    "unconsumed_commit_usd": 19300.0,
@@ -13853,7 +13853,7 @@
    "propensity_score": 38,
    "top_reasons": [
     "2 SA meetings in the last 90 days (top 29% of accounts)",
-    "1 new developers in the last 30 days (top 54% of accounts)",
+    "1 new developer in the last 30 days (top 54% of accounts)",
     "Consuming commit at 93% of expected pace (top 57% of accounts)"
    ],
    "headroom_usd": 29900.0,
@@ -13889,7 +13889,7 @@
    "propensity_score": 39,
    "top_reasons": [
     "Usage +3% over the last 90 days (top 61% of accounts)",
-    "1 new developers in the last 30 days (top 54% of accounts)",
+    "1 new developer in the last 30 days (top 54% of accounts)",
     "Consuming commit at 101% of expected pace (top 46% of accounts)"
    ],
    "headroom_usd": 29100.0,
@@ -13966,7 +13966,7 @@
    "top_reasons": [
     "Consuming commit at 115% of expected pace (top 23% of accounts)",
     "Usage +6% over the last 90 days (top 56% of accounts)",
-    "1 SA meetings in the last 90 days (top 52% of accounts)"
+    "1 SA meeting in the last 90 days (top 52% of accounts)"
    ],
    "headroom_usd": 25000.0,
    "unconsumed_commit_usd": 25000.0,
@@ -14040,7 +14040,7 @@
    "top_reasons": [
     "Usage +6% over the last 90 days (top 55% of accounts)",
     "Consuming commit at 104% of expected pace (top 40% of accounts)",
-    "1 new developers in the last 30 days (top 54% of accounts)"
+    "1 new developer in the last 30 days (top 54% of accounts)"
    ],
    "headroom_usd": 22100.0,
    "unconsumed_commit_usd": 22100.0,
@@ -14077,7 +14077,7 @@
    "propensity_score": 28,
    "top_reasons": [
     "Usage +0% over the last 90 days (top 66% of accounts)",
-    "1 new developers in the last 30 days (top 54% of accounts)",
+    "1 new developer in the last 30 days (top 54% of accounts)",
     "0 SA meetings in the last 90 days (top 83% of accounts)"
    ],
    "headroom_usd": 38600.0,
@@ -14115,7 +14115,7 @@
    "propensity_score": 31,
    "top_reasons": [
     "Usage +8% over the last 90 days (top 50% of accounts)",
-    "1 SA meetings in the last 90 days (top 52% of accounts)",
+    "1 SA meeting in the last 90 days (top 52% of accounts)",
     "0 new developers in the last 30 days (top 83% of accounts)"
    ],
    "headroom_usd": 34700.0,
@@ -14153,8 +14153,8 @@
    "propensity_score": 59,
    "top_reasons": [
     "Usage +31% over the last 90 days (top 15% of accounts)",
-    "1 new developers in the last 30 days (top 54% of accounts)",
-    "1 SA meetings in the last 90 days (top 52% of accounts)"
+    "1 new developer in the last 30 days (top 54% of accounts)",
+    "1 SA meeting in the last 90 days (top 52% of accounts)"
    ],
    "headroom_usd": 18200.0,
    "unconsumed_commit_usd": 7200.0,
@@ -14228,7 +14228,7 @@
    "top_reasons": [
     "Usage +6% over the last 90 days (top 57% of accounts)",
     "Consuming commit at 104% of expected pace (top 40% of accounts)",
-    "1 SA meetings in the last 90 days (top 52% of accounts)"
+    "1 SA meeting in the last 90 days (top 52% of accounts)"
    ],
    "headroom_usd": 26000.0,
    "unconsumed_commit_usd": 21000.0,
@@ -14263,7 +14263,7 @@
    "propensity_score": 34,
    "top_reasons": [
     "Usage +4% over the last 90 days (top 59% of accounts)",
-    "1 new developers in the last 30 days (top 54% of accounts)",
+    "1 new developer in the last 30 days (top 54% of accounts)",
     "Consuming commit at 81% of expected pace (top 74% of accounts)"
    ],
    "headroom_usd": 31100.0,
@@ -14302,7 +14302,7 @@
    "top_reasons": [
     "Usage +12% over the last 90 days (top 44% of accounts)",
     "2 SA meetings in the last 90 days (top 29% of accounts)",
-    "1 new developers in the last 30 days (top 54% of accounts)"
+    "1 new developer in the last 30 days (top 54% of accounts)"
    ],
    "headroom_usd": 18900.0,
    "unconsumed_commit_usd": 18900.0,
@@ -14635,7 +14635,7 @@
    "propensity_score": 34,
    "top_reasons": [
     "Consuming commit at 106% of expected pace (top 36% of accounts)",
-    "1 new developers in the last 30 days (top 54% of accounts)",
+    "1 new developer in the last 30 days (top 54% of accounts)",
     "Usage -10% over the last 90 days (top 82% of accounts)"
    ],
    "headroom_usd": 28900.0,
@@ -14674,7 +14674,7 @@
    "top_reasons": [
     "3 new developers in the last 30 days (top 25% of accounts)",
     "Consuming commit at 100% of expected pace (top 48% of accounts)",
-    "1 SA meetings in the last 90 days (top 52% of accounts)"
+    "1 SA meeting in the last 90 days (top 52% of accounts)"
    ],
    "headroom_usd": 23600.0,
    "unconsumed_commit_usd": 23600.0,
@@ -14782,7 +14782,7 @@
    "top_reasons": [
     "Usage +53% over the last 90 days (top 2% of accounts)",
     "2 new developers in the last 30 days (top 36% of accounts)",
-    "1 SA meetings in the last 90 days (top 52% of accounts)"
+    "1 SA meeting in the last 90 days (top 52% of accounts)"
    ],
    "headroom_usd": 13300.0,
    "unconsumed_commit_usd": 10300.0,
@@ -14817,7 +14817,7 @@
    "propensity_score": 37,
    "top_reasons": [
     "Usage +4% over the last 90 days (top 59% of accounts)",
-    "1 new developers in the last 30 days (top 54% of accounts)",
+    "1 new developer in the last 30 days (top 54% of accounts)",
     "Consuming commit at 89% of expected pace (top 63% of accounts)"
    ],
    "headroom_usd": 24800.0,
@@ -14891,7 +14891,7 @@
    "propensity_score": 34,
    "top_reasons": [
     "Usage +3% over the last 90 days (top 61% of accounts)",
-    "1 new developers in the last 30 days (top 54% of accounts)",
+    "1 new developer in the last 30 days (top 54% of accounts)",
     "Consuming commit at 85% of expected pace (top 70% of accounts)"
    ],
    "headroom_usd": 26400.0,
@@ -15108,7 +15108,7 @@
    "top_reasons": [
     "Usage +17% over the last 90 days (top 35% of accounts)",
     "Consuming commit at 131% of expected pace (top 7% of accounts)",
-    "1 SA meetings in the last 90 days (top 52% of accounts)"
+    "1 SA meeting in the last 90 days (top 52% of accounts)"
    ],
    "headroom_usd": 15500.0,
    "unconsumed_commit_usd": 15500.0,
@@ -15253,7 +15253,7 @@
    "segment": "Mid-Market",
    "propensity_score": 28,
    "top_reasons": [
-    "1 new developers in the last 30 days (top 54% of accounts)",
+    "1 new developer in the last 30 days (top 54% of accounts)",
     "Consuming commit at 95% of expected pace (top 55% of accounts)",
     "Usage -14% over the last 90 days (top 87% of accounts)"
    ],
@@ -15404,8 +15404,8 @@
    "propensity_score": 42,
    "top_reasons": [
     "Usage +10% over the last 90 days (top 48% of accounts)",
-    "1 new developers in the last 30 days (top 54% of accounts)",
-    "1 SA meetings in the last 90 days (top 52% of accounts)"
+    "1 new developer in the last 30 days (top 54% of accounts)",
+    "1 SA meeting in the last 90 days (top 52% of accounts)"
    ],
    "headroom_usd": 17700.0,
    "unconsumed_commit_usd": 9700.0,
@@ -15442,7 +15442,7 @@
    "segment": "Commercial",
    "propensity_score": 28,
    "top_reasons": [
-    "1 new developers in the last 30 days (top 54% of accounts)",
+    "1 new developer in the last 30 days (top 54% of accounts)",
     "Consuming commit at 91% of expected pace (top 61% of accounts)",
     "Usage -12% over the last 90 days (top 85% of accounts)"
    ],
@@ -15515,7 +15515,7 @@
    "propensity_score": 48,
    "top_reasons": [
     "Usage +18% over the last 90 days (top 34% of accounts)",
-    "1 new developers in the last 30 days (top 54% of accounts)",
+    "1 new developer in the last 30 days (top 54% of accounts)",
     "Consuming commit at 100% of expected pace (top 50% of accounts)"
    ],
    "headroom_usd": 15200.0,
@@ -15551,7 +15551,7 @@
    "propensity_score": 33,
    "top_reasons": [
     "Usage +0% over the last 90 days (top 66% of accounts)",
-    "1 SA meetings in the last 90 days (top 52% of accounts)",
+    "1 SA meeting in the last 90 days (top 52% of accounts)",
     "Consuming commit at 88% of expected pace (top 65% of accounts)"
    ],
    "headroom_usd": 21900.0,
@@ -15590,7 +15590,7 @@
    "top_reasons": [
     "Usage +4% over the last 90 days (top 60% of accounts)",
     "Consuming commit at 108% of expected pace (top 33% of accounts)",
-    "1 new developers in the last 30 days (top 54% of accounts)"
+    "1 new developer in the last 30 days (top 54% of accounts)"
    ],
    "headroom_usd": 17200.0,
    "unconsumed_commit_usd": 17200.0,
@@ -15626,7 +15626,7 @@
    "top_reasons": [
     "Usage +35% over the last 90 days (top 10% of accounts)",
     "2 SA meetings in the last 90 days (top 29% of accounts)",
-    "1 new developers in the last 30 days (top 54% of accounts)"
+    "1 new developer in the last 30 days (top 54% of accounts)"
    ],
    "headroom_usd": 11400.0,
    "unconsumed_commit_usd": 11400.0,
@@ -15663,7 +15663,7 @@
    "propensity_score": 51,
    "top_reasons": [
     "Usage +33% over the last 90 days (top 13% of accounts)",
-    "1 SA meetings in the last 90 days (top 52% of accounts)",
+    "1 SA meeting in the last 90 days (top 52% of accounts)",
     "Consuming commit at 89% of expected pace (top 64% of accounts)"
    ],
    "headroom_usd": 14000.0,
@@ -15739,7 +15739,7 @@
    "propensity_score": 45,
    "top_reasons": [
     "Usage +14% over the last 90 days (top 42% of accounts)",
-    "1 new developers in the last 30 days (top 54% of accounts)",
+    "1 new developer in the last 30 days (top 54% of accounts)",
     "Consuming commit at 98% of expected pace (top 52% of accounts)"
    ],
    "headroom_usd": 15100.0,
@@ -15886,7 +15886,7 @@
    "segment": "Commercial",
    "propensity_score": 20,
    "top_reasons": [
-    "1 SA meetings in the last 90 days (top 52% of accounts)",
+    "1 SA meeting in the last 90 days (top 52% of accounts)",
     "Consuming commit at 79% of expected pace (top 79% of accounts)",
     "0 new developers in the last 30 days (top 83% of accounts)"
    ],
@@ -15923,7 +15923,7 @@
    "propensity_score": 34,
    "top_reasons": [
     "Usage +6% over the last 90 days (top 56% of accounts)",
-    "1 SA meetings in the last 90 days (top 52% of accounts)",
+    "1 SA meeting in the last 90 days (top 52% of accounts)",
     "Consuming commit at 80% of expected pace (top 78% of accounts)"
    ],
    "headroom_usd": 19300.0,
@@ -16036,7 +16036,7 @@
    "segment": "Commercial",
    "propensity_score": 33,
    "top_reasons": [
-    "1 new developers in the last 30 days (top 54% of accounts)",
+    "1 new developer in the last 30 days (top 54% of accounts)",
     "Consuming commit at 101% of expected pace (top 46% of accounts)",
     "Usage -8% over the last 90 days (top 79% of accounts)"
    ],
@@ -16152,7 +16152,7 @@
    "top_reasons": [
     "Usage +22% over the last 90 days (top 28% of accounts)",
     "Consuming commit at 114% of expected pace (top 25% of accounts)",
-    "1 new developers in the last 30 days (top 54% of accounts)"
+    "1 new developer in the last 30 days (top 54% of accounts)"
    ],
    "headroom_usd": 9800.0,
    "unconsumed_commit_usd": 3800.0,
@@ -16379,7 +16379,7 @@
    "top_reasons": [
     "Consuming commit at 156% of expected pace (top 1% of accounts)",
     "Usage +5% over the last 90 days (top 58% of accounts)",
-    "1 new developers in the last 30 days (top 54% of accounts)"
+    "1 new developer in the last 30 days (top 54% of accounts)"
    ],
    "headroom_usd": 10900.0,
    "unconsumed_commit_usd": 3900.0,
@@ -16414,7 +16414,7 @@
    "propensity_score": 37,
    "top_reasons": [
     "Usage +8% over the last 90 days (top 50% of accounts)",
-    "1 SA meetings in the last 90 days (top 52% of accounts)",
+    "1 SA meeting in the last 90 days (top 52% of accounts)",
     "Consuming commit at 85% of expected pace (top 70% of accounts)"
    ],
    "headroom_usd": 14300.0,
@@ -16595,7 +16595,7 @@
    "segment": "Commercial",
    "propensity_score": 26,
    "top_reasons": [
-    "1 new developers in the last 30 days (top 54% of accounts)",
+    "1 new developer in the last 30 days (top 54% of accounts)",
     "Usage -11% over the last 90 days (top 84% of accounts)",
     "Consuming commit at 81% of expected pace (top 75% of accounts)"
    ],
@@ -16706,7 +16706,7 @@
    "propensity_score": 31,
    "top_reasons": [
     "Consuming commit at 101% of expected pace (top 47% of accounts)",
-    "1 SA meetings in the last 90 days (top 52% of accounts)",
+    "1 SA meeting in the last 90 days (top 52% of accounts)",
     "Usage -10% over the last 90 days (top 82% of accounts)"
    ],
    "headroom_usd": 15700.0,
@@ -16781,7 +16781,7 @@
    "top_reasons": [
     "Usage +31% over the last 90 days (top 15% of accounts)",
     "Consuming commit at 116% of expected pace (top 21% of accounts)",
-    "1 SA meetings in the last 90 days (top 52% of accounts)"
+    "1 SA meeting in the last 90 days (top 52% of accounts)"
    ],
    "headroom_usd": 8200.0,
    "unconsumed_commit_usd": 8200.0,
@@ -16816,8 +16816,8 @@
    "propensity_score": 37,
    "top_reasons": [
     "Usage +7% over the last 90 days (top 55% of accounts)",
-    "1 new developers in the last 30 days (top 54% of accounts)",
-    "1 SA meetings in the last 90 days (top 52% of accounts)"
+    "1 new developer in the last 30 days (top 54% of accounts)",
+    "1 SA meeting in the last 90 days (top 52% of accounts)"
    ],
    "headroom_usd": 12700.0,
    "unconsumed_commit_usd": 12700.0,
@@ -16927,7 +16927,7 @@
    "top_reasons": [
     "Usage +17% over the last 90 days (top 35% of accounts)",
     "Consuming commit at 120% of expected pace (top 16% of accounts)",
-    "1 new developers in the last 30 days (top 54% of accounts)"
+    "1 new developer in the last 30 days (top 54% of accounts)"
    ],
    "headroom_usd": 8000.0,
    "unconsumed_commit_usd": 0.0,
@@ -17038,7 +17038,7 @@
    "propensity_score": 31,
    "top_reasons": [
     "Consuming commit at 105% of expected pace (top 38% of accounts)",
-    "1 new developers in the last 30 days (top 54% of accounts)",
+    "1 new developer in the last 30 days (top 54% of accounts)",
     "Usage -18% over the last 90 days (top 89% of accounts)"
    ],
    "headroom_usd": 12000.0,
@@ -17075,7 +17075,7 @@
    "top_reasons": [
     "Usage +9% over the last 90 days (top 49% of accounts)",
     "Consuming commit at 102% of expected pace (top 44% of accounts)",
-    "1 SA meetings in the last 90 days (top 52% of accounts)"
+    "1 SA meeting in the last 90 days (top 52% of accounts)"
    ],
    "headroom_usd": 8500.0,
    "unconsumed_commit_usd": 8500.0,
@@ -17111,7 +17111,7 @@
    "segment": "Commercial",
    "propensity_score": 28,
    "top_reasons": [
-    "1 new developers in the last 30 days (top 54% of accounts)",
+    "1 new developer in the last 30 days (top 54% of accounts)",
     "Usage -7% over the last 90 days (top 78% of accounts)",
     "Consuming commit at 84% of expected pace (top 72% of accounts)"
    ],
@@ -17151,7 +17151,7 @@
    "top_reasons": [
     "Usage +9% over the last 90 days (top 49% of accounts)",
     "Consuming commit at 104% of expected pace (top 39% of accounts)",
-    "1 SA meetings in the last 90 days (top 52% of accounts)"
+    "1 SA meeting in the last 90 days (top 52% of accounts)"
    ],
    "headroom_usd": 7900.0,
    "unconsumed_commit_usd": 7900.0,
@@ -17263,7 +17263,7 @@
    "segment": "Commercial",
    "propensity_score": 34,
    "top_reasons": [
-    "1 new developers in the last 30 days (top 54% of accounts)",
+    "1 new developer in the last 30 days (top 54% of accounts)",
     "Consuming commit at 103% of expected pace (top 43% of accounts)",
     "Usage -7% over the last 90 days (top 78% of accounts)"
    ],
@@ -17301,7 +17301,7 @@
    "top_reasons": [
     "Usage +28% over the last 90 days (top 19% of accounts)",
     "Consuming commit at 98% of expected pace (top 52% of accounts)",
-    "1 SA meetings in the last 90 days (top 52% of accounts)"
+    "1 SA meeting in the last 90 days (top 52% of accounts)"
    ],
    "headroom_usd": 6000.0,
    "unconsumed_commit_usd": 6000.0,
@@ -17489,7 +17489,7 @@
    "segment": "Commercial",
    "propensity_score": 22,
    "top_reasons": [
-    "1 SA meetings in the last 90 days (top 52% of accounts)",
+    "1 SA meeting in the last 90 days (top 52% of accounts)",
     "Consuming commit at 85% of expected pace (top 69% of accounts)",
     "0 new developers in the last 30 days (top 83% of accounts)"
    ],
@@ -17526,7 +17526,7 @@
    "propensity_score": 39,
    "top_reasons": [
     "Usage +13% over the last 90 days (top 42% of accounts)",
-    "1 new developers in the last 30 days (top 54% of accounts)",
+    "1 new developer in the last 30 days (top 54% of accounts)",
     "Consuming commit at 79% of expected pace (top 78% of accounts)"
    ],
    "headroom_usd": 6400.0,
@@ -17677,7 +17677,7 @@
    "top_reasons": [
     "3 new developers in the last 30 days (top 25% of accounts)",
     "Consuming commit at 120% of expected pace (top 15% of accounts)",
-    "1 SA meetings in the last 90 days (top 52% of accounts)"
+    "1 SA meeting in the last 90 days (top 52% of accounts)"
    ],
    "headroom_usd": 4200.0,
    "unconsumed_commit_usd": 4200.0,
@@ -17867,7 +17867,7 @@
    "top_reasons": [
     "Usage +14% over the last 90 days (top 40% of accounts)",
     "Consuming commit at 111% of expected pace (top 29% of accounts)",
-    "1 SA meetings in the last 90 days (top 52% of accounts)"
+    "1 SA meeting in the last 90 days (top 52% of accounts)"
    ],
    "headroom_usd": 3400.0,
    "unconsumed_commit_usd": 3400.0,
@@ -17905,7 +17905,7 @@
    "top_reasons": [
     "Usage +14% over the last 90 days (top 42% of accounts)",
     "Consuming commit at 117% of expected pace (top 19% of accounts)",
-    "1 SA meetings in the last 90 days (top 52% of accounts)"
+    "1 SA meeting in the last 90 days (top 52% of accounts)"
    ],
    "headroom_usd": 2600.0,
    "unconsumed_commit_usd": 2600.0,
@@ -17942,8 +17942,8 @@
    "propensity_score": 41,
    "top_reasons": [
     "Consuming commit at 126% of expected pace (top 11% of accounts)",
-    "1 new developers in the last 30 days (top 54% of accounts)",
-    "1 SA meetings in the last 90 days (top 52% of accounts)"
+    "1 new developer in the last 30 days (top 54% of accounts)",
+    "1 SA meeting in the last 90 days (top 52% of accounts)"
    ],
    "headroom_usd": 3000.0,
    "unconsumed_commit_usd": 0.0,
@@ -18321,7 +18321,7 @@
    "top_reasons": [
     "3 SA meetings in the last 90 days (top 15% of accounts)",
     "Consuming commit at 115% of expected pace (top 22% of accounts)",
-    "1 new developers in the last 30 days (top 54% of accounts)"
+    "1 new developer in the last 30 days (top 54% of accounts)"
    ],
    "headroom_usd": 0.0,
    "unconsumed_commit_usd": 0.0,
@@ -18473,7 +18473,7 @@
    "top_reasons": [
     "Consuming commit at 129% of expected pace (top 8% of accounts)",
     "Usage +6% over the last 90 days (top 57% of accounts)",
-    "1 SA meetings in the last 90 days (top 52% of accounts)"
+    "1 SA meeting in the last 90 days (top 52% of accounts)"
    ],
    "headroom_usd": 0.0,
    "unconsumed_commit_usd": 0.0,
@@ -18511,7 +18511,7 @@
    "top_reasons": [
     "Usage +35% over the last 90 days (top 11% of accounts)",
     "Consuming commit at 110% of expected pace (top 32% of accounts)",
-    "1 SA meetings in the last 90 days (top 52% of accounts)"
+    "1 SA meeting in the last 90 days (top 52% of accounts)"
    ],
    "headroom_usd": 0.0,
    "unconsumed_commit_usd": 0.0,
@@ -18587,7 +18587,7 @@
    "top_reasons": [
     "3 new developers in the last 30 days (top 25% of accounts)",
     "Consuming commit at 117% of expected pace (top 19% of accounts)",
-    "1 SA meetings in the last 90 days (top 52% of accounts)"
+    "1 SA meeting in the last 90 days (top 52% of accounts)"
    ],
    "headroom_usd": 0.0,
    "unconsumed_commit_usd": 0.0,

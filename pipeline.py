@@ -138,9 +138,11 @@ def describe_signal(name: str, row: pd.Series) -> str:
     if name == "usage_growth":
         return f"Usage {row['usage_growth_90d_pct']:+.0f}% over the last 90 days ({rank_txt})"
     if name == "new_developers":
-        return f"{row['new_developers_30d']} new developers in the last 30 days ({rank_txt})"
+        n = row["new_developers_30d"]
+        return f"{n} new developer{'' if n == 1 else 's'} in the last 30 days ({rank_txt})"
     if name == "engagement":
-        return f"{row['sa_meetings_90d']} SA meetings in the last 90 days ({rank_txt})"
+        n = row["sa_meetings_90d"]
+        return f"{n} SA meeting{'' if n == 1 else 's'} in the last 90 days ({rank_txt})"
     if name == "commit_burn":
         return f"Consuming commit at {row['burn_pace']:.0%} of expected pace ({rank_txt})"
     raise ValueError(name)

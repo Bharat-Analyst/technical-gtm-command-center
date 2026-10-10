@@ -1,0 +1,153 @@
+{
+  "engagements": [
+    {
+      "account": "Northwind Commerce",
+      "goal": "Move checkout personalization to Workers; recover commit burn",
+      "owner": "FDE: Priya Raman / SA: Marcus Lee",
+      "status": "yellow",
+      "next_step": "Onsite architecture workshop, Oct 21"
+    },
+    {
+      "account": "Driftwood Logistics",
+      "goal": "Edge routing for real-time shipment tracking API",
+      "owner": "FDE: Tomas Okafor",
+      "status": "green",
+      "next_step": "Production cutover review, Oct 14"
+    },
+    {
+      "account": "Driftwood Retail",
+      "goal": "Unblock stalled image pipeline migration",
+      "owner": "SA: Hannah Cho",
+      "status": "red",
+      "next_step": "Exec sponsor call to reset scope"
+    },
+    {
+      "account": "Juniper Finance",
+      "goal": "Validate compliance pattern for edge data processing",
+      "owner": "SA: Daniel Brooks",
+      "status": "yellow",
+      "next_step": "Security review with CISO team"
+    },
+    {
+      "account": "Driftwood Networks",
+      "goal": "Scale API gateway to 3 new regions",
+      "owner": "FDE: Priya Raman",
+      "status": "green",
+      "next_step": "Load test results readout"
+    },
+    {
+      "account": "Lumen Mobility",
+      "goal": "Onboard 2 new dev teams to serverless platform",
+      "owner": "SA: Marcus Lee",
+      "status": "green",
+      "next_step": "Developer enablement session"
+    },
+    {
+      "account": "Willow Markets",
+      "goal": "Prove ROI of edge caching for market data feeds",
+      "owner": "SA: Hannah Cho",
+      "status": "yellow",
+      "next_step": "Share benchmark results"
+    },
+    {
+      "account": "Fernhill Energy",
+      "goal": "Reference architecture for IoT telemetry ingestion",
+      "owner": "FDE: Tomas Okafor",
+      "status": "green",
+      "next_step": "Architecture sign-off"
+    }
+  ],
+  "onsite": {
+    "account": "Northwind Commerce",
+    "goal": "Agree a plan to move checkout personalization to Workers within 60 days",
+    "date": "Oct 21, 2026 (full day, customer HQ)",
+    "agenda": [
+      "09:00  Business context: checkout conversion goals and commit status",
+      "09:45  Current architecture walkthrough (customer-led)",
+      "11:00  Target design: personalization logic at the edge on Workers",
+      "13:00  Hands-on build: prototype one personalization rule",
+      "15:00  Migration plan, risks, and owners",
+      "16:00  Exec readout and agreed next steps"
+    ],
+    "attendees": {
+      "customer": [
+        "VP Engineering (sponsor)",
+        "Checkout tech lead",
+        "2 senior developers",
+        "Platform/SRE lead"
+      ],
+      "our_team": [
+        "FDE (lead)",
+        "Solutions Architect",
+        "Account Executive",
+        "Product specialist (remote)"
+      ]
+    },
+    "prep_checklist": [
+      "Review usage telemetry and commit burn trend",
+      "Get current checkout architecture diagram from customer",
+      "Build a working demo of edge personalization",
+      "Confirm decision makers attend the exec readout",
+      "Draft success metric and 60-day plan for review"
+    ],
+    "follow_ups": [
+      "Send written migration plan within 48 hours",
+      "Weekly FDE build session for 6 weeks",
+      "Propose Workers Migration Accelerator (Migrate tier)",
+      "30-day checkpoint on commit burn pace"
+    ],
+    "success_metric": "Personalization live on Workers for 25% of checkout traffic in 60 days; commit burn pace back above 90%"
+  },
+  "program": {
+    "name": "Commit Burn Sprint",
+    "trigger": "Commit at Risk flag: 25%+ into contract and consuming less than 70% of expected pace",
+    "owner": "Scaled SA team (pooled), with FDE escalation for top-30 accounts",
+    "cadence": "6-week sprint: kickoff, weekly 30-min office hours, week-6 review",
+    "steps": [
+      "Auto-enroll flagged accounts weekly from Salesforce",
+      "Diagnose: find the stalled workload from usage data",
+      "Kickoff call: agree one workload to move in 6 weeks",
+      "Weekly office hours + reusable migration templates",
+      "Week 6: review burn pace; exit or escalate to FDE/PS offer"
+    ],
+    "success_metric": "60% of enrolled accounts back above 90% burn pace within 90 days",
+    "eligible_accounts": 45,
+    "eligible_outside_capacity": 40,
+    "eligible_unconsumed_commit_usd": 8677300
+  },
+  "ps_offer": {
+    "name": "Workers Migration Accelerator",
+    "summary": "Fixed-scope services package that moves a stalled workload to Workers quickly.",
+    "tiers": [
+      {
+        "tier": "Assess",
+        "scope": "Architecture review + migration plan for one workload",
+        "duration": "2 weeks",
+        "price_usd": 25000,
+        "deals_per_year": 12,
+        "consumption_pull_through_usd": 40000
+      },
+      {
+        "tier": "Migrate",
+        "scope": "Hands-on migration of one production workload",
+        "duration": "6 weeks",
+        "price_usd": 90000,
+        "deals_per_year": 8,
+        "consumption_pull_through_usd": 150000
+      },
+      {
+        "tier": "Scale",
+        "scope": "Multi-workload migration + team enablement",
+        "duration": "12 weeks",
+        "price_usd": 180000,
+        "deals_per_year": 3,
+        "consumption_pull_through_usd": 400000
+      }
+    ],
+    "business_case_notes": [
+      "Prices are indicative, for illustration only.",
+      "Pull-through = extra annual platform consumption after the migration.",
+      "Target buyers: Commit at Risk accounts first, then Strategic Bets."
+    ]
+  }
+}

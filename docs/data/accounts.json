@@ -22,7 +22,7 @@
    "account_id": "001NW0000000314",
    "account_name": "Driftwood Logistics",
    "industry": "Technology",
-   "region": null,
+   "region": "AMER",
    "segment": "Enterprise",
    "propensity_score": 86,
    "top_reasons": [
@@ -51,7 +51,7 @@
    "account_id": "001NW0000000001",
    "account_name": "Northwind Commerce",
    "industry": "Retail & eCommerce",
-   "region": null,
+   "region": "AMER",
    "segment": "Enterprise",
    "propensity_score": 80,
    "top_reasons": [
@@ -145,7 +145,7 @@
    "account_id": "001NW0000000265",
    "account_name": "Driftwood Networks",
    "industry": "Technology",
-   "region": null,
+   "region": "AMER",
    "segment": "Enterprise",
    "propensity_score": 81,
    "top_reasons": [
@@ -294,7 +294,7 @@
    "account_id": "001NW0000000442",
    "account_name": "Zephyr Games",
    "industry": "Media & Gaming",
-   "region": null,
+   "region": "AMER",
    "segment": "Enterprise",
    "propensity_score": 67,
    "top_reasons": [
@@ -323,7 +323,7 @@
    "account_id": "001NW0000000374",
    "account_name": "Acme Markets",
    "industry": "Retail & eCommerce",
-   "region": null,
+   "region": "AMER",
    "segment": "Enterprise",
    "propensity_score": 71,
    "top_reasons": [
@@ -352,7 +352,7 @@
    "account_id": "001NW0000000145",
    "account_name": "Saltmarsh Learning",
    "industry": "Technology",
-   "region": null,
+   "region": "AMER",
    "segment": "Enterprise",
    "propensity_score": 70,
    "top_reasons": [
@@ -383,7 +383,7 @@
    "account_id": "001NW0000000299",
    "account_name": "Ironleaf Mobility",
    "industry": "Technology",
-   "region": null,
+   "region": "AMER",
    "segment": "Enterprise",
    "propensity_score": 71,
    "top_reasons": [
@@ -441,7 +441,7 @@
    "account_id": "001NW0000000228",
    "account_name": "Quarry Systems",
    "industry": "Technology",
-   "region": null,
+   "region": "AMER",
    "segment": "Enterprise",
    "propensity_score": 58,
    "top_reasons": [
@@ -502,7 +502,7 @@
    "account_id": "001NW0000000173",
    "account_name": "Willow Health",
    "industry": "Healthcare",
-   "region": null,
+   "region": "AMER",
    "segment": "Enterprise",
    "propensity_score": 62,
    "top_reasons": [
@@ -560,7 +560,7 @@
    "account_id": "001NW0000000271",
    "account_name": "Redwood Markets",
    "industry": "Retail & eCommerce",
-   "region": null,
+   "region": "AMER",
    "segment": "Enterprise",
    "propensity_score": 81,
    "top_reasons": [
@@ -589,7 +589,7 @@
    "account_id": "001NW0000000037",
    "account_name": "Redwood Retail",
    "industry": "Retail & eCommerce",
-   "region": null,
+   "region": "AMER",
    "segment": "Enterprise",
    "propensity_score": 65,
    "top_reasons": [
@@ -618,7 +618,7 @@
    "account_id": "001NW0000000297",
    "account_name": "Fernhill Networks",
    "industry": "Technology",
-   "region": null,
+   "region": "AMER",
    "segment": "Enterprise",
    "propensity_score": 76,
    "top_reasons": [
@@ -649,7 +649,7 @@
    "account_id": "001NW0000000092",
    "account_name": "Lumen Finance",
    "industry": "Financial Services",
-   "region": null,
+   "region": "AMER",
    "segment": "Enterprise",
    "propensity_score": 56,
    "top_reasons": [
@@ -680,7 +680,7 @@
    "account_id": "001NW0000000391",
    "account_name": "Duneview Apparel",
    "industry": "Retail & eCommerce",
-   "region": null,
+   "region": "AMER",
    "segment": "Enterprise",
    "propensity_score": 45,
    "top_reasons": [
@@ -740,7 +740,7 @@
    "account_id": "001NW0000000353",
    "account_name": "Nimbus Logistics",
    "industry": "Technology",
-   "region": null,
+   "region": "AMER",
    "segment": "Enterprise",
    "propensity_score": 72,
    "top_reasons": [
@@ -769,7 +769,7 @@
    "account_id": "001NW0000000277",
    "account_name": "Quarry Apparel",
    "industry": "Retail & eCommerce",
-   "region": null,
+   "region": "AMER",
    "segment": "Enterprise",
    "propensity_score": 58,
    "top_reasons": [
@@ -800,7 +800,7 @@
    "account_id": "001NW0000000266",
    "account_name": "Pinecrest Games",
    "industry": "Media & Gaming",
-   "region": null,
+   "region": "AMER",
    "segment": "Enterprise",
    "propensity_score": 71,
    "top_reasons": [
@@ -895,7 +895,7 @@
    "account_id": "001NW0000000427",
    "account_name": "Ember Networks",
    "industry": "Technology",
-   "region": null,
+   "region": "AMER",
    "segment": "Enterprise",
    "propensity_score": 66,
    "top_reasons": [
@@ -924,7 +924,7 @@
    "account_id": "001NW0000000149",
    "account_name": "Tidewater Health",
    "industry": "Healthcare",
-   "region": null,
+   "region": "AMER",
    "segment": "Enterprise",
    "propensity_score": 70,
    "top_reasons": [
@@ -1046,7 +1046,7 @@
    "account_id": "001NW0000000204",
    "account_name": "Vantage Logistics",
    "industry": "Technology",
-   "region": null,
+   "region": "AMER",
    "segment": "Mid-Market",
    "propensity_score": 66,
    "top_reasons": [
@@ -1075,7 +1075,7 @@
    "account_id": "001NW0000000113",
    "account_name": "Granite Insurance",
    "industry": "Financial Services",
-   "region": null,
+   "region": "AMER",
    "segment": "Mid-Market",
    "propensity_score": 72,
    "top_reasons": [
@@ -1285,7 +1285,7 @@
    "account_id": "001NW0000000097",
    "account_name": "Upland Markets",
    "industry": "Retail & eCommerce",
-   "region": null,
+   "region": "AMER",
    "segment": "Enterprise",
    "propensity_score": 56,
    "top_reasons": [
@@ -1345,7 +1345,7 @@
    "account_id": "001NW0000000445",
    "account_name": "Copperline Markets",
    "industry": "Retail & eCommerce",
-   "region": null,
+   "region": "AMER",
    "segment": "Enterprise",
    "propensity_score": 78,
    "top_reasons": [
@@ -1562,7 +1562,7 @@
    "account_id": "001NW0000000185",
    "account_name": "Orchard Apparel",
    "industry": "Retail & eCommerce",
-   "region": null,
+   "region": "AMER",
    "segment": "Enterprise",
    "propensity_score": 24,
    "top_reasons": [
@@ -1803,7 +1803,7 @@
    "account_id": "001NW0000000310",
    "account_name": "Kestrel Retail",
    "industry": "Retail & eCommerce",
-   "region": null,
+   "region": "AMER",
    "segment": "Enterprise",
    "propensity_score": 90,
    "top_reasons": [
@@ -1895,7 +1895,7 @@
    "account_id": "001NW0000000401",
    "account_name": "Redwood Insurance",
    "industry": "Financial Services",
-   "region": null,
+   "region": "AMER",
    "segment": "Enterprise",
    "propensity_score": 75,
    "top_reasons": [
@@ -1924,7 +1924,7 @@
    "account_id": "001NW0000000354",
    "account_name": "Foxglove Software",
    "industry": "Technology",
-   "region": null,
+   "region": "AMER",
    "segment": "Enterprise",
    "propensity_score": 72,
    "top_reasons": [
@@ -1982,7 +1982,7 @@
    "account_id": "001NW0000000243",
    "account_name": "Maple Insurance",
    "industry": "Financial Services",
-   "region": null,
+   "region": "AMER",
    "segment": "Enterprise",
    "propensity_score": 64,
    "top_reasons": [
@@ -2040,7 +2040,7 @@
    "account_id": "001NW0000000428",
    "account_name": "Nimbus Markets",
    "industry": "Retail & eCommerce",
-   "region": null,
+   "region": "AMER",
    "segment": "Mid-Market",
    "propensity_score": 63,
    "top_reasons": [
@@ -2069,7 +2069,7 @@
    "account_id": "001NW0000000390",
    "account_name": "Vantage Apparel",
    "industry": "Retail & eCommerce",
-   "region": null,
+   "region": "AMER",
    "segment": "Enterprise",
    "propensity_score": 54,
    "top_reasons": [
@@ -2161,7 +2161,7 @@
    "account_id": "001NW0000000220",
    "account_name": "Duneview Games",
    "industry": "Media & Gaming",
-   "region": null,
+   "region": "AMER",
    "segment": "Enterprise",
    "propensity_score": 66,
    "top_reasons": [
@@ -2193,7 +2193,7 @@
    "account_id": "001NW0000000218",
    "account_name": "Quarry Learning",
    "industry": "Technology",
-   "region": null,
+   "region": "AMER",
    "segment": "Enterprise",
    "propensity_score": 66,
    "top_reasons": [
@@ -2253,7 +2253,7 @@
    "account_id": "001NW0000000404",
    "account_name": "Vantage Media",
    "industry": "Media & Gaming",
-   "region": null,
+   "region": "AMER",
    "segment": "Mid-Market",
    "propensity_score": 65,
    "top_reasons": [
@@ -2400,7 +2400,7 @@
    "account_id": "001NW0000000136",
    "account_name": "Duneview Software",
    "industry": "Technology",
-   "region": null,
+   "region": "AMER",
    "segment": "Mid-Market",
    "propensity_score": 49,
    "top_reasons": [
@@ -2492,7 +2492,7 @@
    "account_id": "001NW0000000027",
    "account_name": "Ember Logistics",
    "industry": "Technology",
-   "region": null,
+   "region": "AMER",
    "segment": "Enterprise",
    "propensity_score": 65,
    "top_reasons": [
@@ -2550,7 +2550,7 @@
    "account_id": "001NW0000000419",
    "account_name": "Ember Software",
    "industry": "Technology",
-   "region": null,
+   "region": "AMER",
    "segment": "Enterprise",
    "propensity_score": 76,
    "top_reasons": [
@@ -2579,7 +2579,7 @@
    "account_id": "001NW0000000015",
    "account_name": "Pinecrest Media",
    "industry": "Media & Gaming",
-   "region": null,
+   "region": "AMER",
    "segment": "Enterprise",
    "propensity_score": 72,
    "top_reasons": [
@@ -2666,7 +2666,7 @@
    "account_id": "001NW0000000040",
    "account_name": "Duneview Retail",
    "industry": "Retail & eCommerce",
-   "region": null,
+   "region": "AMER",
    "segment": "Enterprise",
    "propensity_score": 56,
    "top_reasons": [
@@ -2697,7 +2697,7 @@
    "account_id": "001NW0000000032",
    "account_name": "Harbor Software",
    "industry": "Technology",
-   "region": null,
+   "region": "AMER",
    "segment": "Mid-Market",
    "propensity_score": 58,
    "top_reasons": [
@@ -2757,7 +2757,7 @@
    "account_id": "001NW0000000110",
    "account_name": "Granite Mobility",
    "industry": "Technology",
-   "region": null,
+   "region": "AMER",
    "segment": "Enterprise",
    "propensity_score": 74,
    "top_reasons": [
@@ -2786,7 +2786,7 @@
    "account_id": "001NW0000000012",
    "account_name": "Foxglove Markets",
    "industry": "Retail & eCommerce",
-   "region": null,
+   "region": "AMER",
    "segment": "Enterprise",
    "propensity_score": 63,
    "top_reasons": [
@@ -2906,7 +2906,7 @@
    "account_id": "001NW0000000480",
    "account_name": "Tidewater Finance",
    "industry": "Financial Services",
-   "region": null,
+   "region": "AMER",
    "segment": "Mid-Market",
    "propensity_score": 54,
    "top_reasons": [
@@ -3140,7 +3140,7 @@
    "account_id": "001NW0000000166",
    "account_name": "Saltmarsh Energy",
    "industry": "Technology",
-   "region": null,
+   "region": "AMER",
    "segment": "Enterprise",
    "propensity_score": 78,
    "top_reasons": [
@@ -3171,7 +3171,7 @@
    "account_id": "001NW0000000470",
    "account_name": "Tidewater Analytics",
    "industry": "Technology",
-   "region": null,
+   "region": "AMER",
    "segment": "Enterprise",
    "propensity_score": 72,
    "top_reasons": [
@@ -3200,7 +3200,7 @@
    "account_id": "001NW0000000258",
    "account_name": "Evergreen Media",
    "industry": "Media & Gaming",
-   "region": null,
+   "region": "AMER",
    "segment": "Mid-Market",
    "propensity_score": 51,
    "top_reasons": [
@@ -3295,7 +3295,7 @@
    "account_id": "001NW0000000367",
    "account_name": "Copperline Logistics",
    "industry": "Technology",
-   "region": null,
+   "region": "AMER",
    "segment": "Enterprise",
    "propensity_score": 50,
    "top_reasons": [
@@ -3326,7 +3326,7 @@
    "account_id": "001NW0000000448",
    "account_name": "Nimbus Systems",
    "industry": "Technology",
-   "region": null,
+   "region": "AMER",
    "segment": "Mid-Market",
    "propensity_score": 44,
    "top_reasons": [
@@ -3562,7 +3562,7 @@
    "account_id": "001NW0000000073",
    "account_name": "Juniper Logistics",
    "industry": "Technology",
-   "region": null,
+   "region": "AMER",
    "segment": "Mid-Market",
    "propensity_score": 60,
    "top_reasons": [
@@ -3591,7 +3591,7 @@
    "account_id": "001NW0000000205",
    "account_name": "Saltmarsh Labs",
    "industry": "Technology",
-   "region": null,
+   "region": "AMER",
    "segment": "Enterprise",
    "propensity_score": 31,
    "top_reasons": [
@@ -3623,7 +3623,7 @@
    "account_id": "001NW0000000050",
    "account_name": "Ember Travel",
    "industry": "Technology",
-   "region": null,
+   "region": "AMER",
    "segment": "Enterprise",
    "propensity_score": 66,
    "top_reasons": [
@@ -3681,7 +3681,7 @@
    "account_id": "001NW0000000007",
    "account_name": "Maple Markets",
    "industry": "Retail & eCommerce",
-   "region": null,
+   "region": "AMER",
    "segment": "Mid-Market",
    "propensity_score": 49,
    "top_reasons": [
@@ -3710,7 +3710,7 @@
    "account_id": "001NW0000000493",
    "account_name": "Saltmarsh Health",
    "industry": "Healthcare",
-   "region": null,
+   "region": "AMER",
    "segment": "Commercial",
    "propensity_score": 50,
    "top_reasons": [
@@ -3739,7 +3739,7 @@
    "account_id": "001NW0000000461",
    "account_name": "Redwood Software",
    "industry": "Technology",
-   "region": null,
+   "region": "AMER",
    "segment": "Mid-Market",
    "propensity_score": 55,
    "top_reasons": [
@@ -3797,7 +3797,7 @@
    "account_id": "001NW0000000409",
    "account_name": "Vantage Travel",
    "industry": "Technology",
-   "region": null,
+   "region": "AMER",
    "segment": "Mid-Market",
    "propensity_score": 57,
    "top_reasons": [
@@ -3828,7 +3828,7 @@
    "account_id": "001NW0000000059",
    "account_name": "Tidewater Energy",
    "industry": "Technology",
-   "region": null,
+   "region": "AMER",
    "segment": "Mid-Market",
    "propensity_score": 62,
    "top_reasons": [
@@ -3859,7 +3859,7 @@
    "account_id": "001NW0000000237",
    "account_name": "Duneview Logistics",
    "industry": "Technology",
-   "region": null,
+   "region": "AMER",
    "segment": "Enterprise",
    "propensity_score": 63,
    "top_reasons": [
@@ -3953,7 +3953,7 @@
    "account_id": "001NW0000000146",
    "account_name": "Granite Retail",
    "industry": "Retail & eCommerce",
-   "region": null,
+   "region": "AMER",
    "segment": "Mid-Market",
    "propensity_score": 59,
    "top_reasons": [
@@ -4044,7 +4044,7 @@
    "account_id": "001NW0000000325",
    "account_name": "Copperline Health",
    "industry": "Healthcare",
-   "region": null,
+   "region": "AMER",
    "segment": "Mid-Market",
    "propensity_score": 53,
    "top_reasons": [
@@ -4102,7 +4102,7 @@
    "account_id": "001NW0000000016",
    "account_name": "Acme Foods",
    "industry": "Retail & eCommerce",
-   "region": null,
+   "region": "AMER",
    "segment": "Mid-Market",
    "propensity_score": 47,
    "top_reasons": [
@@ -4247,7 +4247,7 @@
    "account_id": "001NW0000000035",
    "account_name": "Upland Insurance",
    "industry": "Financial Services",
-   "region": null,
+   "region": "AMER",
    "segment": "Mid-Market",
    "propensity_score": 41,
    "top_reasons": [
@@ -4307,7 +4307,7 @@
    "account_id": "001NW0000000094",
    "account_name": "Duneview Insurance",
    "industry": "Financial Services",
-   "region": null,
+   "region": "AMER",
    "segment": "Mid-Market",
    "propensity_score": 34,
    "top_reasons": [
@@ -4396,7 +4396,7 @@
    "account_id": "001NW0000000247",
    "account_name": "Brightpath Studios",
    "industry": "Media & Gaming",
-   "region": null,
+   "region": "AMER",
    "segment": "Mid-Market",
    "propensity_score": 44,
    "top_reasons": [
@@ -4427,7 +4427,7 @@
    "account_id": "001NW0000000380",
    "account_name": "Cobalt Systems",
    "industry": "Technology",
-   "region": null,
+   "region": "AMER",
    "segment": "Mid-Market",
    "propensity_score": 69,
    "top_reasons": [
@@ -4485,7 +4485,7 @@
    "account_id": "001NW0000000372",
    "account_name": "Lumen Networks",
    "industry": "Technology",
-   "region": null,
+   "region": "AMER",
    "segment": "Mid-Market",
    "propensity_score": 65,
    "top_reasons": [
@@ -4514,7 +4514,7 @@
    "account_id": "001NW0000000285",
    "account_name": "Foxglove Insurance",
    "industry": "Financial Services",
-   "region": null,
+   "region": "AMER",
    "segment": "Mid-Market",
    "propensity_score": 69,
    "top_reasons": [
@@ -4543,7 +4543,7 @@
    "account_id": "001NW0000000473",
    "account_name": "Copperline Systems",
    "industry": "Technology",
-   "region": null,
+   "region": "AMER",
    "segment": "Mid-Market",
    "propensity_score": 65,
    "top_reasons": [
@@ -4572,7 +4572,7 @@
    "account_id": "001NW0000000498",
    "account_name": "Vantage Finance",
    "industry": "Financial Services",
-   "region": null,
+   "region": "AMER",
    "segment": "Mid-Market",
    "propensity_score": 61,
    "top_reasons": [
@@ -4601,7 +4601,7 @@
    "account_id": "001NW0000000328",
    "account_name": "Pinecrest Labs",
    "industry": "Technology",
-   "region": null,
+   "region": "AMER",
    "segment": "Enterprise",
    "propensity_score": 69,
    "top_reasons": [
@@ -4661,7 +4661,7 @@
    "account_id": "001NW0000000058",
    "account_name": "Nimbus Foods",
    "industry": "Retail & eCommerce",
-   "region": null,
+   "region": "AMER",
    "segment": "Mid-Market",
    "propensity_score": 54,
    "top_reasons": [
@@ -4808,7 +4808,7 @@
    "account_id": "001NW0000000075",
    "account_name": "Copperline Networks",
    "industry": "Technology",
-   "region": null,
+   "region": "AMER",
    "segment": "Mid-Market",
    "propensity_score": 55,
    "top_reasons": [
@@ -4837,7 +4837,7 @@
    "account_id": "001NW0000000464",
    "account_name": "Bluefin Insurance",
    "industry": "Financial Services",
-   "region": null,
+   "region": "AMER",
    "segment": "Mid-Market",
    "propensity_score": 66,
    "top_reasons": [
@@ -4868,7 +4868,7 @@
    "account_id": "001NW0000000048",
    "account_name": "Quarry Logistics",
    "industry": "Technology",
-   "region": null,
+   "region": "AMER",
    "segment": "Mid-Market",
    "propensity_score": 37,
    "top_reasons": [
@@ -4897,7 +4897,7 @@
    "account_id": "001NW0000000463",
    "account_name": "Pinecrest Energy",
    "industry": "Technology",
-   "region": null,
+   "region": "AMER",
    "segment": "Mid-Market",
    "propensity_score": 57,
    "top_reasons": [
@@ -5047,7 +5047,7 @@
    "account_id": "001NW0000000452",
    "account_name": "Saltmarsh Travel",
    "industry": "Technology",
-   "region": null,
+   "region": "AMER",
    "segment": "Mid-Market",
    "propensity_score": 52,
    "top_reasons": [
@@ -5107,7 +5107,7 @@
    "account_id": "001NW0000000242",
    "account_name": "Driftwood Games",
    "industry": "Media & Gaming",
-   "region": null,
+   "region": "AMER",
    "segment": "Mid-Market",
    "propensity_score": 60,
    "top_reasons": [
@@ -5136,7 +5136,7 @@
    "account_id": "001NW0000000322",
    "account_name": "Fernhill Games",
    "industry": "Media & Gaming",
-   "region": null,
+   "region": "AMER",
    "segment": "Mid-Market",
    "propensity_score": 59,
    "top_reasons": [
@@ -5165,7 +5165,7 @@
    "account_id": "001NW0000000411",
    "account_name": "Lumen Software",
    "industry": "Technology",
-   "region": null,
+   "region": "AMER",
    "segment": "Mid-Market",
    "propensity_score": 55,
    "top_reasons": [
@@ -5223,7 +5223,7 @@
    "account_id": "001NW0000000306",
    "account_name": "Tidewater Software",
    "industry": "Technology",
-   "region": null,
+   "region": "AMER",
    "segment": "Mid-Market",
    "propensity_score": 79,
    "top_reasons": [
@@ -5283,7 +5283,7 @@
    "account_id": "001NW0000000120",
    "account_name": "Tidewater Logistics",
    "industry": "Technology",
-   "region": null,
+   "region": "AMER",
    "segment": "Mid-Market",
    "propensity_score": 50,
    "top_reasons": [
@@ -5343,7 +5343,7 @@
    "account_id": "001NW0000000293",
    "account_name": "Driftwood Foods",
    "industry": "Retail & eCommerce",
-   "region": null,
+   "region": "AMER",
    "segment": "Mid-Market",
    "propensity_score": 55,
    "top_reasons": [
@@ -5401,7 +5401,7 @@
    "account_id": "001NW0000000064",
    "account_name": "Copperline Foods",
    "industry": "Retail & eCommerce",
-   "region": null,
+   "region": "AMER",
    "segment": "Mid-Market",
    "propensity_score": 35,
    "top_reasons": [
@@ -5523,7 +5523,7 @@
    "account_id": "001NW0000000019",
    "account_name": "Ironleaf Apparel",
    "industry": "Retail & eCommerce",
-   "region": null,
+   "region": "AMER",
    "segment": "Mid-Market",
    "propensity_score": 56,
    "top_reasons": [
@@ -5583,7 +5583,7 @@
    "account_id": "001NW0000000393",
    "account_name": "Lumen Travel",
    "industry": "Technology",
-   "region": null,
+   "region": "AMER",
    "segment": "Mid-Market",
    "propensity_score": 51,
    "top_reasons": [
@@ -5643,7 +5643,7 @@
    "account_id": "001NW0000000052",
    "account_name": "Willow Analytics",
    "industry": "Technology",
-   "region": null,
+   "region": "AMER",
    "segment": "Mid-Market",
    "propensity_score": 55,
    "top_reasons": [
@@ -5759,7 +5759,7 @@
    "account_id": "001NW0000000152",
    "account_name": "Redwood Learning",
    "industry": "Technology",
-   "region": null,
+   "region": "AMER",
    "segment": "Enterprise",
    "propensity_score": 92,
    "top_reasons": [
@@ -5820,7 +5820,7 @@
    "account_id": "001NW0000000447",
    "account_name": "Yellowstone Mobility",
    "industry": "Technology",
-   "region": null,
+   "region": "AMER",
    "segment": "Mid-Market",
    "propensity_score": 46,
    "top_reasons": [
@@ -5880,7 +5880,7 @@
    "account_id": "001NW0000000283",
    "account_name": "Kestrel Mobility",
    "industry": "Technology",
-   "region": null,
+   "region": "AMER",
    "segment": "Mid-Market",
    "propensity_score": 61,
    "top_reasons": [
@@ -5909,7 +5909,7 @@
    "account_id": "001NW0000000329",
    "account_name": "Brightpath Labs",
    "industry": "Technology",
-   "region": null,
+   "region": "AMER",
    "segment": "Mid-Market",
    "propensity_score": 53,
    "top_reasons": [
@@ -5996,7 +5996,7 @@
    "account_id": "001NW0000000071",
    "account_name": "Quarry Networks",
    "industry": "Technology",
-   "region": null,
+   "region": "AMER",
    "segment": "Mid-Market",
    "propensity_score": 59,
    "top_reasons": [
@@ -6056,7 +6056,7 @@
    "account_id": "001NW0000000006",
    "account_name": "Quarry Energy",
    "industry": "Technology",
-   "region": null,
+   "region": "AMER",
    "segment": "Mid-Market",
    "propensity_score": 57,
    "top_reasons": [
@@ -6085,7 +6085,7 @@
    "account_id": "001NW0000000112",
    "account_name": "Brightpath Mobility",
    "industry": "Technology",
-   "region": null,
+   "region": "AMER",
    "segment": "Mid-Market",
    "propensity_score": 46,
    "top_reasons": [
@@ -6146,7 +6146,7 @@
    "account_id": "001NW0000000009",
    "account_name": "Foxglove Travel",
    "industry": "Technology",
-   "region": null,
+   "region": "AMER",
    "segment": "Mid-Market",
    "propensity_score": 54,
    "top_reasons": [
@@ -6175,7 +6175,7 @@
    "account_id": "001NW0000000262",
    "account_name": "Juniper Foods",
    "industry": "Retail & eCommerce",
-   "region": null,
+   "region": "AMER",
    "segment": "Mid-Market",
    "propensity_score": 55,
    "top_reasons": [
@@ -6206,7 +6206,7 @@
    "account_id": "001NW0000000387",
    "account_name": "Acme Media",
    "industry": "Media & Gaming",
-   "region": null,
+   "region": "AMER",
    "segment": "Enterprise",
    "propensity_score": 53,
    "top_reasons": [
@@ -6269,7 +6269,7 @@
    "account_id": "001NW0000000180",
    "account_name": "Granite Software",
    "industry": "Technology",
-   "region": null,
+   "region": "AMER",
    "segment": "Mid-Market",
    "propensity_score": 48,
    "top_reasons": [
@@ -6419,7 +6419,7 @@
    "account_id": "001NW0000000358",
    "account_name": "Acme Systems",
    "industry": "Technology",
-   "region": null,
+   "region": "AMER",
    "segment": "Mid-Market",
    "propensity_score": 65,
    "top_reasons": [
@@ -6568,7 +6568,7 @@
    "account_id": "001NW0000000438",
    "account_name": "Fernhill Retail",
    "industry": "Retail & eCommerce",
-   "region": null,
+   "region": "AMER",
    "segment": "Mid-Market",
    "propensity_score": 40,
    "top_reasons": [
@@ -6597,7 +6597,7 @@
    "account_id": "001NW0000000324",
    "account_name": "Duneview Media",
    "industry": "Media & Gaming",
-   "region": null,
+   "region": "AMER",
    "segment": "Mid-Market",
    "propensity_score": 58,
    "top_reasons": [
@@ -6686,7 +6686,7 @@
    "account_id": "001NW0000000039",
    "account_name": "Ironleaf Foods",
    "industry": "Retail & eCommerce",
-   "region": null,
+   "region": "AMER",
    "segment": "Mid-Market",
    "propensity_score": 42,
    "top_reasons": [
@@ -6744,7 +6744,7 @@
    "account_id": "001NW0000000248",
    "account_name": "Fernhill Markets",
    "industry": "Retail & eCommerce",
-   "region": null,
+   "region": "AMER",
    "segment": "Mid-Market",
    "propensity_score": 64,
    "top_reasons": [
@@ -6775,7 +6775,7 @@
    "account_id": "001NW0000000219",
    "account_name": "Saltmarsh Retail",
    "industry": "Retail & eCommerce",
-   "region": null,
+   "region": "AMER",
    "segment": "Mid-Market",
    "propensity_score": 71,
    "top_reasons": [
@@ -6895,7 +6895,7 @@
    "account_id": "001NW0000000100",
    "account_name": "Granite Labs",
    "industry": "Technology",
-   "region": null,
+   "region": "AMER",
    "segment": "Commercial",
    "propensity_score": 49,
    "top_reasons": [
@@ -6982,7 +6982,7 @@
    "account_id": "001NW0000000259",
    "account_name": "Zephyr Analytics",
    "industry": "Technology",
-   "region": null,
+   "region": "AMER",
    "segment": "Mid-Market",
    "propensity_score": 42,
    "top_reasons": [
@@ -7011,7 +7011,7 @@
    "account_id": "001NW0000000193",
    "account_name": "Kestrel Finance",
    "industry": "Financial Services",
-   "region": null,
+   "region": "AMER",
    "segment": "Mid-Market",
    "propensity_score": 37,
    "top_reasons": [
@@ -7129,7 +7129,7 @@
    "account_id": "001NW0000000236",
    "account_name": "Quarry Retail",
    "industry": "Retail & eCommerce",
-   "region": null,
+   "region": "AMER",
    "segment": "Mid-Market",
    "propensity_score": 41,
    "top_reasons": [
@@ -7218,7 +7218,7 @@
    "account_id": "001NW0000000171",
    "account_name": "Evergreen Analytics",
    "industry": "Technology",
-   "region": null,
+   "region": "AMER",
    "segment": "Mid-Market",
    "propensity_score": 40,
    "top_reasons": [
@@ -7249,7 +7249,7 @@
    "account_id": "001NW0000000117",
    "account_name": "Nimbus Apparel",
    "industry": "Retail & eCommerce",
-   "region": null,
+   "region": "AMER",
    "segment": "Mid-Market",
    "propensity_score": 47,
    "top_reasons": [
@@ -7278,7 +7278,7 @@
    "account_id": "001NW0000000047",
    "account_name": "Ironleaf Energy",
    "industry": "Technology",
-   "region": null,
+   "region": "AMER",
    "segment": "Enterprise",
    "propensity_score": 77,
    "top_reasons": [
@@ -7398,7 +7398,7 @@
    "account_id": "001NW0000000005",
    "account_name": "Juniper Labs",
    "industry": "Technology",
-   "region": null,
+   "region": "AMER",
    "segment": "Commercial",
    "propensity_score": 62,
    "top_reasons": [
@@ -7427,7 +7427,7 @@
    "account_id": "001NW0000000346",
    "account_name": "Orchard Systems",
    "industry": "Technology",
-   "region": null,
+   "region": "AMER",
    "segment": "Mid-Market",
    "propensity_score": 34,
    "top_reasons": [
@@ -7458,7 +7458,7 @@
    "account_id": "001NW0000000082",
    "account_name": "Zephyr Software",
    "industry": "Technology",
-   "region": null,
+   "region": "AMER",
    "segment": "Mid-Market",
    "propensity_score": 25,
    "top_reasons": [
@@ -7487,7 +7487,7 @@
    "account_id": "001NW0000000163",
    "account_name": "Granite Energy",
    "industry": "Technology",
-   "region": null,
+   "region": "AMER",
    "segment": "Mid-Market",
    "propensity_score": 30,
    "top_reasons": [
@@ -7518,7 +7518,7 @@
    "account_id": "001NW0000000279",
    "account_name": "Tidewater Apparel",
    "industry": "Retail & eCommerce",
-   "region": null,
+   "region": "AMER",
    "segment": "Commercial",
    "propensity_score": 31,
    "top_reasons": [
@@ -7547,7 +7547,7 @@
    "account_id": "001NW0000000017",
    "account_name": "Yellowstone Energy",
    "industry": "Technology",
-   "region": null,
+   "region": "AMER",
    "segment": "Mid-Market",
    "propensity_score": 29,
    "top_reasons": [
@@ -7607,7 +7607,7 @@
    "account_id": "001NW0000000462",
    "account_name": "Driftwood Insurance",
    "industry": "Financial Services",
-   "region": null,
+   "region": "AMER",
    "segment": "Mid-Market",
    "propensity_score": 42,
    "top_reasons": [
@@ -7636,7 +7636,7 @@
    "account_id": "001NW0000000129",
    "account_name": "Brightpath Media",
    "industry": "Media & Gaming",
-   "region": null,
+   "region": "AMER",
    "segment": "Commercial",
    "propensity_score": 57,
    "top_reasons": [
@@ -7667,7 +7667,7 @@
    "account_id": "001NW0000000399",
    "account_name": "Acme Analytics",
    "industry": "Technology",
-   "region": null,
+   "region": "AMER",
    "segment": "Mid-Market",
    "propensity_score": 40,
    "top_reasons": [
@@ -7758,7 +7758,7 @@
    "account_id": "001NW0000000497",
    "account_name": "Evergreen Markets",
    "industry": "Retail & eCommerce",
-   "region": null,
+   "region": "AMER",
    "segment": "Commercial",
    "propensity_score": 42,
    "top_reasons": [
@@ -7787,7 +7787,7 @@
    "account_id": "001NW0000000471",
    "account_name": "Copperline Energy",
    "industry": "Technology",
-   "region": null,
+   "region": "AMER",
    "segment": "Mid-Market",
    "propensity_score": 35,
    "top_reasons": [
@@ -7816,7 +7816,7 @@
    "account_id": "001NW0000000281",
    "account_name": "Ironleaf Games",
    "industry": "Media & Gaming",
-   "region": null,
+   "region": "AMER",
    "segment": "Commercial",
    "propensity_score": 48,
    "top_reasons": [
@@ -7874,7 +7874,7 @@
    "account_id": "001NW0000000304",
    "account_name": "Ironleaf Networks",
    "industry": "Technology",
-   "region": null,
+   "region": "AMER",
    "segment": "Mid-Market",
    "propensity_score": 75,
    "top_reasons": [
@@ -7905,7 +7905,7 @@
    "account_id": "001NW0000000239",
    "account_name": "Fernhill Foods",
    "industry": "Retail & eCommerce",
-   "region": null,
+   "region": "AMER",
    "segment": "Mid-Market",
    "propensity_score": 35,
    "top_reasons": [
@@ -7965,7 +7965,7 @@
    "account_id": "001NW0000000184",
    "account_name": "Maple Apparel",
    "industry": "Retail & eCommerce",
-   "region": null,
+   "region": "AMER",
    "segment": "Mid-Market",
    "propensity_score": 54,
    "top_reasons": [
@@ -8025,7 +8025,7 @@
    "account_id": "001NW0000000458",
    "account_name": "Ember Labs",
    "industry": "Technology",
-   "region": null,
+   "region": "AMER",
    "segment": "Commercial",
    "propensity_score": 64,
    "top_reasons": [
@@ -8350,7 +8350,7 @@
    "account_id": "001NW0000000011",
    "account_name": "Foxglove Foods",
    "industry": "Retail & eCommerce",
-   "region": null,
+   "region": "AMER",
    "segment": "Mid-Market",
    "propensity_score": 41,
    "top_reasons": [
@@ -8441,7 +8441,7 @@
    "account_id": "001NW0000000105",
    "account_name": "Ember Apparel",
    "industry": "Retail & eCommerce",
-   "region": null,
+   "region": "AMER",
    "segment": "Commercial",
    "propensity_score": 63,
    "top_reasons": [
@@ -8528,7 +8528,7 @@
    "account_id": "001NW0000000263",
    "account_name": "Juniper Media",
    "industry": "Media & Gaming",
-   "region": null,
+   "region": "AMER",
    "segment": "Commercial",
    "propensity_score": 26,
    "top_reasons": [
@@ -8557,7 +8557,7 @@
    "account_id": "001NW0000000103",
    "account_name": "Bluefin Software",
    "industry": "Technology",
-   "region": null,
+   "region": "AMER",
    "segment": "Mid-Market",
    "propensity_score": 48,
    "top_reasons": [
@@ -8589,7 +8589,7 @@
    "account_id": "001NW0000000253",
    "account_name": "Willow Systems",
    "industry": "Technology",
-   "region": null,
+   "region": "AMER",
    "segment": "Mid-Market",
    "propensity_score": 38,
    "top_reasons": [
@@ -8705,7 +8705,7 @@
    "account_id": "001NW0000000361",
    "account_name": "Tidewater Games",
    "industry": "Media & Gaming",
-   "region": null,
+   "region": "AMER",
    "segment": "Mid-Market",
    "propensity_score": 33,
    "top_reasons": [
@@ -8765,7 +8765,7 @@
    "account_id": "001NW0000000216",
    "account_name": "Saltmarsh Apparel",
    "industry": "Retail & eCommerce",
-   "region": null,
+   "region": "AMER",
    "segment": "Commercial",
    "propensity_score": 35,
    "top_reasons": [
@@ -8794,7 +8794,7 @@
    "account_id": "001NW0000000426",
    "account_name": "Driftwood Labs",
    "industry": "Technology",
-   "region": null,
+   "region": "AMER",
    "segment": "Mid-Market",
    "propensity_score": 35,
    "top_reasons": [
@@ -8854,7 +8854,7 @@
    "account_id": "001NW0000000397",
    "account_name": "Saltmarsh Studios",
    "industry": "Media & Gaming",
-   "region": null,
+   "region": "AMER",
    "segment": "Commercial",
    "propensity_score": 50,
    "top_reasons": [
@@ -8941,7 +8941,7 @@
    "account_id": "001NW0000000093",
    "account_name": "Granite Markets",
    "industry": "Retail & eCommerce",
-   "region": null,
+   "region": "AMER",
    "segment": "Commercial",
    "propensity_score": 39,
    "top_reasons": [
@@ -8970,7 +8970,7 @@
    "account_id": "001NW0000000363",
    "account_name": "Juniper Games",
    "industry": "Media & Gaming",
-   "region": null,
+   "region": "AMER",
    "segment": "Commercial",
    "propensity_score": 62,
    "top_reasons": [
@@ -9124,7 +9124,7 @@
    "account_id": "001NW0000000036",
    "account_name": "Kestrel Networks",
    "industry": "Technology",
-   "region": null,
+   "region": "AMER",
    "segment": "Commercial",
    "propensity_score": 51,
    "top_reasons": [
@@ -9367,7 +9367,7 @@
    "account_id": "001NW0000000350",
    "account_name": "Tidewater Networks",
    "industry": "Technology",
-   "region": null,
+   "region": "AMER",
    "segment": "Commercial",
    "propensity_score": 48,
    "top_reasons": [
@@ -9483,7 +9483,7 @@
    "account_id": "001NW0000000499",
    "account_name": "Ember Games",
    "industry": "Media & Gaming",
-   "region": null,
+   "region": "AMER",
    "segment": "Commercial",
    "propensity_score": 52,
    "top_reasons": [
@@ -9512,7 +9512,7 @@
    "account_id": "001NW0000000432",
    "account_name": "Kestrel Foods",
    "industry": "Retail & eCommerce",
-   "region": null,
+   "region": "AMER",
    "segment": "Commercial",
    "propensity_score": 27,
    "top_reasons": [
@@ -9572,7 +9572,7 @@
    "account_id": "001NW0000000155",
    "account_name": "Acme Software",
    "industry": "Technology",
-   "region": null,
+   "region": "AMER",
    "segment": "Commercial",
    "propensity_score": 38,
    "top_reasons": [
@@ -9630,7 +9630,7 @@
    "account_id": "001NW0000000147",
    "account_name": "Zephyr Mobility",
    "industry": "Technology",
-   "region": null,
+   "region": "AMER",
    "segment": "Commercial",
    "propensity_score": 24,
    "top_reasons": [
@@ -9688,7 +9688,7 @@
    "account_id": "001NW0000000330",
    "account_name": "Harbor Media",
    "industry": "Media & Gaming",
-   "region": null,
+   "region": "AMER",
    "segment": "Mid-Market",
    "propensity_score": 39,
    "top_reasons": [
@@ -9775,7 +9775,7 @@
    "account_id": "001NW0000000238",
    "account_name": "Saltmarsh Mobility",
    "industry": "Technology",
-   "region": null,
+   "region": "AMER",
    "segment": "Commercial",
    "propensity_score": 54,
    "top_reasons": [
@@ -9804,7 +9804,7 @@
    "account_id": "001NW0000000340",
    "account_name": "Maple Analytics",
    "industry": "Technology",
-   "region": null,
+   "region": "AMER",
    "segment": "Commercial",
    "propensity_score": 53,
    "top_reasons": [
@@ -9926,7 +9926,7 @@
    "account_id": "001NW0000000214",
    "account_name": "Pinecrest Insurance",
    "industry": "Financial Services",
-   "region": null,
+   "region": "AMER",
    "segment": "Commercial",
    "propensity_score": 29,
    "top_reasons": [
@@ -9988,7 +9988,7 @@
    "account_id": "001NW0000000303",
    "account_name": "Pinecrest Learning",
    "industry": "Technology",
-   "region": null,
+   "region": "AMER",
    "segment": "Commercial",
    "propensity_score": 44,
    "top_reasons": [
@@ -10017,7 +10017,7 @@
    "account_id": "001NW0000000175",
    "account_name": "Ember Learning",
    "industry": "Technology",
-   "region": null,
+   "region": "AMER",
    "segment": "Commercial",
    "propensity_score": 29,
    "top_reasons": [
@@ -10046,7 +10046,7 @@
    "account_id": "001NW0000000301",
    "account_name": "Fernhill Systems",
    "industry": "Technology",
-   "region": null,
+   "region": "AMER",
    "segment": "Commercial",
    "propensity_score": 57,
    "top_reasons": [
@@ -10075,7 +10075,7 @@
    "account_id": "001NW0000000202",
    "account_name": "Upland Software",
    "industry": "Technology",
-   "region": null,
+   "region": "AMER",
    "segment": "Mid-Market",
    "propensity_score": 43,
    "top_reasons": [
@@ -10106,7 +10106,7 @@
    "account_id": "001NW0000000276",
    "account_name": "Ironleaf Travel",
    "industry": "Technology",
-   "region": null,
+   "region": "AMER",
    "segment": "Commercial",
    "propensity_score": 42,
    "top_reasons": [
@@ -10137,7 +10137,7 @@
    "account_id": "001NW0000000189",
    "account_name": "Bluefin Health",
    "industry": "Healthcare",
-   "region": null,
+   "region": "AMER",
    "segment": "Mid-Market",
    "propensity_score": 46,
    "top_reasons": [
@@ -10229,7 +10229,7 @@
    "account_id": "001NW0000000119",
    "account_name": "Cobalt Markets",
    "industry": "Retail & eCommerce",
-   "region": null,
+   "region": "AMER",
    "segment": "Commercial",
    "propensity_score": 38,
    "top_reasons": [
@@ -10287,7 +10287,7 @@
    "account_id": "001NW0000000398",
    "account_name": "Upland Mobility",
    "industry": "Technology",
-   "region": null,
+   "region": "AMER",
    "segment": "Commercial",
    "propensity_score": 39,
    "top_reasons": [
@@ -10378,7 +10378,7 @@
    "account_id": "001NW0000000102",
    "account_name": "Pinecrest Networks",
    "industry": "Technology",
-   "region": null,
+   "region": "AMER",
    "segment": "Commercial",
    "propensity_score": 43,
    "top_reasons": [
@@ -10409,7 +10409,7 @@
    "account_id": "001NW0000000026",
    "account_name": "Bluefin Media",
    "industry": "Media & Gaming",
-   "region": null,
+   "region": "AMER",
    "segment": "Commercial",
    "propensity_score": 58,
    "top_reasons": [
@@ -10440,7 +10440,7 @@
    "account_id": "001NW0000000392",
    "account_name": "Nimbus Studios",
    "industry": "Media & Gaming",
-   "region": null,
+   "region": "AMER",
    "segment": "Commercial",
    "propensity_score": 56,
    "top_reasons": [
@@ -10500,7 +10500,7 @@
    "account_id": "001NW0000000124",
    "account_name": "Copperline Retail",
    "industry": "Retail & eCommerce",
-   "region": null,
+   "region": "AMER",
    "segment": "Mid-Market",
    "propensity_score": 21,
    "top_reasons": [
@@ -10651,7 +10651,7 @@
    "account_id": "001NW0000000413",
    "account_name": "Evergreen Learning",
    "industry": "Technology",
-   "region": null,
+   "region": "AMER",
    "segment": "Commercial",
    "propensity_score": 27,
    "top_reasons": [
@@ -10680,7 +10680,7 @@
    "account_id": "001NW0000000144",
    "account_name": "Foxglove Energy",
    "industry": "Technology",
-   "region": null,
+   "region": "AMER",
    "segment": "Commercial",
    "propensity_score": 52,
    "top_reasons": [
@@ -10709,7 +10709,7 @@
    "account_id": "001NW0000000081",
    "account_name": "Zephyr Logistics",
    "industry": "Technology",
-   "region": null,
+   "region": "AMER",
    "segment": "Commercial",
    "propensity_score": 61,
    "top_reasons": [
@@ -10738,7 +10738,7 @@
    "account_id": "001NW0000000364",
    "account_name": "Evergreen Retail",
    "industry": "Retail & eCommerce",
-   "region": null,
+   "region": "AMER",
    "segment": "Commercial",
    "propensity_score": 44,
    "top_reasons": [
@@ -10796,7 +10796,7 @@
    "account_id": "001NW0000000099",
    "account_name": "Lumen Analytics",
    "industry": "Technology",
-   "region": null,
+   "region": "AMER",
    "segment": "Commercial",
    "propensity_score": 59,
    "top_reasons": [
@@ -10827,7 +10827,7 @@
    "account_id": "001NW0000000485",
    "account_name": "Acme Logistics",
    "industry": "Technology",
-   "region": null,
+   "region": "AMER",
    "segment": "Commercial",
    "propensity_score": 41,
    "top_reasons": [
@@ -10947,7 +10947,7 @@
    "account_id": "001NW0000000159",
    "account_name": "Harbor Health",
    "industry": "Healthcare",
-   "region": null,
+   "region": "AMER",
    "segment": "Commercial",
    "propensity_score": 53,
    "top_reasons": [
@@ -10976,7 +10976,7 @@
    "account_id": "001NW0000000327",
    "account_name": "Pinecrest Foods",
    "industry": "Retail & eCommerce",
-   "region": null,
+   "region": "AMER",
    "segment": "Commercial",
    "propensity_score": 39,
    "top_reasons": [
@@ -11065,7 +11065,7 @@
    "account_id": "001NW0000000417",
    "account_name": "Harbor Finance",
    "industry": "Financial Services",
-   "region": null,
+   "region": "AMER",
    "segment": "Commercial",
    "propensity_score": 43,
    "top_reasons": [
@@ -11183,7 +11183,7 @@
    "account_id": "001NW0000000467",
    "account_name": "Ironleaf Analytics",
    "industry": "Technology",
-   "region": null,
+   "region": "AMER",
    "segment": "Commercial",
    "propensity_score": 39,
    "top_reasons": [
@@ -11274,7 +11274,7 @@
    "account_id": "001NW0000000294",
    "account_name": "Nimbus Games",
    "industry": "Media & Gaming",
-   "region": null,
+   "region": "AMER",
    "segment": "Mid-Market",
    "propensity_score": 62,
    "top_reasons": [
@@ -11367,7 +11367,7 @@
    "account_id": "001NW0000000074",
    "account_name": "Evergreen Networks",
    "industry": "Technology",
-   "region": null,
+   "region": "AMER",
    "segment": "Commercial",
    "propensity_score": 31,
    "top_reasons": [
@@ -11458,7 +11458,7 @@
    "account_id": "001NW0000000278",
    "account_name": "Bluefin Networks",
    "industry": "Technology",
-   "region": null,
+   "region": "AMER",
    "segment": "Commercial",
    "propensity_score": 41,
    "top_reasons": [
@@ -11487,7 +11487,7 @@
    "account_id": "001NW0000000451",
    "account_name": "Quarry Analytics",
    "industry": "Technology",
-   "region": null,
+   "region": "AMER",
    "segment": "Commercial",
    "propensity_score": 34,
    "top_reasons": [
@@ -11518,7 +11518,7 @@
    "account_id": "001NW0000000416",
    "account_name": "Granite Health",
    "industry": "Healthcare",
-   "region": null,
+   "region": "AMER",
    "segment": "Commercial",
    "propensity_score": 55,
    "top_reasons": [
@@ -11549,7 +11549,7 @@
    "account_id": "001NW0000000309",
    "account_name": "Upland Travel",
    "industry": "Technology",
-   "region": null,
+   "region": "AMER",
    "segment": "Commercial",
    "propensity_score": 30,
    "top_reasons": [
@@ -11578,7 +11578,7 @@
    "account_id": "001NW0000000336",
    "account_name": "Evergreen Energy",
    "industry": "Technology",
-   "region": null,
+   "region": "AMER",
    "segment": "Commercial",
    "propensity_score": 36,
    "top_reasons": [
@@ -11609,7 +11609,7 @@
    "account_id": "001NW0000000457",
    "account_name": "Juniper Software",
    "industry": "Technology",
-   "region": null,
+   "region": "AMER",
    "segment": "Commercial",
    "propensity_score": 38,
    "top_reasons": [
@@ -11729,7 +11729,7 @@
    "account_id": "001NW0000000422",
    "account_name": "Cobalt Labs",
    "industry": "Technology",
-   "region": null,
+   "region": "AMER",
    "segment": "Mid-Market",
    "propensity_score": 61,
    "top_reasons": [
@@ -11760,7 +11760,7 @@
    "account_id": "001NW0000000368",
    "account_name": "Copperline Games",
    "industry": "Media & Gaming",
-   "region": null,
+   "region": "AMER",
    "segment": "Commercial",
    "propensity_score": 39,
    "top_reasons": [
@@ -11789,7 +11789,7 @@
    "account_id": "001NW0000000161",
    "account_name": "Bluefin Studios",
    "industry": "Media & Gaming",
-   "region": null,
+   "region": "AMER",
    "segment": "Mid-Market",
    "propensity_score": 34,
    "top_reasons": [
@@ -11849,7 +11849,7 @@
    "account_id": "001NW0000000199",
    "account_name": "Duneview Foods",
    "industry": "Retail & eCommerce",
-   "region": null,
+   "region": "AMER",
    "segment": "Commercial",
    "propensity_score": 40,
    "top_reasons": [
@@ -11878,7 +11878,7 @@
    "account_id": "001NW0000000289",
    "account_name": "Bluefin Games",
    "industry": "Media & Gaming",
-   "region": null,
+   "region": "AMER",
    "segment": "Commercial",
    "propensity_score": 43,
    "top_reasons": [
@@ -11936,7 +11936,7 @@
    "account_id": "001NW0000000190",
    "account_name": "Driftwood Software",
    "industry": "Technology",
-   "region": null,
+   "region": "AMER",
    "segment": "Commercial",
    "propensity_score": 37,
    "top_reasons": [
@@ -11967,7 +11967,7 @@
    "account_id": "001NW0000000020",
    "account_name": "Kestrel Learning",
    "industry": "Technology",
-   "region": null,
+   "region": "AMER",
    "segment": "Commercial",
    "propensity_score": 43,
    "top_reasons": [
@@ -12025,7 +12025,7 @@
    "account_id": "001NW0000000170",
    "account_name": "Upland Labs",
    "industry": "Technology",
-   "region": null,
+   "region": "AMER",
    "segment": "Commercial",
    "propensity_score": 46,
    "top_reasons": [
@@ -12054,7 +12054,7 @@
    "account_id": "001NW0000000226",
    "account_name": "Nimbus Health",
    "industry": "Healthcare",
-   "region": null,
+   "region": "AMER",
    "segment": "Commercial",
    "propensity_score": 28,
    "top_reasons": [
@@ -12141,7 +12141,7 @@
    "account_id": "001NW0000000140",
    "account_name": "Duneview Energy",
    "industry": "Technology",
-   "region": null,
+   "region": "AMER",
    "segment": "Commercial",
    "propensity_score": 24,
    "top_reasons": [
@@ -12170,7 +12170,7 @@
    "account_id": "001NW0000000077",
    "account_name": "Harbor Markets",
    "industry": "Retail & eCommerce",
-   "region": null,
+   "region": "AMER",
    "segment": "Commercial",
    "propensity_score": 55,
    "top_reasons": [
@@ -12199,7 +12199,7 @@
    "account_id": "001NW0000000043",
    "account_name": "Acme Travel",
    "industry": "Technology",
-   "region": null,
+   "region": "AMER",
    "segment": "Commercial",
    "propensity_score": 18,
    "top_reasons": [
@@ -12228,7 +12228,7 @@
    "account_id": "001NW0000000151",
    "account_name": "Harbor Games",
    "industry": "Media & Gaming",
-   "region": null,
+   "region": "AMER",
    "segment": "Commercial",
    "propensity_score": 40,
    "top_reasons": [
@@ -12289,7 +12289,7 @@
    "account_id": "001NW0000000024",
    "account_name": "Evergreen Systems",
    "industry": "Technology",
-   "region": null,
+   "region": "AMER",
    "segment": "Mid-Market",
    "propensity_score": 28,
    "top_reasons": [
@@ -12472,7 +12472,7 @@
    "account_id": "001NW0000000339",
    "account_name": "Fernhill Software",
    "industry": "Technology",
-   "region": null,
+   "region": "AMER",
    "segment": "Commercial",
    "propensity_score": 35,
    "top_reasons": [
@@ -12530,7 +12530,7 @@
    "account_id": "001NW0000000348",
    "account_name": "Quarry Travel",
    "industry": "Technology",
-   "region": null,
+   "region": "AMER",
    "segment": "Commercial",
    "propensity_score": 33,
    "top_reasons": [
@@ -12590,7 +12590,7 @@
    "account_id": "001NW0000000208",
    "account_name": "Harbor Travel",
    "industry": "Technology",
-   "region": null,
+   "region": "AMER",
    "segment": "Mid-Market",
    "propensity_score": 63,
    "top_reasons": [
@@ -12745,7 +12745,7 @@
    "account_id": "001NW0000000222",
    "account_name": "Cobalt Energy",
    "industry": "Technology",
-   "region": null,
+   "region": "AMER",
    "segment": "Commercial",
    "propensity_score": 43,
    "top_reasons": [
@@ -12956,7 +12956,7 @@
    "account_id": "001NW0000000384",
    "account_name": "Redwood Finance",
    "industry": "Financial Services",
-   "region": null,
+   "region": "AMER",
    "segment": "Commercial",
    "propensity_score": 74,
    "top_reasons": [
@@ -13018,7 +13018,7 @@
    "account_id": "001NW0000000318",
    "account_name": "Vantage Software",
    "industry": "Technology",
-   "region": null,
+   "region": "AMER",
    "segment": "Commercial",
    "propensity_score": 61,
    "top_reasons": [
@@ -13321,7 +13321,7 @@
    "account_id": "001NW0000000221",
    "account_name": "Vantage Markets",
    "industry": "Retail & eCommerce",
-   "region": null,
+   "region": "AMER",
    "segment": "Commercial",
    "propensity_score": 41,
    "top_reasons": [
@@ -13379,7 +13379,7 @@
    "account_id": "001NW0000000436",
    "account_name": "Ironleaf Learning",
    "industry": "Technology",
-   "region": null,
+   "region": "AMER",
    "segment": "Commercial",
    "propensity_score": 26,
    "top_reasons": [
@@ -13439,7 +13439,7 @@
    "account_id": "001NW0000000168",
    "account_name": "Brightpath Energy",
    "industry": "Technology",
-   "region": null,
+   "region": "AMER",
    "segment": "Commercial",
    "propensity_score": 24,
    "top_reasons": [
@@ -13528,7 +13528,7 @@
    "account_id": "001NW0000000115",
    "account_name": "Foxglove Media",
    "industry": "Media & Gaming",
-   "region": null,
+   "region": "AMER",
    "segment": "Commercial",
    "propensity_score": 59,
    "top_reasons": [
@@ -13557,7 +13557,7 @@
    "account_id": "001NW0000000319",
    "account_name": "Harbor Analytics",
    "industry": "Technology",
-   "region": null,
+   "region": "AMER",
    "segment": "Commercial",
    "propensity_score": 37,
    "top_reasons": [
@@ -13588,7 +13588,7 @@
    "account_id": "001NW0000000284",
    "account_name": "Willow Media",
    "industry": "Media & Gaming",
-   "region": null,
+   "region": "AMER",
    "segment": "Commercial",
    "propensity_score": 28,
    "top_reasons": [
@@ -13617,7 +13617,7 @@
    "account_id": "001NW0000000492",
    "account_name": "Lumen Health",
    "industry": "Healthcare",
-   "region": null,
+   "region": "AMER",
    "segment": "Commercial",
    "propensity_score": 21,
    "top_reasons": [
@@ -13646,7 +13646,7 @@
    "account_id": "001NW0000000377",
    "account_name": "Ironleaf Logistics",
    "industry": "Technology",
-   "region": null,
+   "region": "AMER",
    "segment": "Commercial",
    "propensity_score": 54,
    "top_reasons": [
@@ -13677,7 +13677,7 @@
    "account_id": "001NW0000000197",
    "account_name": "Acme Health",
    "industry": "Healthcare",
-   "region": null,
+   "region": "AMER",
    "segment": "Commercial",
    "propensity_score": 17,
    "top_reasons": [
@@ -13797,7 +13797,7 @@
    "account_id": "001NW0000000014",
    "account_name": "Fernhill Labs",
    "industry": "Technology",
-   "region": null,
+   "region": "AMER",
    "segment": "Commercial",
    "propensity_score": 28,
    "top_reasons": [
@@ -13890,7 +13890,7 @@
    "account_id": "001NW0000000156",
    "account_name": "Ember Energy",
    "industry": "Technology",
-   "region": null,
+   "region": "AMER",
    "segment": "Mid-Market",
    "propensity_score": 63,
    "top_reasons": [
@@ -13921,7 +13921,7 @@
    "account_id": "001NW0000000286",
    "account_name": "Pinecrest Markets",
    "industry": "Retail & eCommerce",
-   "region": null,
+   "region": "AMER",
    "segment": "Commercial",
    "propensity_score": 34,
    "top_reasons": [
@@ -13950,7 +13950,7 @@
    "account_id": "001NW0000000378",
    "account_name": "Orchard Labs",
    "industry": "Technology",
-   "region": null,
+   "region": "AMER",
    "segment": "Commercial",
    "propensity_score": 52,
    "top_reasons": [
@@ -13981,7 +13981,7 @@
    "account_id": "001NW0000000326",
    "account_name": "Cobalt Learning",
    "industry": "Technology",
-   "region": null,
+   "region": "AMER",
    "segment": "Commercial",
    "propensity_score": 38,
    "top_reasons": [
@@ -14103,7 +14103,7 @@
    "account_id": "001NW0000000449",
    "account_name": "Yellowstone Retail",
    "industry": "Retail & eCommerce",
-   "region": null,
+   "region": "AMER",
    "segment": "Commercial",
    "propensity_score": 39,
    "top_reasons": [
@@ -14318,7 +14318,7 @@
    "account_id": "001NW0000000365",
    "account_name": "Harbor Insurance",
    "industry": "Financial Services",
-   "region": null,
+   "region": "AMER",
    "segment": "Commercial",
    "propensity_score": 49,
    "top_reasons": [
@@ -14349,7 +14349,7 @@
    "account_id": "001NW0000000376",
    "account_name": "Maple Networks",
    "industry": "Technology",
-   "region": null,
+   "region": "AMER",
    "segment": "Mid-Market",
    "propensity_score": 65,
    "top_reasons": [
@@ -14380,7 +14380,7 @@
    "account_id": "001NW0000000381",
    "account_name": "Granite Media",
    "industry": "Media & Gaming",
-   "region": null,
+   "region": "AMER",
    "segment": "Commercial",
    "propensity_score": 49,
    "top_reasons": [
@@ -14442,7 +14442,7 @@
    "account_id": "001NW0000000213",
    "account_name": "Fernhill Travel",
    "industry": "Technology",
-   "region": null,
+   "region": "AMER",
    "segment": "Commercial",
    "propensity_score": 41,
    "top_reasons": [
@@ -14473,7 +14473,7 @@
    "account_id": "001NW0000000179",
    "account_name": "Cobalt Finance",
    "industry": "Financial Services",
-   "region": null,
+   "region": "AMER",
    "segment": "Commercial",
    "propensity_score": 23,
    "top_reasons": [
@@ -14533,7 +14533,7 @@
    "account_id": "001NW0000000004",
    "account_name": "Granite Logistics",
    "industry": "Technology",
-   "region": null,
+   "region": "AMER",
    "segment": "Commercial",
    "propensity_score": 51,
    "top_reasons": [
@@ -14719,7 +14719,7 @@
    "account_id": "001NW0000000169",
    "account_name": "Quarry Markets",
    "industry": "Retail & eCommerce",
-   "region": null,
+   "region": "AMER",
    "segment": "Commercial",
    "propensity_score": 51,
    "top_reasons": [
@@ -14750,7 +14750,7 @@
    "account_id": "001NW0000000196",
    "account_name": "Bluefin Analytics",
    "industry": "Technology",
-   "region": null,
+   "region": "AMER",
    "segment": "Mid-Market",
    "propensity_score": 52,
    "top_reasons": [
@@ -14781,7 +14781,7 @@
    "account_id": "001NW0000000225",
    "account_name": "Orchard Mobility",
    "industry": "Technology",
-   "region": null,
+   "region": "AMER",
    "segment": "Enterprise",
    "propensity_score": 64,
    "top_reasons": [
@@ -14812,7 +14812,7 @@
    "account_id": "001NW0000000241",
    "account_name": "Duneview Markets",
    "industry": "Retail & eCommerce",
-   "region": null,
+   "region": "AMER",
    "segment": "Mid-Market",
    "propensity_score": 74,
    "top_reasons": [
@@ -14843,7 +14843,7 @@
    "account_id": "001NW0000000334",
    "account_name": "Quarry Insurance",
    "industry": "Financial Services",
-   "region": null,
+   "region": "AMER",
    "segment": "Mid-Market",
    "propensity_score": 67,
    "top_reasons": [
@@ -14905,7 +14905,7 @@
    "account_id": "001NW0000000355",
    "account_name": "Saltmarsh Analytics",
    "industry": "Technology",
-   "region": null,
+   "region": "AMER",
    "segment": "Commercial",
    "propensity_score": 59,
    "top_reasons": [
@@ -14936,7 +14936,7 @@
    "account_id": "001NW0000000439",
    "account_name": "Quarry Studios",
    "industry": "Media & Gaming",
-   "region": null,
+   "region": "AMER",
    "segment": "Commercial",
    "propensity_score": 70,
    "top_reasons": [

@@ -88,7 +88,7 @@ open_pipeline = np.where(has_pipeline, np.round(commit * rng.uniform(0.1, 0.8, s
 accounts = pd.DataFrame({
     "account_name": names,
     "industry": [INDUSTRIES.get(nm.split()[-1], "Technology") for nm in names],
-    "region": rng.choice(["NA", "EMEA", "APAC", "LATAM"], size=n, p=[0.45, 0.3, 0.18, 0.07]),
+    "region": rng.choice(["AMER", "EMEA", "APAC", "LATAM"], size=n, p=[0.45, 0.3, 0.18, 0.07]),
     "segment": segment,
     "contract_start_date": contract_start.date,
     "contract_end_date": contract_end.date,
@@ -112,7 +112,7 @@ nw_start = AS_OF_DATE - pd.Timedelta(days=220)
 northwind = {
     "account_name": "Northwind Commerce",
     "industry": "Retail & eCommerce",
-    "region": "NA",
+    "region": "AMER",
     "segment": "Enterprise",
     "contract_start_date": nw_start.date(),
     "contract_end_date": (nw_start + pd.DateOffset(years=1)).date(),

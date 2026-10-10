@@ -51,3 +51,11 @@ Each page should show where Northwind sits at that stage.
 - Work in **small steps**. After each step, **commit locally** with a clear message.
 - **Never push to GitHub or publish anything** (Pages, artifacts, etc.) without asking first.
 - Ask before adding dependencies or changing the constraints above.
+
+## Current files
+- `generate_data.py` → `data/raw/accounts.csv` (synthetic, seed 42, Northwind planted)
+- `pipeline.py` → scorecard, headroom/EV, flags, quadrants, capacity; writes
+  `data/processed/account_scores.csv`, `data/output/salesforce_writeback.csv`,
+  `docs/data/accounts.json`, and updates only the count fields in `docs/data/content.json`
+- `docs/data/content.json` — hand-edited copy (owner edits it; never overwrite wording)
+- `docs/*.html` + `docs/assets/` — static site; preview with `python3 -m http.server 8000 -d docs`

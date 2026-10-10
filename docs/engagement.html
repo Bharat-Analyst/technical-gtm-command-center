@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Engagement and Onsite</title>
+  <meta name="description" content="Strategic engagement tracker and the Northwind Commerce technical onsite plan. Synthetic data.">
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+  <div class="banner" role="note">Synthetic data. Personal project, not affiliated with Cloudflare.</div>
+  <header class="site-header">
+    <div class="inner">
+      <a class="brand" href="index.html">Technical GTM Command Center</a>
+      <nav aria-label="Main">
+        <ul>
+          <li><a href="index.html">Guided Tour</a></li>
+          <li><a href="prioritization.html">Prioritization</a></li>
+          <li><a href="engagement.html" aria-current="page">Engagement &amp; Onsite</a></li>
+          <li><a href="programs.html">Programs &amp; PS Offer</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <span class="responsibility">Strategic customer engagement · Technical onsites</span>
+    <h1>Engagement &amp; onsite</h1>
+    <p class="lede">This page shows how I'd run strategic customer engagements: each top account has one goal, one owner, a visible status and a next step, and onsites are planned to a measurable outcome.</p>
+
+    <div class="grid grid-3" id="summary"></div>
+
+    <h2>Engagement tracker</h2>
+    <div class="table-wrap">
+      <table>
+        <thead><tr>
+          <th>Account</th><th>Goal</th><th>Owner</th><th>Status</th><th>Next step</th>
+          <th class="num">Rank</th><th>Quadrant</th><th class="num">Expected value</th>
+        </tr></thead>
+        <tbody id="tracker"></tbody>
+      </table>
+    </div>
+    <p class="muted small">Rank, quadrant and expected value are joined live from the scoring pipeline output.</p>
+
+    <h2 id="onsite">Northwind Commerce onsite plan</h2>
+    <div id="onsite-plan"></div>
+  </main>
+
+  <footer>Synthetic data generated with a fixed seed. All company and person names are fictional.</footer>
+
+  <script src="assets/common.js"></script>
+  <script>
+    (async function () {
+      let accounts, content;
+      try { [accounts, content] = await Promise.all([GTM.load("accounts"), GTM.load("content")]); }
+      catch (err) { GTM.showError(document.querySelector("main"), err); return; }
+
+      const byName = Object.fromEntries(accounts.accounts.map((a) => [a.account_name, a]));
+      const eng = content.engagements;
+
+      // Status summary: shape + label, never color alone.
+      const count = (s) => eng.filter((e) => e.status === s).length;
+      document.getElementById("summary").innerHTML = [["green", "On track"], ["yellow", "At risk"], ["red", "Blocked"]]
+        .map(([s, label]) => `<div class="card kpi"><div class="label">${GTM.status(s)}</div><div class="value">${count(s)}</div><div class="sub">of ${eng.length} active engagements</div></div>`)
+        .join("");
+
+      document.getElementById("tracker").innerHTML = eng.map((e) => {
+        const a = byName[e.account];
+        return `<tr class="${e.account === "Northwind Commerce" ? "is-northwind" : ""}">
+          <td><strong>${GTM.esc(e.account)}</strong></td>
+          <td>${GTM.esc(e.goal)}</td>
+          <td>${GTM.esc(e.owner)}</td>
+          <td>${GTM.status(e.status)}</td>
+          <td>${GTM.esc(e.next_step)}</td>
+          <td class="num">${a ? a.priority_rank : "—"}</td>
+          <td>${a ? GTM.esc(a.quadrant) : "—"}</td>
+          <td class="num">${a ? GTM.usd(a.expected_value_usd) : "—"}</td>
+        </tr>`;
+      }).join("");
+
+      const o = content.onsite;
+      const list = (items, tag = "ul") => `<${tag} class="tight">${items.map((i) => `<li>${GTM.esc(i)}</li>`).join("")}</${tag}>`;
+      document.getElementById("onsite-plan").innerHTML = `
+        <div class="card" style="margin-bottom:12px">
+          <h3>Goal</h3>
+          <p style="margin:0 0 8px">${GTM.esc(o.goal)}</p>
+          <p class="muted small" style="margin:0">${GTM.esc(o.date)}</p>
+        </div>
+        <div class="grid grid-2">
+          <div class="card"><h3>Agenda</h3>${list(o.agenda, "ol")}</div>
+          <div class="card">
+            <h3>Attendees</h3>
+            <p class="small muted" style="margin:0 0 4px">Customer</p>${list(o.attendees.customer)}
+            <p class="small muted" style="margin:10px 0 4px">Our team</p>${list(o.attendees.our_team)}
+          </div>
+          <div class="card"><h3>Prep checklist</h3>${list(o.prep_checklist)}</div>
+          <div class="card"><h3>Follow-up actions</h3>${list(o.follow_ups)}</div>
+        </div>
+        <div class="card metric" style="margin-top:12px">
+          <h3>Success metric</h3>
+          <p style="margin:0">${GTM.esc(o.success_metric)}</p>
+        </div>`;
+    })();
+  </script>
+</body>
+</html>

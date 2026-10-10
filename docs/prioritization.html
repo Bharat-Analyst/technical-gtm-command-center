@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Account Prioritization</title>
+  <meta name="description" content="Propensity × headroom matrix, flags and SA/FDE capacity for 500 synthetic accounts.">
+  <link rel="stylesheet" href="assets/style.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/plotly.js/2.35.3/plotly.min.js"></script>
+</head>
+<body>
+  <div class="banner" role="note">Synthetic data. Personal project, not affiliated with Cloudflare.</div>
+  <header class="site-header">
+    <div class="inner">
+      <a class="brand" href="index.html">Technical GTM Command Center</a>
+      <nav aria-label="Main">
+        <ul>
+          <li><a href="index.html">Guided Tour</a></li>
+          <li><a href="prioritization.html" aria-current="page">Prioritization</a></li>
+          <li><a href="engagement.html">Engagement &amp; Onsite</a></li>
+          <li><a href="programs.html">Programs &amp; PS Offer</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <span class="responsibility">Prioritization &amp; visibility · Leadership visibility</span>
+    <h1>Account prioritization</h1>
+    <p class="lede">This page shows how I'd decide where SA and FDE time goes: every account scored on propensity and headroom, flagged, and ranked against real capacity.</p>
+
+    <div class="controls card" style="margin-bottom:12px">
+      <label for="capacity">Capacity: cover the top
+        <input type="range" id="capacity" min="5" max="100" step="5" value="30">
+        <strong id="capacity-out">30</strong> accounts
+      </label>
+      <span class="muted small">Drag to see what more (or less) headcount would cover.</span>
+    </div>
+
+    <div class="grid grid-4" id="kpis"></div>
+
+    <h2>Propensity × headroom</h2>
+    <div class="card">
+      <div id="scatter" class="chart" role="img" aria-label="Scatter plot of propensity score versus headroom for every account, divided into four quadrants. Northwind Commerce is highlighted in the top-right FDE Deep Engagement quadrant."></div>
+      <p class="muted small" style="margin:8px 0 0">Headroom uses a log scale so small and large accounts both stay visible. Dashed lines are the quadrant cut-offs. The ranked table below has every value.</p>
+    </div>
+
+    <h2>Ranked accounts</h2>
+    <div class="controls">
+      <label>Quadrant
+        <select id="f-quadrant"><option value="">All</option></select>
+      </label>
+      <label>Flag
+        <select id="f-flag"><option value="">Any</option></select>
+      </label>
+      <label>Coverage
+        <select id="f-cap"><option value="">All</option><option value="in">In capacity</option><option value="out">Outside capacity</option></select>
+      </label>
+      <label><input type="search" id="f-search" placeholder="Search account" aria-label="Search account"></label>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr>
+          <th class="num">Rank</th><th>Account</th><th>Quadrant</th><th class="num">Score</th>
+          <th class="num">Headroom</th><th class="num">Expected value</th><th>Flags</th><th>Top reasons</th><th>Coverage</th>
+        </tr></thead>
+        <tbody id="rows"></tbody>
+      </table>
+    </div>
+    <p class="small" style="display:flex;gap:12px;align-items:center;flex-wrap:wrap">
+      <span class="muted" id="row-count"></span>
+      <button class="btn" id="more" type="button">Show 50 more</button>
+    </p>
+  </main>
+
+  <footer>Synthetic data generated with a fixed seed. All company names are fictional.</footer>
+
+  <script src="assets/common.js"></script>
+  <script>
+    (async function () {
+      let data;
+      try { data = await GTM.load("accounts"); }
+      catch (err) { GTM.showError(document.querySelector("main"), err); return; }
+
+      const accounts = data.accounts;           // already sorted by Expected Value (rank 1 first)
+      const t = data.meta.thresholds;
+      const NW = "Northwind Commerce";
+      const slider = document.getElementById("capacity");
+      let capacity = Number(slider.value);
+      let shown = 50;
+
+      // ---------- KPI cards (react to the capacity slider) ----------
+      const totalEV = accounts.reduce((s, a) => s + a.expected_value_usd, 0);
+      const totalHeadroom = accounts.reduce((s, a) => s + a.headroom_usd, 0);
+      const atRisk = accounts.filter((a) => a.flags.includes("Commit at Risk"));
+
+      function renderKpis() {
+        const covered = accounts.slice(0, capacity);
+        const coveredEV = covered.reduce((s, a) => s + a.expected_value_usd, 0);
+        const fde = covered.filter((a) => a.quadrant === "FDE Deep Engagement").length;
+        const riskCovered = covered.filter((a) => a.flags.includes("Commit at Risk")).length;
+        const card = (label, value, sub) =>
+          `<div class="card kpi"><div class="label">${label}</div><div class="value">${value}</div><div class="sub">${sub}</div></div>`;
+        document.getElementById("kpis").innerHTML = [
+          card("Accounts scored", accounts.length, `${GTM.usd(totalHeadroom)} total headroom`),
+          card("Expected value covered", GTM.usd(coveredEV), `${GTM.pct(coveredEV / totalEV)} of total with ${capacity} accounts (${GTM.pct(capacity / accounts.length)} of book)`),
+          card("FDE Deep Engagement in capacity", `${fde}`, `of ${accounts.filter((a) => a.quadrant === "FDE Deep Engagement").length} high/high accounts`),
+          card("Commit at Risk", atRisk.length, `${riskCovered} covered · ${atRisk.length - riskCovered} need the scaled program`),
+        ].join("");
+      }
+
+      // ---------- Scatter: score vs headroom ----------
+      const MIN_Y = 1000; // accounts with ~$0 headroom are drawn on the floor of the log axis
+      function trace(rows, name, color, size, extra = {}) {
+        return {
+          type: "scatter", mode: "markers", name,
+          x: rows.map((a) => a.propensity_score),
+          y: rows.map((a) => Math.max(a.headroom_usd, MIN_Y)),
+          customdata: rows.map((a) => [a.account_name, GTM.usd(a.headroom_usd), GTM.usd(a.expected_value_usd), a.priority_rank, a.quadrant]),
+          hovertemplate: "<b>%{customdata[0]}</b><br>Score %{x} · Headroom %{customdata[1]}<br>Expected value %{customdata[2]} · Rank #%{customdata[3]}<br>%{customdata[4]}<extra></extra>",
+          marker: { color, size, line: { color: GTM.colors().surface, width: 1 } },
+          ...extra,
+        };
+      }
+
+      function renderScatter() {
+        const c = GTM.colors();
+        const others = accounts.filter((a) => a.account_name !== NW);
+        const nw = accounts.find((a) => a.account_name === NW);
+        const traces = [
+          trace(others.filter((a) => a.priority_rank > capacity), "Outside capacity", c.out, 8, { marker: { color: c.out, size: 8, opacity: 0.7, line: { color: c.surface, width: 1 } } }),
+          trace(others.filter((a) => a.priority_rank <= capacity), `In capacity (top ${capacity})`, c.accent, 9),
+          trace([nw], NW, c.highlight, 15, { marker: { color: c.highlight, size: 15, line: { color: c.surface, width: 2 } } }),
+        ];
+        const corner = (x, y, text, xanchor, yanchor) => ({
+          x, y, xref: "x", yref: "paper", text, showarrow: false, xanchor, yanchor,
+          font: { size: narrow ? 10 : 12, color: c.muted },
+        });
+        // Phones: legend moves below the plot so it can't collide with quadrant labels.
+        const narrow = document.getElementById("scatter").clientWidth < 600;
+        const layout = {
+          paper_bgcolor: c.surface, plot_bgcolor: c.surface,
+          font: { family: "system-ui, -apple-system, Segoe UI, sans-serif", color: c.text2, size: 12 },
+          margin: { l: 56, r: 16, t: narrow ? 12 : 40, b: narrow ? 96 : 48 },
+          legend: { orientation: "h", x: 0, y: narrow ? -0.22 : 1.1, yanchor: narrow ? "top" : "bottom", font: { color: c.text2 } },
+          hoverlabel: { bgcolor: c.surface, bordercolor: c.axis, font: { color: c.text } },
+          xaxis: { title: { text: "Propensity score", font: { color: c.muted } }, range: [0, 100], gridcolor: c.grid, zeroline: false, linecolor: c.axis, tickfont: { color: c.muted } },
+          yaxis: {
+            title: { text: "Headroom", font: { color: c.muted } }, type: "log", range: [Math.log10(800), Math.log10(3e6)],
+            tickvals: [1e3, 1e4, 1e5, 1e6], ticktext: ["$1K", "$10K", "$100K", "$1M"],
+            gridcolor: c.grid, zeroline: false, linecolor: c.axis, tickfont: { color: c.muted },
+          },
+          shapes: [
+            { type: "line", x0: t.score_high, x1: t.score_high, yref: "paper", y0: 0, y1: 1, line: { color: c.axis, width: 1.5, dash: "dash" } },
+            // Shapes use raw data values even on a log axis (annotations below need log10).
+            { type: "line", xref: "paper", x0: 0, x1: 1, y0: t.headroom_high, y1: t.headroom_high, line: { color: c.axis, width: 1.5, dash: "dash" } },
+          ],
+          annotations: [
+            corner(99, 0.99, "<b>FDE Deep Engagement</b>", "right", "top"),
+            corner(1, 0.99, "<b>Strategic Bet</b>", "left", "top"),
+            corner(99, 0.01, "<b>Scaled SA Program</b>", "right", "bottom"),
+            corner(1, 0.01, "<b>Digital</b>", "left", "bottom"),
+            { x: nw.propensity_score, y: Math.log10(nw.headroom_usd), text: "Northwind", showarrow: true, arrowhead: 0, ax: -44, ay: narrow ? 30 : -28,
+              arrowcolor: c.text2, font: { size: 12, color: c.text } },
+          ],
+        };
+        Plotly.react("scatter", traces, layout, { responsive: true, displayModeBar: false });
+      }
+
+      // ---------- Ranked table with filters ----------
+      const quadrants = ["FDE Deep Engagement", "Scaled SA Program", "Strategic Bet", "Digital"];
+      const flags = ["Commit at Risk", "Renewal Window", "Usage Spike", "New Developers"];
+      const fq = document.getElementById("f-quadrant"), ff = document.getElementById("f-flag");
+      quadrants.forEach((q) => fq.add(new Option(q, q)));
+      flags.forEach((f) => ff.add(new Option(f, f)));
+
+      function filtered() {
+        const q = fq.value, f = ff.value, cap = document.getElementById("f-cap").value;
+        const s = document.getElementById("f-search").value.trim().toLowerCase();
+        return accounts.filter((a) =>
+          (!q || a.quadrant === q) &&
+          (!f || a.flags.includes(f)) &&
+          (!cap || (cap === "in") === (a.priority_rank <= capacity)) &&
+          (!s || a.account_name.toLowerCase().includes(s)));
+      }
+
+      function renderTable() {
+        const rows = filtered();
+        document.getElementById("rows").innerHTML = rows.slice(0, shown).map((a) => `
+          <tr class="${a.account_name === NW ? "is-northwind" : ""}">
+            <td class="num">${a.priority_rank}</td>
+            <td><strong>${GTM.esc(a.account_name)}</strong><div class="muted small">${GTM.esc(a.segment)} · ${GTM.esc(a.region)}</div></td>
+            <td>${GTM.esc(a.quadrant)}</td>
+            <td class="num">${a.propensity_score}</td>
+            <td class="num">${GTM.usd(a.headroom_usd)}</td>
+            <td class="num">${GTM.usd(a.expected_value_usd)}</td>
+            <td>${a.flags.length ? GTM.chips(a.flags) : '<span class="muted">—</span>'}</td>
+            <td><ul class="reasons">${a.top_reasons.map((r) => `<li>${GTM.esc(r)}</li>`).join("")}</ul></td>
+            <td>${a.priority_rank <= capacity ? "In capacity" : '<span class="muted">Outside</span>'}</td>
+          </tr>`).join("") || `<tr><td colspan="9" class="muted">No accounts match these filters.</td></tr>`;
+        document.getElementById("row-count").textContent = `Showing ${Math.min(shown, rows.length)} of ${rows.length} accounts`;
+        document.getElementById("more").hidden = shown >= rows.length;
+      }
+
+      function renderAll() { renderKpis(); renderScatter(); renderTable(); }
+
+      slider.addEventListener("input", () => {
+        capacity = Number(slider.value);
+        document.getElementById("capacity-out").textContent = capacity;
+        renderAll();
+      });
+      ["f-quadrant", "f-flag", "f-cap", "f-search"].forEach((id) =>
+        document.getElementById(id).addEventListener("input", () => { shown = 50; renderTable(); }));
+      document.getElementById("more").addEventListener("click", () => { shown += 50; renderTable(); });
+      GTM.onThemeChange(renderScatter);
+      // Re-layout the chart when crossing the phone/desktop width.
+      let resizeTimer;
+      window.addEventListener("resize", () => { clearTimeout(resizeTimer); resizeTimer = setTimeout(renderScatter, 200); });
+
+      renderAll();
+    })();
+  </script>
+</body>
+</html>

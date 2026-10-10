@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Technical GTM Command Center</title>
+  <meta name="description" content="Portfolio POC: how to decide where Solutions Architects and Forward Deployed Engineers spend time, run engagements, and prove ROI. Synthetic data.">
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+  <div class="banner" role="note">Synthetic data. Personal project, not affiliated with Cloudflare.</div>
+  <header class="site-header">
+    <div class="inner">
+      <a class="brand" href="index.html">Technical GTM Command Center</a>
+      <nav aria-label="Main">
+        <ul>
+          <li><a href="index.html" aria-current="page">Guided Tour</a></li>
+          <li><a href="prioritization.html">Prioritization</a></li>
+          <li><a href="engagement.html">Engagement &amp; Onsite</a></li>
+          <li><a href="programs.html">Programs &amp; PS Offer</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <span class="responsibility">Overview · all six responsibilities, end to end</span>
+    <h1>Where should technical experts spend their time?</h1>
+    <p class="lede">
+      Solutions Architects and Forward Deployed Engineers are scarce, and today their time often goes to whoever asks loudest rather than where it moves revenue most.
+      I built a command center that scores every account on propensity and headroom, flags risk and opportunity, routes each account to the right engagement motion, and packages repeatable programs and services.
+      It turns technical GTM capacity into a ranked, measurable investment that leadership can see and defend.
+    </p>
+
+    <h2 id="tour-title">Follow one customer through the system</h2>
+    <p class="muted small" style="margin-top:-6px">Click any step, or use Next / Back. Northwind Commerce is a fictional retailer.</p>
+    <ol class="flow" id="flow" aria-labelledby="tour-title"></ol>
+
+    <section class="card step-panel" id="panel" aria-live="polite"></section>
+
+    <h2>Job responsibility → where to see it</h2>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Responsibility</th><th>What I built</th><th>Page</th></tr></thead>
+        <tbody>
+          <tr><td>Prioritization &amp; visibility</td><td>Propensity × headroom matrix, flags, capacity slider</td><td><a href="prioritization.html">Prioritization</a></td></tr>
+          <tr><td>Strategic customer engagement</td><td>Engagement tracker with owner, status, next step</td><td><a href="engagement.html">Engagement &amp; Onsite</a></td></tr>
+          <tr><td>Technical onsites</td><td>Northwind onsite plan: agenda, attendees, prep, follow-ups, metric</td><td><a href="engagement.html#onsite">Engagement &amp; Onsite</a></td></tr>
+          <tr><td>Technical programs</td><td>"Commit Burn Sprint" proactive SA playbook, triggered from data</td><td><a href="programs.html">Programs &amp; PS Offer</a></td></tr>
+          <tr><td>Professional Services packaging</td><td>"Workers Migration Accelerator" tiers + business case</td><td><a href="programs.html#ps">Programs &amp; PS Offer</a></td></tr>
+          <tr><td>Leadership visibility / ROI</td><td>KPI cards, Expected Value covered by capacity, measurement plan</td><td><a href="prioritization.html">Prioritization</a> · <a href="#" data-step-link="6">Measure step</a></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </main>
+
+  <footer>Synthetic data generated with a fixed seed. All company and person names are fictional.</footer>
+
+  <script src="assets/common.js"></script>
+  <script>
+    (async function () {
+      const panel = document.getElementById("panel");
+      let accounts, content;
+      try {
+        [accounts, content] = await Promise.all([GTM.load("accounts"), GTM.load("content")]);
+      } catch (err) { GTM.showError(panel, err); return; }
+
+      const nw = accounts.accounts.find((a) => a.account_name === "Northwind Commerce");
+      const t = accounts.meta.thresholds;
+      const eng = content.engagements.find((e) => e.account === "Northwind Commerce");
+      const migrate = content.ps_offer.tiers.find((x) => x.tier === "Migrate");
+      const total = accounts.accounts.length;
+      const li = (items) => `<ul class="tight">${items.map((i) => `<li>${i}</li>`).join("")}</ul>`;
+
+      // Each step: what happens, the logic behind it, and Northwind's data at that point.
+      const steps = [
+        {
+          name: "CRM Data",
+          what: `A nightly extract of ${total} accounts: Salesforce Account, Contract and Opportunity fields joined with product usage telemetry.`,
+          logic: "Raw fields only — commit, consumption, pipeline, usage trend, developer counts, SA meetings. No judgment applied yet.",
+          northwind: li([
+            `Annual commit ${GTM.usd(nw.annual_commit_usd)}, consumed ${GTM.usd(nw.commit_consumed_usd)} — ${GTM.pct(nw.contract_elapsed_share)} through the contract`,
+            `Open expansion pipeline ${GTM.usd(nw.open_pipeline_usd)}`,
+            `Usage ${nw.usage_growth_90d_pct > 0 ? "+" : ""}${nw.usage_growth_90d_pct}% in 90 days · ${nw.new_developers_30d} new developers in 30 days · ${nw.sa_meetings_90d} SA meetings in 90 days`,
+          ]),
+        },
+        {
+          name: "Score",
+          what: "Every account gets a 0–100 propensity score: how likely it is to expand if we invest technical time.",
+          logic: `Weighted scorecard on percentiles vs. all accounts: usage growth ${GTM.pct(accounts.meta.weights.usage_growth)}, new developers ${GTM.pct(accounts.meta.weights.new_developers)}, engagement ${GTM.pct(accounts.meta.weights.engagement)}, commit burn ${GTM.pct(accounts.meta.weights.commit_burn)}. The three biggest contributors become plain-English reasons a seller can repeat.`,
+          northwind: `<strong>Score ${nw.propensity_score}</strong>${li(nw.top_reasons)}`,
+        },
+        {
+          name: "Headroom & Flags",
+          what: "Size what is at stake, weight it by likelihood, and raise flags that need action now.",
+          logic: `Headroom = unconsumed commit + open pipeline. Expected Value = score/100 × headroom. Commit at Risk = 25%+ into contract and burning below ${GTM.pct(t.commit_at_risk_max_pace)} of expected pace.`,
+          northwind: li([
+            `Headroom <strong>${GTM.usd(nw.headroom_usd)}</strong> = ${GTM.usd(nw.unconsumed_commit_usd)} unconsumed commit + ${GTM.usd(nw.open_pipeline_usd)} pipeline`,
+            `Expected Value <strong>${GTM.usd(nw.expected_value_usd)}</strong>`,
+            `Burning commit at ${GTM.pct(nw.burn_pace)} of expected pace`,
+            `Flags: ${GTM.chips(nw.flags)}`,
+          ]),
+        },
+        {
+          name: "Prioritize",
+          what: `Rank all accounts by Expected Value and place each in a quadrant that decides the engagement motion. Current capacity covers the top ${t.capacity_top_n}.`,
+          logic: `High score = ${t.score_high}+. High value = ${GTM.usd(t.headroom_high)}+ headroom. High/high → FDE Deep Engagement; high score/low value → Scaled SA Program; low score/high value → Strategic Bet; low/low → Digital.`,
+          northwind: li([
+            `Rank <strong>#${nw.priority_rank} of ${total}</strong> — ${nw.in_capacity ? "inside" : "outside"} capacity`,
+            `Quadrant: <strong>${GTM.esc(nw.quadrant)}</strong>`,
+            `Why: strong signals and a large commit gap — the case where hands-on FDE work pays back most`,
+          ]),
+          link: ["prioritization.html", "See the matrix"],
+        },
+        {
+          name: "Engage & Onsite",
+          what: "Open a tracked engagement with a named owner, a status and one next step, then plan an onsite to unblock the stalled workload.",
+          logic: "Every in-capacity account has exactly one goal and one next step. Onsites are reserved for FDE Deep Engagement accounts with a clear technical decision to make.",
+          northwind: li([
+            `Goal: ${GTM.esc(eng.goal)}`,
+            `Owner: ${GTM.esc(eng.owner)} · ${GTM.status(eng.status)}`,
+            `Next step: ${GTM.esc(eng.next_step)}`,
+            `Onsite success metric: ${GTM.esc(content.onsite.success_metric)}`,
+          ]),
+          link: ["engagement.html", "See tracker and onsite plan"],
+        },
+        {
+          name: "Program & PS Offer",
+          what: "Scale what works: a repeatable SA program for every flagged account, and a packaged services offer for accounts that need hands-on delivery.",
+          logic: `The "${GTM.esc(content.program.name)}" auto-enrolls every Commit at Risk account (${content.program.eligible_accounts} today, ${content.program.eligible_outside_capacity} of them outside FDE capacity). Accounts that need more get the "${GTM.esc(content.ps_offer.name)}".`,
+          northwind: li([
+            `Inside FDE capacity, so it gets direct FDE coverage rather than the pooled sprint`,
+            `Proposed: ${GTM.esc(migrate.tier)} tier — ${GTM.esc(migrate.scope.toLowerCase())}, ${GTM.esc(migrate.duration)}, ${GTM.usd(migrate.price_usd)} indicative`,
+          ]),
+          link: ["programs.html", "See playbook and offer"],
+        },
+        {
+          name: "Measure",
+          what: "Prove the time was worth it: did covered accounts recover burn and expand more than similar accounts we did not cover?",
+          logic: "Leadership view tracks Expected Value covered, flags resolved, and burn pace recovery. True ROI needs a holdout: randomly leave some eligible accounts untreated and compare outcomes, so we credit only the incremental lift (see README next steps).",
+          northwind: li([
+            `Today: burn pace ${GTM.pct(nw.burn_pace)}, score ${nw.propensity_score}`,
+            `Target: ${GTM.esc(content.onsite.success_metric)}`,
+            `Written back to Salesforce: score, reasons, headroom, EV, rank, quadrant, flags, capacity`,
+          ]),
+        },
+      ];
+
+      const flow = document.getElementById("flow");
+      flow.innerHTML = steps.map((s, i) =>
+        `<li><button type="button" data-i="${i}"><span class="n">${i + 1}</span>${s.name}</button></li>`).join("");
+
+      let current = 0;
+      function show(i) {
+        current = i;
+        const s = steps[i];
+        flow.querySelectorAll("button").forEach((b, j) => {
+          if (j === i) b.setAttribute("aria-current", "step");
+          else b.removeAttribute("aria-current");
+        });
+        panel.innerHTML = `
+          <h2>Step ${i + 1} of ${steps.length}: ${s.name}</h2>
+          <dl>
+            <div><dt>What happens</dt><dd>${s.what}</dd></div>
+            <div><dt>The logic</dt><dd>${s.logic}</dd></div>
+            <div class="nw-box"><dt>Northwind Commerce at this step</dt><dd>${s.northwind}</dd></div>
+          </dl>
+          ${s.link ? `<p class="small" style="margin:14px 0 0"><a href="${s.link[0]}">${s.link[1]} →</a></p>` : ""}
+          <div class="step-nav">
+            <button class="btn" id="back" ${i === 0 ? "disabled" : ""}>← Back</button>
+            <span class="muted small">${i + 1} / ${steps.length}</span>
+            <button class="btn btn-primary" id="next" ${i === steps.length - 1 ? "disabled" : ""}>Next →</button>
+          </div>`;
+        document.getElementById("back").onclick = () => show(current - 1);
+        document.getElementById("next").onclick = () => show(current + 1);
+      }
+
+      flow.addEventListener("click", (e) => {
+        const b = e.target.closest("button[data-i]");
+        if (b) show(Number(b.dataset.i));
+      });
+      document.querySelectorAll("[data-step-link]").forEach((a) => a.addEventListener("click", (e) => {
+        e.preventDefault();
+        show(Number(a.dataset.stepLink));
+        flow.scrollIntoView({ behavior: "smooth" });
+      }));
+      show(0);
+    })();
+  </script>
+</body>
+</html>

@@ -221,7 +221,7 @@ Handoff: when the comparison group shows impact for two cycles in a row, the pla
 **Why this matters.** Northwind is the clearest case for an FDE: strong momentum (its developers are already adopting the platform) plus a large, specific gap ($383K behind). Without help, it likely renews smaller.
 
 **Possibly we can.** Track Northwind's Monthly spend weekly against the needed $180K, and adjust for its Q4 peak.
-⚑ CONFIRM: the current onsite success metric says "On-track % back to 90%+" within 60 days. That would need about $245K a month, roughly 5× today's spend, which a director would question. I suggest changing it to "Monthly spend reaches the needed $180K/month within 60 days."
+⚑ CONFIRM: the current onsite success metric says "On-track % back to 90%+" within 60 days. That would need about $250K a month, roughly 5× today's spend, which a director would question. I suggest changing it to "Monthly spend reaches the needed $180K/month within 60 days."
 
 ## 16. Assumptions and limitations
 

@@ -58,6 +58,10 @@ COMMIT_AT_RISK_MIN_ELAPSED = 0.25  # too early in the contract to judge before 2
 COMMIT_AT_RISK_MAX_PACE = 0.70     # consuming <70% of expected pace → large unused commit at renewal
 RENEWAL_WINDOW_DAYS = 120          # ~1 quarter + prep time: when renewal decisions get made
 USAGE_SPIKE_RATIO = 1.5            # last 7 days ≥ 1.5× the 4-week average = something new launched
+# On-track status bands shown next to On-track % (burn pace). The lower band
+# matches the Commit at Risk line so the label and the alert never disagree.
+ON_TRACK_GOOD = 0.90               # 90%+ = On track: small gaps close on their own
+ON_TRACK_WARN = COMMIT_AT_RISK_MAX_PACE  # 70–89% = Slightly behind; below 70% = Behind
 USAGE_SPIKE_RECENT_DAYS = 7        # (these two windows match the telemetry columns)
 USAGE_SPIKE_BASELINE_DAYS = 28
 NEW_DEVELOPERS_MIN = 10            # ≥10 new developers in 30 days = a new team, not noise
@@ -88,18 +92,24 @@ SITE_JSON = ROOT / "docs" / "data" / "accounts.json"
 CONTENT_JSON = ROOT / "docs" / "data" / "content.json"
 
 # One showcase account per quadrant, used by the lifecycle walkthrough.
+# "Type of help" names (shown on screen as-is).
+DEEP = "Deep engagement (SA + FDE)"   # likely to grow AND lots at stake → SA designs, FDE builds
+SCALED = "Scaled SA programs"          # likely to grow, smaller $ → SA group formats, no FDE
+BET = "Strategic Bet"                  # big $ but weak signals → SA-led discovery
+DIGITAL = "Digital / self-serve"       # neither → no SA/FDE time
+
 FEATURED = {
-    "FDE Deep Engagement": "Northwind Commerce",
-    "Scaled SA Program": "Contoso Media",
-    "Strategic Bet": "Fabrikam Health",
-    "Digital": "Tailspin Games",
+    DEEP: "Northwind Commerce",
+    SCALED: "Contoso Media",
+    BET: "Fabrikam Health",
+    DIGITAL: "Tailspin Games",
 }
 
 QUADRANTS = {
-    (True, True): "FDE Deep Engagement",   # likely to grow AND lots at stake
-    (True, False): "Scaled SA Program",    # likely to grow, smaller $ → one-to-many
-    (False, True): "Strategic Bet",        # big $ but weak signals → targeted exec/SA play
-    (False, False): "Digital",             # self-serve docs, webinars, community
+    (True, True): DEEP,
+    (True, False): SCALED,
+    (False, True): BET,
+    (False, False): DIGITAL,
 }
 
 
@@ -156,12 +166,12 @@ def describe_signal(name: str, row: pd.Series) -> str:
         return f"Usage {row['usage_growth_90d_pct']:+.0f}% over the last 90 days ({rank_txt})"
     if name == "new_developers":
         n = row["new_developers_30d"]
-        return f"{n} new developer{'' if n == 1 else 's'} in the last 30 days ({rank_txt})"
+        return f"{n} new builder{'' if n == 1 else 's'} in the last 30 days ({rank_txt})"
     if name == "engagement":
         n = row["sa_meetings_90d"]
         return f"{n} SA meeting{'' if n == 1 else 's'} in the last 90 days ({rank_txt})"
     if name == "commit_burn":
-        return f"Consuming commit at {row['burn_pace']:.0%} of expected pace ({rank_txt})"
+        return f"On-track % is {row['burn_pace']:.0%} ({rank_txt})"
     raise ValueError(name)
 
 
@@ -200,6 +210,10 @@ def add_value(df: pd.DataFrame) -> pd.DataFrame:
     return df
 
 
+# Alert names (shown on screen as-is), in display order.
+ALERTS = ["Commit at Risk", "Days to renewal", "Usage Spike", "New builders"]
+
+
 # =============================================================================
 # 3. FLAGS
 # =============================================================================
@@ -207,10 +221,11 @@ def add_flags(df: pd.DataFrame) -> pd.DataFrame:
     rules = {
         "Commit at Risk": (df["contract_elapsed_share"] >= COMMIT_AT_RISK_MIN_ELAPSED)
                           & (df["burn_pace"] < COMMIT_AT_RISK_MAX_PACE),
-        "Renewal Window": df["days_to_renewal"].between(0, RENEWAL_WINDOW_DAYS),
+        "Days to renewal": df["days_to_renewal"].between(0, RENEWAL_WINDOW_DAYS),
         "Usage Spike": df["usage_spike_ratio"] >= USAGE_SPIKE_RATIO,
-        "New Developers": df["new_developers_30d"] >= NEW_DEVELOPERS_MIN,
+        "New builders": df["new_developers_30d"] >= NEW_DEVELOPERS_MIN,
     }
+    assert list(rules) == ALERTS, "alert rules and ALERTS (shown on screen) must match"
     for flag, mask in rules.items():
         df[f"flag_{flag.lower().replace(' ', '_')}"] = mask
     df["flags"] = [[f for f, m in rules.items() if m.iloc[i]] for i in range(len(df))]
@@ -245,18 +260,20 @@ def add_rank(df: pd.DataFrame) -> pd.DataFrame:
 # =============================================================================
 def motion_for(quadrant: str, in_capacity: bool) -> str:
     """Engagement motion. Capacity only matters for the two high-touch motions."""
-    if quadrant == "FDE Deep Engagement":
-        return "Dedicated FDE engagement" if in_capacity else "FDE waitlist, Scaled SA Program meanwhile"
-    if quadrant == "Strategic Bet":
-        return "Targeted exec + SA discovery" if in_capacity else "Account team-led, SA on request"
-    if quadrant == "Scaled SA Program":
-        return "Scaled SA Program (pooled office hours and templates)"
-    return "Digital (docs, webinars, community)"
+    if quadrant == DEEP:
+        return ("SA leads design and the relationship; FDE builds with the customer's developers until the first production workload"
+                if in_capacity else "Waitlist for deep engagement; Scaled SA programs meanwhile")
+    if quadrant == BET:
+        return ("SA-led discovery with the account team; FDE only if a real project appears"
+                if in_capacity else "Account team leads; SA discovery on request")
+    if quadrant == SCALED:
+        return "SA office hours, workshops and reference architectures (no FDE)"
+    return "Docs, templates and alerts (no SA/FDE time)"
 
 
 def ps_tier_for(row: pd.Series) -> str | None:
     """Target buyers: Commit at Risk accounts first, then Strategic Bets."""
-    if not (row["flag_commit_at_risk"] or row["quadrant"] == "Strategic Bet"):
+    if not (row["flag_commit_at_risk"] or row["quadrant"] == BET):
         return None
     gap = row["unused_commit"]
     if gap < PS_ASSESS_BELOW:
@@ -270,7 +287,7 @@ def add_routing(df: pd.DataFrame) -> pd.DataFrame:
     # capacity get the same recovery work led directly by their FDE/SA.
     df["program"] = np.select(
         [df["flag_commit_at_risk"] & df["in_capacity"], df["flag_commit_at_risk"]],
-        ["FDE-led burn recovery", "Commit Burn Sprint"], default=None)
+        ["FDE-led catch-up plan", "Commit Burn Sprint"], default=None)
     df["ps_recommended_tier"] = df.apply(ps_tier_for, axis=1)
 
     # Randomly hold out a share of Sprint accounts. Random (not hand-picked) so
@@ -280,7 +297,7 @@ def add_routing(df: pd.DataFrame) -> pd.DataFrame:
     n_holdout = round(len(sprint_ids) * HOLDOUT_SHARE)
     holdout_ids = set(np.random.default_rng(SEED).choice(sprint_ids, size=n_holdout, replace=False))
     df["holdout"] = df["account_id"].isin(holdout_ids)
-    df.loc[df["holdout"], "program"] = "Holdout (measured, not enrolled)"
+    df.loc[df["holdout"], "program"] = "Comparison group (measured, not enrolled)"
     # URL-friendly id for links between pages, e.g. ?account=northwind-commerce
     df["slug"] = df["account_name"].str.lower().str.replace(r"[^a-z0-9]+", "-", regex=True).str.strip("-")
     assert df["slug"].is_unique, "Account slugs must be unique"
@@ -343,6 +360,7 @@ def export(df: pd.DataFrame) -> None:
                 "capacity_top_n": CAPACITY_TOP_N,
                 "commit_at_risk_max_pace": COMMIT_AT_RISK_MAX_PACE,
                 "commit_at_risk_min_elapsed": COMMIT_AT_RISK_MIN_ELAPSED,
+                "on_track_good": ON_TRACK_GOOD, "on_track_warn": ON_TRACK_WARN,
                 "usage_spike_recent_days": USAGE_SPIKE_RECENT_DAYS,
                 "usage_spike_baseline_days": USAGE_SPIKE_BASELINE_DAYS,
                 "renewal_window_days": RENEWAL_WINDOW_DAYS,
@@ -351,6 +369,9 @@ def export(df: pd.DataFrame) -> None:
                 "ps_assess_below": PS_ASSESS_BELOW, "ps_migrate_below": PS_MIGRATE_BELOW,
             },
             "featured": [FEATURED[q] for q in QUADRANTS.values()],
+            # Type-of-help names in fixed order: high/high, high/low, low/high, low/low.
+            "quadrants": list(QUADRANTS.values()),
+            "alerts": ALERTS,
             "signal_windows_days": {
                 "usage_growth": USAGE_GROWTH_WINDOW_DAYS,
                 "engagement": ENGAGEMENT_WINDOW_DAYS,
@@ -399,7 +420,7 @@ def main() -> None:
     print("\nQuadrants:\n" + df["quadrant"].value_counts().to_string())
     print(f"\nProgram: {df['program'].value_counts().to_dict()}")
     print("\nFlag counts:")
-    for f in ["Commit at Risk", "Renewal Window", "Usage Spike", "New Developers"]:
+    for f in ALERTS:
         print(f"  {f:16s} {df['flags'].apply(lambda x: f in x).sum()}")
 
     # Story checks: each featured account must land in its intended quadrant.

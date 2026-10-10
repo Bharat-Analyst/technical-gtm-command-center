@@ -8,7 +8,6 @@
   <link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
-  <div class="banner" role="note">Personal project, not affiliated with Cloudflare.</div>
   <header class="site-header">
     <div class="inner">
       <a class="brand" href="index.html">Technical GTM Command Center</a>
@@ -32,19 +31,18 @@
         <thead><tr>
           <th><span data-term="account">Account</span></th><th><span data-term="goal">Goal</span></th><th><span data-term="owner">Owner</span></th>
           <th><span data-term="status">Status</span></th><th><span data-term="blocker">Blocker</span></th><th><span data-term="next_step">Next step</span></th>
-          <th class="num"><span data-term="rank">Rank</span></th><th><span data-term="quadrant">Quadrant</span></th><th class="num"><span data-term="expected_value">Expected value</span></th>
+          <th class="num"><span data-term="rank">Rank</span></th><th><span data-term="quadrant">Type of help</span></th><th class="num"><span data-term="expected_value">Opportunity value</span></th>
         </tr></thead>
         <tbody id="tracker"></tbody>
       </table>
     </div>
-    <p class="howto"><strong>How to read this:</strong> one row per active engagement. Read across: what we're trying to achieve, who owns it, what's in the way, and what happens next. Rank, quadrant and expected value come straight from the scoring pipeline.</p>
+    <p class="howto"><strong>How to read this:</strong> one row per active engagement. Read across: what we're trying to achieve, who owns it, what's in the way, and what happens next. Rank, type of help and Opportunity value come straight from the scoring pipeline. Eight engagements are shown as examples; every account inside team capacity would have one.</p>
 
     <h2 id="onsite">Northwind Commerce onsite plan</h2>
     <p class="howto" style="margin:-4px 0 12px"><strong>How to read this:</strong> the plan follows one visit from intake to measurement, in the order the work happens.</p>
     <div id="onsite-plan"></div>
   </main>
 
-  <footer>All company and person names are fictional.</footer>
 
   <script src="assets/common.js"></script>
   <script src="assets/lifecycle.js"></script>
@@ -65,10 +63,10 @@
       const inTracker = eng.some((e) => e.account === selected.account_name);
       document.getElementById("selected").innerHTML = `
         <span class="responsibility" style="margin:0">Selected account</span>
-        <h3 style="font-size:18px">${GTM.esc(selected.account_name)} <span class="muted small" style="font-weight:400">${GTM.esc(selected.quadrant)} · rank #${selected.priority_rank}</span></h3>
+        <h3 style="font-size:18px">${GTM.esc(selected.account_name)} <span class="muted small" style="font-weight:400">${GTM.term(selected.quadrant)} · rank #${selected.priority_rank}</span></h3>
         <p style="margin:0">${GTM.esc(engageStep.sentence(selected))}</p>
         ${inTracker ? '<p class="small muted" style="margin:6px 0 0">Highlighted in the tracker below.</p>' : ""}
-        ${selected.account_name !== content.onsite.account ? `<p class="small muted" style="margin:6px 0 0">The onsite plan below is for ${GTM.esc(content.onsite.account)}; onsites are reserved for FDE Deep Engagement accounts.</p>` : ""}`;
+        ${selected.account_name !== content.onsite.account ? `<p class="small muted" style="margin:6px 0 0">The onsite plan below is for ${GTM.esc(content.onsite.account)}; onsites are reserved for ${GTM.esc(accounts.meta.quadrants[0])} accounts.</p>` : ""}`;
 
       // Status summary: shape + label, never color alone.
       const count = (s) => eng.filter((e) => e.status === s).length;
@@ -111,7 +109,7 @@
         </div>
         <div class="card metric" style="margin-top:12px">
           <h3><span class="muted">7.</span> Measurement: success metric</h3>
-          <p style="margin:0">${GTM.esc(o.success_metric)}</p>
+          <p style="margin:0">${GTM.esc(GTM.fill(o.success_metric))}</p>
         </div>`;
       GTM.scrollToHash();
     })();

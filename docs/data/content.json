@@ -2,7 +2,7 @@
   "engagements": [
     {
       "account": "Northwind Commerce",
-      "goal": "Move checkout personalization to Workers; recover commit burn",
+      "goal": "Move checkout personalization to Workers; get back on track with commit",
       "owner": "FDE: Priya Raman / SA: Marcus Lee",
       "status": "yellow",
       "blocker": "Migration stalled on legacy checkout dependencies",
@@ -67,7 +67,7 @@
   ],
   "onsite": {
     "account": "Northwind Commerce",
-    "intake": "VP Engineering asked for help after the checkout migration stalled; qualified because it is FDE Deep Engagement and Commit at Risk.",
+    "intake": "VP Engineering asked for help after the checkout migration stalled; qualified because it is Deep engagement (SA + FDE) and Commit at Risk.",
     "goal": "Agree a plan to move checkout personalization to Workers within 60 days",
     "date": "Oct 21, 2026 (full day, customer HQ)",
     "execution": "Full day at customer HQ: morning design, afternoon hands-on build, exec readout at 16:00.",
@@ -94,7 +94,7 @@
       ]
     },
     "prep_checklist": [
-      "Review usage telemetry and commit burn trend",
+      "Review product usage and On-track % trend",
       "Get current checkout architecture diagram from customer",
       "Build a working demo of edge personalization",
       "Confirm decision makers attend the exec readout",
@@ -104,23 +104,23 @@
       "Send written migration plan within 48 hours",
       "Weekly FDE build session for 6 weeks",
       "Propose Workers Migration Accelerator (Migrate tier)",
-      "30-day checkpoint on commit burn pace"
+      "30-day checkpoint on On-track %"
     ],
-    "success_metric": "Personalization live on Workers for 25% of checkout traffic in 60 days; commit burn pace back above 90%"
+    "success_metric": "Personalization live on Workers for 25% of checkout traffic in 60 days; On-track % back to {on_track_good}+"
   },
   "program": {
     "name": "Commit Burn Sprint",
-    "trigger": "Commit at Risk flag: 25%+ into contract and consuming less than 70% of expected pace",
-    "owner": "Scaled SA team (pooled), with FDE escalation for top-30 accounts",
+    "trigger": "Commit at Risk alert: {car_min_elapsed}+ into the contract and On-track % below {car_pace}",
+    "owner": "Scaled SA team (pooled), with FDE escalation for accounts inside team capacity",
     "cadence": "6-week sprint: kickoff, weekly 30-min office hours, week-6 review",
     "steps": [
       "Auto-enroll flagged accounts weekly from Salesforce",
       "Diagnose: find the stalled workload from usage data",
       "Kickoff call: agree one workload to move in 6 weeks",
       "Weekly office hours + reusable migration templates",
-      "Week 6: review burn pace; exit or escalate to FDE/PS offer"
+      "Week 6: review On-track %; exit or escalate to FDE/PS offer"
     ],
-    "success_metric": "60% of enrolled accounts back above 90% burn pace within 90 days",
+    "success_metric": "60% of enrolled accounts back to On track ({on_track_good}+ On-track %) within 90 days",
     "eligible_accounts": 45,
     "eligible_outside_capacity": 40,
     "handoff": {
@@ -163,8 +163,7 @@
       }
     ],
     "business_case_notes": [
-      "Prices are indicative, for illustration only.",
-      "Pull-through = extra annual platform consumption after the migration.",
+      "Usage pull-through = extra yearly platform usage after the migration.",
       "Target buyers: Commit at Risk accounts first, then Strategic Bets."
     ]
   }

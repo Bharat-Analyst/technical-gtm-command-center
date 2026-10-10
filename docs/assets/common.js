@@ -10,7 +10,6 @@ const PAGES = [
   { file: "engagement.html", nav: "Engagement", role: "Engagement and onsite" },
   { file: "programs.html", nav: "Programs & PS", role: "Programs and PS offer" },
   { file: "executive.html", nav: "Executive", role: "Executive view" },
-  { file: "methodology.html", nav: "Methodology", role: "Methodology" },
   { file: "decisions.html", nav: "Decision Log", role: "Decision log" },
 ];
 
@@ -51,6 +50,9 @@ const GTM = {
       w_usage: GTM.pct(w.usage_growth), w_newdev: GTM.pct(w.new_developers), w_eng: GTM.pct(w.engagement), w_burn: GTM.pct(w.commit_burn),
       win_usage: win.usage_growth, win_eng: win.engagement, win_newdev: win.new_developers,
       holdout_share: GTM.pct(m.holdout_share),
+      car_min_elapsed: GTM.pct(t.commit_at_risk_min_elapsed),
+      spike_recent: t.usage_spike_recent_days, spike_baseline: t.usage_spike_baseline_days,
+      on_track_good: GTM.pct(t.on_track_good), on_track_warn: GTM.pct(t.on_track_warn),
     };
   },
 
@@ -151,6 +153,26 @@ const GTM = {
     return `${(x * 100).toFixed(digits)}%`;
   },
 
+  // On-track % (burn pace) always comes with its status band and a link to the
+  // assumption behind the bands.
+  onTrackStatus(pace) {
+    const t = GTM.data.accounts.meta.thresholds;
+    const [cls, label] = pace >= t.on_track_good ? ["green", "On track"]
+      : pace >= t.on_track_warn ? ["yellow", "Slightly behind"] : ["red", "Behind"];
+    return `<span class="chip status status-${cls}"><span class="dot" aria-hidden="true"></span>${label}</span>`;
+  },
+  onTrack(a, withWhy = true) {
+    return `${GTM.pct(a.burn_pace)} ${GTM.onTrackStatus(a.burn_pace)}${withWhy ? GTM.why("on-track-bands") : ""}`;
+  },
+
+  // Straight-line On-track % assumes even spending all year. Seasonal
+  // industries (retail peaks in Q4) can look further behind than they are.
+  SEASONAL_INDUSTRIES: ["Retail & eCommerce"],
+  seasonalNote(a) {
+    if (!GTM.SEASONAL_INDUSTRIES.includes(a.industry)) return "";
+    return `<p class="note">Seasonality: On-track % assumes even spending all year, so it can overstate risk for retail, where spend peaks in Q4. Possibly we can adjust it using spending curves from similar customers.</p>`;
+  },
+
   // Pool of funds is always shown with its breakdown.
   poolBreakdown(a) {
     return `${GTM.usd(a.unused_commit)} unused commit + ${GTM.usd(a.open_pipeline_usd)} open pipeline`;
@@ -161,7 +183,7 @@ const GTM = {
     return String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
   },
 
-  // Chips for flags / quadrants; each known term gets its ⓘ.
+  // Chips for alerts / types of help; each known term gets its ⓘ.
   chips(items) {
     return items.map((t) => `<span class="chip">${GTM.term(t)}</span>`).join("");
   },

@@ -109,9 +109,9 @@ def run() -> None:
         # --- 5. Flags and quadrant follow the published thresholds ---------
         flags = {
             "Commit at Risk": elapsed >= t["commit_at_risk_min_elapsed"] and a["burn_pace"] < t["commit_at_risk_max_pace"],
-            "Renewal Window": 0 <= days_to_renewal <= t["renewal_window_days"],
+            "Days to renewal": 0 <= days_to_renewal <= t["renewal_window_days"],
             "Usage Spike": a["usage_spike_ratio"] >= t["usage_spike_ratio"] - 0.005,
-            "New Developers": a["new_developers_30d"] >= t["new_developers_min"],
+            "New builders": a["new_developers_30d"] >= t["new_developers_min"],
         }
         for f, on in flags.items():
             # Burn pace and spike ratio are rounded in the JSON; skip borderline cases.
@@ -121,8 +121,8 @@ def run() -> None:
                 check(on == (f in a["flags"]), f"{name}: flag '{f}' should be {'on' if on else 'off'}")
         high_score = a["propensity_score"] >= t["score_high"]
         high_value = a["pool_of_funds"] >= t["pool_of_funds_high"]
-        want_q = {(True, True): "FDE Deep Engagement", (True, False): "Scaled SA Program",
-                  (False, True): "Strategic Bet", (False, False): "Digital"}[(high_score, high_value)]
+        q = meta["quadrants"]  # [high/high, high/low, low/high, low/low]
+        want_q = {(True, True): q[0], (True, False): q[1], (False, True): q[2], (False, False): q[3]}[(high_score, high_value)]
         check(a["quadrant"] == want_q, f"{name}: quadrant {a['quadrant']} but thresholds give {want_q}")
 
         # --- 6a. Salesforce write-back agrees with the site JSON -----------
@@ -174,19 +174,19 @@ def print_northwind(a: dict) -> None:
         ("% of commit used", "consumed ÷ commit", f"{a['commit_consumed_usd'] / a['annual_commit_usd']:.1%}"),
         ("% of contract elapsed", "days elapsed ÷ term days", f"{a['contract_elapsed_share']:.0%}"),
         ("Days to renewal", "contract end − as-of date", f"{a['days_to_renewal']}"),
-        ("Burn pace", "% used ÷ % elapsed", f"{a['burn_pace']:.0%}"),
-        ("Burn rate (monthly)", "consumed ÷ months elapsed", usd(a["burn_rate_monthly"])),
+        ("On-track %", "% used ÷ % elapsed", f"{a['burn_pace']:.0%}"),
+        ("Monthly spend", "consumed ÷ months elapsed", usd(a["burn_rate_monthly"])),
         ("Expected consumed to date", "commit × % elapsed", usd(a["expected_consumed_to_date"])),
-        ("Behind pace amount", "expected − consumed", usd(a["behind_pace_amount"])),
+        ("Behind by", "expected − consumed", usd(a["behind_pace_amount"])),
         ("Unused commit", "commit − consumed", usd(a["unused_commit"])),
-        ("Required monthly burn", "unused ÷ months to renewal", usd(a["required_monthly_burn"])),
+        ("Needed monthly spend", "unused ÷ months to renewal", usd(a["required_monthly_burn"])),
         ("Open pipeline", "from Salesforce", usd(a["open_pipeline_usd"])),
         ("Pool of funds", "unused commit + open pipeline", usd(a["pool_of_funds"])),
         ("Propensity score", "weighted percentile scorecard", f"{a['propensity_score']}/100"),
-        ("Expected value", "score ÷ 100 × pool of funds", usd(a["expected_value_usd"])),
-        ("New developers (30 days)", "from usage telemetry", f"{a['new_developers_30d']}"),
-        ("Flags", "thresholds in decision log", ", ".join(a["flags"]) or "none"),
-        ("Quadrant", "score ≥ cut-off × pool ≥ cut-off", a["quadrant"]),
+        ("Opportunity value", "score ÷ 100 × pool of funds", usd(a["expected_value_usd"])),
+        ("New builders (30 days)", "from usage telemetry", f"{a['new_developers_30d']}"),
+        ("Alerts", "thresholds in decision log", ", ".join(a["flags"]) or "none"),
+        ("Type of help", "score ≥ cut-off × pool ≥ cut-off", a["quadrant"]),
     ]
     print("\nNorthwind Commerce check")
     print(f"  {'Measure':28s} {'Formula':32s} Result")

@@ -4,12 +4,11 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Executive View</title>
-  <meta name="description" content="Leadership view: money in play, coverage, engagement health, account propensity and the holdout plan for proving ROI.">
+  <meta name="description" content="Leadership view: money in play, coverage, engagement health, account propensity and the comparison-group plan for proving ROI.">
   <link rel="stylesheet" href="assets/style.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/plotly.js/2.35.3/plotly.min.js"></script>
 </head>
 <body>
-  <div class="banner" role="note">Personal project, not affiliated with Cloudflare.</div>
   <header class="site-header">
     <div class="inner">
       <a class="brand" href="index.html">Technical GTM Command Center</a>
@@ -23,30 +22,29 @@
     <p class="lede">This page shows what leadership could see each week: money in play, how much of it the team covers, engagement health, and how we plan to prove ROI.</p>
 
     <div class="grid grid-4" id="kpis"></div>
-    <p class="howto"><strong>How to read this:</strong> four numbers for a weekly review. Money in play is the total opportunity; coverage shows how much of it current headcount reaches. <span id="why-kpis"></span></p>
+    <p class="howto"><strong>How to read this:</strong> four numbers for a weekly review. Money in play is the total opportunity; coverage shows how much of it current team capacity reaches. <span id="why-kpis"></span></p>
 
-    <h2>Where the money is, by quadrant</h2>
+    <h2>Where the money is, by type of help</h2>
     <div class="card">
-      <div id="bars" class="chart" style="height:320px" role="img" aria-label="Stacked bar chart of pool of funds by quadrant, split into unused commit and open pipeline. The table below lists the values."></div>
-      <p class="howto"><strong>How to read this:</strong> longer bars mean more money to unlock in that quadrant. Each bar splits into unused commit (protects renewals) and open pipeline (new revenue). <span id="why-bars"></span></p>
+      <div id="bars" class="chart" style="height:320px" role="img" aria-label="Stacked bar chart of Pool of funds by type of help, split into unused commit and open pipeline. The table below lists the values."></div>
+      <p class="howto"><strong>How to read this:</strong> longer bars mean more money to unlock with that type of help. Each bar splits into unused commit (protects renewals) and open pipeline (new revenue). <span id="why-bars"></span></p>
     </div>
     <div class="table-wrap" style="margin-top:12px">
       <table>
         <thead><tr>
-          <th><span data-term="quadrant">Quadrant</span></th><th class="num"><span data-term="accounts_count">Accounts</span></th>
-          <th class="num"><span data-term="pool_of_funds">Pool of funds</span></th><th class="num"><span data-term="expected_value">Expected value</span></th>
-          <th class="num"><span data-term="capacity">In capacity</span></th><th><span data-term="motion">Motion</span></th>
+          <th><span data-term="quadrant">Type of help</span></th><th class="num"><span data-term="accounts_count">Accounts</span></th>
+          <th class="num"><span data-term="pool_of_funds">Pool of funds</span></th><th class="num"><span data-term="expected_value">Opportunity value</span></th>
+          <th class="num"><span data-term="capacity">Inside team capacity</span></th><th><span data-term="motion">Help plan</span></th>
         </tr></thead>
         <tbody id="quadrant-rows"></tbody>
       </table>
     </div>
-    <p class="howto"><strong>How to read this:</strong> the same numbers as the chart, plus how many accounts in each quadrant get dedicated help today.</p>
+    <p class="howto"><strong>How to read this:</strong> the same numbers as the chart, plus how many accounts of each type get dedicated help today.</p>
 
-    <h2 id="measure">Measure and learn: proving ROI with a holdout</h2>
+    <h2 id="measure">Measure and learn: proving ROI with a comparison group</h2>
     <div class="card" id="measure-body"></div>
   </main>
 
-  <footer>All company and person names are fictional.</footer>
 
   <script src="assets/common.js"></script>
   <script>
@@ -77,7 +75,7 @@
         card(GTM.term("money_in_play"), GTM.usd(sum(all, "pool_of_funds")),
           `${GTM.usd(sum(all, "unused_commit"))} unused commit + ${GTM.usd(sum(all, "open_pipeline_usd"))} open pipeline`),
         card(GTM.term("ev_covered", "Coverage"), GTM.pct(evCovered / evTotal),
-          `of expected value (${GTM.usd(evCovered)}) reached by covering the top ${t.capacity_top_n} of ${all.length} accounts`),
+          `of Opportunity value (${GTM.usd(evCovered)}) reached by covering the top ${t.capacity_top_n} of ${all.length} accounts`),
         card(GTM.term("engagement_health"), `${health("green")} of ${eng.length}`,
           `on track · ${health("yellow")} at risk · ${health("red")} blocked`),
         card(GTM.term("propensity_score", "High-propensity accounts"), highProp.length,
@@ -85,7 +83,9 @@
       ].join("");
 
       // ---------- Pool of funds by quadrant ----------
-      const quadrants = ["FDE Deep Engagement", "Strategic Bet", "Scaled SA Program", "Digital"];
+      // Order bars by dedicated help first: deep, bet, scaled, digital.
+      const [qDeep, qScaled, qBet, qDigital] = accounts.meta.quadrants;
+      const quadrants = [qDeep, qBet, qScaled, qDigital];
       const byQ = quadrants.map((q) => {
         const rows = all.filter((a) => a.quadrant === q);
         return {
@@ -133,13 +133,13 @@
       // ---------- Measure and learn: holdout ----------
       // Baseline check: enrolled and holdout groups should look alike *before*
       // the program starts; that's what makes the later comparison fair.
-      const enrolled = all.filter((a) => a.program === "Commit Burn Sprint");
+      const enrolled = all.filter((a) => a.program === content.program.name);
       const holdout = all.filter((a) => a.holdout);
       const avg = (rows, k) => rows.length ? sum(rows, k) / rows.length : 0;
       // Small random groups can differ by chance; say so rather than hide it.
       const paceGap = Math.abs(avg(enrolled, "burn_pace") - avg(holdout, "burn_pace"));
       const gapNote = paceGap >= 0.05
-        ? ` Today they differ by ${GTM.pct(paceGap)} in burn pace, which is normal with only ${holdout.length} holdout accounts; possibly we can match the groups on burn pace before splitting them.`
+        ? ` Today their average On-track % differs by ${GTM.pct(paceGap)}, which is normal with only ${holdout.length} accounts in the comparison group; possibly we can match the groups on On-track % before splitting them.`
         : "";
       const row = (label, rows) => `<tr>
         <td>${label}</td><td class="num">${rows.length}</td>
@@ -150,17 +150,17 @@
         <p style="margin:0 0 10px">${GTM.fill("{holdout_share}")} of ${content.program.name} accounts are picked at random and measured, but not enrolled. ${GTM.why("holdout")}</p>
         <div class="table-wrap">
           <table>
-            <thead><tr><th>${GTM.term("group")}</th><th class="num">${GTM.term("accounts_count")}</th><th class="num">${GTM.term("burn_pace", "Avg burn pace today")}</th>
+            <thead><tr><th>${GTM.term("group")}</th><th class="num">${GTM.term("accounts_count")}</th><th class="num">${GTM.term("burn_pace", "Avg On-track % today")}</th>
               <th class="num">${GTM.term("unused_commit", "Avg unused commit")}</th><th class="num">${GTM.term("unused_commit", "Total unused commit")}</th></tr></thead>
             <tbody>${row(GTM.term("treated"), enrolled)}${row(GTM.term("holdout"), holdout)}</tbody>
           </table>
         </div>
         <p class="howto"><strong>How to read this:</strong> the two groups should look alike today, so any gap that opens up later is the program's effect, not luck.${gapNote}</p>
         <dl class="facts" style="grid-template-columns:1fr">
-          <div><dt>How ROI gets calculated</dt><dd style="font-weight:400">Lift = enrolled accounts' burn-pace recovery minus the holdout's, after one sprint cycle. ROI = lift × enrolled unused commit ÷ SA time spent.</dd></div>
+          <div><dt>How ROI gets calculated</dt><dd style="font-weight:400">Impact = how much enrolled accounts' On-track % improves minus how much the comparison group's improves, after one sprint cycle. ROI = impact × enrolled unused commit ÷ SA time spent.</dd></div>
           <div><dt>Status</dt><dd style="font-weight:400">Waiting on outcomes. This snapshot has no after-period data yet, so no ROI is reported.</dd></div>
         </dl>
-        <p class="small" style="margin:12px 0 0">Once lift is proven, the program moves to a long-term owner: see <a href="programs.html#handoff">Hand off to an owner</a>.</p>`;
+        <p class="small" style="margin:12px 0 0">Once impact is proven, the program moves to a long-term owner: see <a href="programs.html#handoff">Hand off to an owner</a>.</p>`;
 
       GTM.scrollToHash();
     })();

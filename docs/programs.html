@@ -8,7 +8,6 @@
   <link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
-  <div class="banner" role="note">Personal project, not affiliated with Cloudflare.</div>
   <header class="site-header">
     <div class="inner">
       <a class="brand" href="index.html">Technical GTM Command Center</a>
@@ -33,7 +32,6 @@
     <div id="handoff-body"></div>
   </main>
 
-  <footer>Prices are indicative and for illustration only.</footer>
 
   <script src="assets/common.js"></script>
   <script src="assets/lifecycle.js"></script>
@@ -53,13 +51,14 @@
       const programStep = LIFECYCLE.steps({ accounts, content })[6]; // "Program & PS Offer"
       document.getElementById("selected").innerHTML = `
         <span class="responsibility" style="margin:0">Selected account</span>
-        <h3 style="font-size:18px">${GTM.esc(selected.account_name)} <span class="muted small" style="font-weight:400">${GTM.esc(selected.quadrant)} · rank #${selected.priority_rank}</span></h3>
-        <p style="margin:0">${GTM.esc(programStep.sentence(selected))}</p>`;
+        <h3 style="font-size:18px">${GTM.esc(selected.account_name)} <span class="muted small" style="font-weight:400">${GTM.term(selected.quadrant)} · rank #${selected.priority_rank}</span></h3>
+        <p style="margin:0">${GTM.esc(programStep.sentence(selected))}</p>
+        ${GTM.seasonalNote(selected)}`;
       const list = (items, tag = "ul") => `<${tag} class="tight">${items.map((i) => `<li>${GTM.esc(i)}</li>`).join("")}</${tag}>`;
       const kpi = (label, value, sub) => `<div class="card kpi"><div class="label">${label}</div><div class="value">${value}</div><div class="sub">${sub}</div></div>`;
       const howto = (text) => `<p class="howto"><strong>How to read this:</strong> ${text}</p>`;
 
-      // Largest eligible accounts by unconsumed commit — the first enrollment wave.
+      // Largest eligible accounts by unused commit — the first enrollment wave.
       const eligible = all
         .filter((a) => a.flags.includes("Commit at Risk"))
         .sort((a, b) => b.unused_commit - a.unused_commit);
@@ -68,22 +67,22 @@
       document.getElementById("program-title").textContent = `Program playbook: ${p.name}`;
       document.getElementById("program").innerHTML = `
         <div class="grid grid-3" style="margin-bottom:4px">
-          ${kpi("Eligible accounts today", p.eligible_accounts, `triggered by the ${GTM.term("commit_at_risk")} flag ${GTM.why("flags")}`)}
-          ${kpi("Outside FDE capacity", p.eligible_outside_capacity, `only reachable through a scaled program; ${holdoutCount} held out to measure impact ${GTM.why("holdout")}`)}
+          ${kpi("Eligible accounts today", p.eligible_accounts, `triggered by the ${GTM.term("commit_at_risk")} alert ${GTM.why("flags")}`)}
+          ${kpi(`Outside ${GTM.term("capacity", "team capacity")}`, p.eligible_outside_capacity, `only reachable through a scaled program; ${holdoutCount} in the comparison group to measure impact ${GTM.why("holdout")}`)}
           ${kpi(GTM.term("unused_commit", "Unused commit at stake"), GTM.usd(p.eligible_unused_commit), "across eligible accounts")}
         </div>
-        ${howto("the program finds its own customers: every account with the Commit at Risk flag qualifies, and most of them are beyond what FDEs alone can reach.")}
+        ${howto("the program finds its own customers: every account with the Commit at Risk alert qualifies, and most of them are beyond what the team can cover one-to-one.")}
         <div class="grid grid-2" style="margin-top:12px">
           <div class="card">
             <dl class="step-panel" style="margin:0">
-              <dt>Trigger</dt><dd style="margin:2px 0 12px">${GTM.esc(p.trigger)}</dd>
+              <dt>Trigger</dt><dd style="margin:2px 0 12px">${GTM.esc(GTM.fill(p.trigger))}${GTM.why("flags")}</dd>
               <dt>Owner</dt><dd style="margin:2px 0 12px">${GTM.esc(p.owner)}</dd>
               <dt>Cadence</dt><dd style="margin:2px 0 0">${GTM.esc(p.cadence)}</dd>
             </dl>
           </div>
           <div class="card"><h3>Steps</h3>${list(p.steps, "ol")}</div>
         </div>
-        <div class="card metric" style="margin-top:12px"><h3>Success metric</h3><p style="margin:0">${GTM.esc(p.success_metric)}</p></div>
+        <div class="card metric" style="margin-top:12px"><h3>Success metric</h3><p style="margin:0">${GTM.esc(GTM.fill(p.success_metric))}</p></div>
         <h3 style="margin-top:20px">First enrollment wave: top 10 eligible by unused commit</h3>
         <div class="table-wrap">
           <table>
@@ -94,14 +93,14 @@
             <tbody>${eligible.slice(0, 10).map((a) => `
               <tr class="${a.slug === selected.slug ? "is-selected" : ""}">
                 <td><strong>${GTM.esc(a.account_name)}</strong></td><td>${GTM.esc(a.segment)}</td>
-                <td class="num">${GTM.pct(a.burn_pace)}</td><td class="num">${GTM.usd(a.unused_commit)}</td>
+                <td class="num">${GTM.onTrack(a, false)}</td><td class="num">${GTM.usd(a.unused_commit)}</td>
                 <td class="num">${a.days_to_renewal}</td>
                 <td>${GTM.esc(a.program)}</td>
               </tr>`).join("")}
             </tbody>
           </table>
         </div>
-        ${howto(`the biggest unused commits go first. A lower burn pace means further behind schedule; accounts marked Holdout are measured but not enrolled. ${GTM.why("holdout")}`)}`;
+        ${howto(`the biggest unused commits go first. A lower On-track % means further behind schedule; accounts in the comparison group are measured but not enrolled. Retail accounts may look further behind than they are because of Q4 seasonality. ${GTM.why("on-track-bands")}${GTM.why("holdout")}`)}`;
 
       // ---------- PS offer + business case (computed from content.json inputs) ----------
       const o = content.ps_offer;

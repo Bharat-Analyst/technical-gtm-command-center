@@ -123,7 +123,10 @@ def run() -> None:
         high_value = a["pool_of_funds"] >= t["pool_of_funds_high"]
         q = meta["quadrants"]  # [high/high, high/low, low/high, low/low]
         want_q = {(True, True): q[0], (True, False): q[1], (False, True): q[2], (False, False): q[3]}[(high_score, high_value)]
-        check(a["quadrant"] == want_q, f"{name}: quadrant {a['quadrant']} but thresholds give {want_q}")
+        check(a["model_quadrant"] == want_q, f"{name}: scorecard type of help {a['model_quadrant']} but thresholds give {want_q}")
+        # A different final type of help is only allowed with a logged override reason.
+        check(a["quadrant"] == a["model_quadrant"] or bool(a["override_reason"]),
+              f"{name}: type of help changed to {a['quadrant']} without a logged override reason")
 
         # --- 6a. Salesforce write-back agrees with the site JSON -----------
         w = writeback.loc[a["account_id"]]

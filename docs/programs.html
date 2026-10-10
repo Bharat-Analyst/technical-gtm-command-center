@@ -30,6 +30,7 @@
 
     <h2 id="handoff">Hand off to an owner</h2>
     <div id="handoff-body"></div>
+    <div data-faq="handoff"></div>
   </main>
 
 
@@ -100,7 +101,8 @@
             </tbody>
           </table>
         </div>
-        ${howto(`the biggest unused commits go first. A lower On-track % means further behind schedule; accounts in the comparison group are measured but not enrolled. Retail accounts may look further behind than they are because of Q4 seasonality. ${GTM.why("on-track-bands")}${GTM.why("holdout")}`)}`;
+        ${howto(`the biggest unused commits go first. A lower On-track % means further behind schedule; accounts in the comparison group are measured but not enrolled. Retail accounts may look further behind than they are because of Q4 seasonality. ${GTM.why("on-track-bands")}${GTM.why("holdout")}`)}
+        ${GTM.faqMini(["commit-burn"])}`;
 
       // ---------- PS offer + business case (computed from content.json inputs) ----------
       const o = content.ps_offer;
@@ -144,7 +146,7 @@
         <div class="card">
           <p style="margin:0 0 8px">${GTM.esc(h.owner)}</p>
           <h3>Ready to hand off when</h3>${list(h.ready_when)}
-          <p class="small" style="margin:10px 0 0">Proof comes from the holdout comparison on the <a href="executive.html#measure">Executive view</a>. ${GTM.why("holdout")}</p>
+          <p class="small" style="margin:10px 0 0">Proof comes from the comparison group on the <a href="executive.html#measure">Executive view</a>. ${GTM.why("holdout")}</p>
         </div>`;
 
       GTM.decorateTerms(document);

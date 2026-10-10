@@ -30,6 +30,7 @@
         <span id="why-capacity"></span>
       </div>
       <p class="howto"><strong>How to read this:</strong> drag to change how many accounts the team can cover. The cards, chart and table update to show what a bigger (or smaller) team would reach.</p>
+      <div data-faq="capacity"></div>
     </div>
 
     <section class="card callout" id="selected" style="margin-bottom:12px"></section>
@@ -40,6 +41,7 @@
     <div class="card" id="matrix">
       <div id="scatter" class="chart" role="img" aria-label="Scatter plot of Propensity score versus Pool of funds for every account, split into four types of help. The selected account is highlighted."></div>
       <p class="howto"><strong>How to read this:</strong> each dot is an account. Further right = more likely to grow; higher = more money to unlock (log scale). Dashed lines split the four types of help; blue dots fit current team capacity. <span id="why-matrix"></span></p>
+      <div data-faq="score-wrong"></div>
     </div>
 
     <h2>Ranked accounts</h2>
@@ -72,6 +74,7 @@
       </table>
     </div>
     <p class="howto"><strong>How to read this:</strong> accounts are sorted by Opportunity value, so the top rows are worth the most time. Pool of funds shows its breakdown underneath; the reasons say why each score is high or low. <span id="why-table"></span></p>
+    <div data-faq="propensity"></div>
     <p class="small" style="display:flex;gap:12px;align-items:center;flex-wrap:wrap">
       <span class="muted" id="row-count"></span>
       <button class="btn" id="more" type="button">Show 50 more</button>
@@ -133,6 +136,7 @@
         <p class="small" style="margin:12px 0 4px"><strong>${GTM.term("top_reasons")}:</strong> ${a.top_reasons.map(GTM.esc).join(" · ")}${GTM.why("weights")}${GTM.why("windows")}</p>
         <p class="small" style="margin:0"><strong>${GTM.term("motion")}:</strong> ${GTM.esc(a.motion)}</p>
         <p class="small" style="margin:4px 0 0">${GTM.why("on-track-bands")}</p>
+        ${GTM.whyThisAccountBox(a)}
         ${GTM.seasonalNote(a)}`;
 
       // ---------- KPI cards (react to the capacity slider) ----------

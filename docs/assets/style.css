@@ -302,11 +302,33 @@ ul.tight li, ol.tight li { margin: 3px 0; }
 .howto strong { color: var(--text); font-weight: 600; }
 .why { font-size: 12px; font-weight: 600; margin-left: 6px; white-space: nowrap; }
 .breakdown { display: block; font-size: 11.5px; color: var(--muted); font-weight: 400; white-space: nowrap; }
+.facts .breakdown, .kpi .breakdown { white-space: normal; }
 
 /* Decision log: highlight the entry a "Why?" link points to */
 article:target { outline: 2px solid var(--accent); outline-offset: 2px; }
 
 .note { font-size: 12.5px; color: var(--text-2); background: var(--surface-2); border-radius: 6px; padding: 6px 10px; margin: 8px 0 0; }
+
+/* Small "?" questions next to charts and tables */
+.faq-mini { margin: 10px 0 0; display: grid; gap: 4px; }
+.faq-mini details { font-size: 13px; border: 1px solid var(--border); border-radius: 8px; background: var(--surface); }
+.faq-mini summary { cursor: pointer; padding: 6px 10px; color: var(--text-2); list-style: none; display: flex; gap: 8px; align-items: baseline; }
+.faq-mini summary::-webkit-details-marker { display: none; }
+.faq-mini summary:hover { color: var(--text); }
+.faq-mini details[open] summary { color: var(--text); font-weight: 600; }
+.faq-mini p { margin: 0; padding: 0 10px 8px 34px; color: var(--text-2); line-height: 1.5; }
+.q-mark {
+  flex: none; width: 16px; height: 16px; border-radius: 50%; font-size: 11px; font-weight: 700; line-height: 16px; text-align: center;
+  background: color-mix(in srgb, var(--accent) 16%, transparent); color: var(--accent);
+}
+.why-account { margin: 12px 0 0; padding: 10px 12px; border-radius: 8px; background: color-mix(in srgb, var(--highlight) 9%, var(--surface)); font-size: 14px; line-height: 1.55; }
+
+/* Questions page */
+.faq-group h2 { margin-top: 28px; }
+.faq-full details { border: 1px solid var(--border); border-radius: 8px; background: var(--surface); margin-bottom: 6px; }
+.faq-full summary { cursor: pointer; padding: 10px 14px; font-weight: 600; }
+.faq-full details > div { padding: 0 14px 12px; color: var(--text-2); }
+.faq-full details:target { outline: 2px solid var(--accent); }
 
 footer { max-width: 1120px; margin: 0 auto; padding: 0 16px 32px; font-size: 12px; color: var(--muted); }
 

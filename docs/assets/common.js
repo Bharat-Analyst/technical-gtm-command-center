@@ -11,6 +11,7 @@ const PAGES = [
   { file: "programs.html", nav: "Programs & PS", role: "Programs and PS offer" },
   { file: "executive.html", nav: "Executive", role: "Executive view" },
   { file: "decisions.html", nav: "Decision Log", role: "Decision log" },
+  { file: "questions.html", nav: "Questions", role: "Questions" },
 ];
 
 const GTM = {
@@ -27,12 +28,13 @@ const GTM = {
   // static ⓘ terms. Returns the loaded data.
   async init(pageFile) {
     GTM.renderNav(pageFile);
-    const [accounts, content, glossary, jd, decisions] = await Promise.all(
-      ["accounts", "content", "glossary", "jd_mapping", "decisions"].map(GTM.load));
+    const [accounts, content, glossary, jd, decisions, faq] = await Promise.all(
+      ["accounts", "content", "glossary", "jd_mapping", "decisions", "faq"].map(GTM.load));
     const vars = GTM.metaVars(accounts);
-    GTM.data = { accounts, content, glossary, jd, decisions, vars };
+    GTM.data = { accounts, content, glossary, jd, decisions, faq, vars };
     GTM._byLabel = Object.fromEntries(Object.entries(glossary).filter(([k]) => !k.startsWith("_")).map(([k, g]) => [g.label, k]));
     GTM.decorateTerms(document);
+    GTM.renderFaqSlots(document);
     GTM.setupTooltips();
     return GTM.data;
   },
@@ -131,6 +133,52 @@ const GTM = {
     });
     document.addEventListener("keydown", (e) => { if (e.key === "Escape") hide(); });
     window.addEventListener("scroll", hide, { passive: true });
+  },
+
+  // ---------- Questions (faq.json) ----------
+  // Small expandable "?" items placed next to the chart or table they explain.
+  faqMini(ids) {
+    const items = ids.map((id) => GTM.data.faq.find((q) => q.id === id)).filter(Boolean);
+    return `<div class="faq-mini">${items.map((q) => `
+      <details><summary><span class="q-mark" aria-hidden="true">?</span>${GTM.esc(q.question)}</summary>
+        <p>${GTM.esc(GTM.fill(q.answer))} <a href="questions.html#${q.id}">All questions</a></p>
+      </details>`).join("")}</div>`;
+  },
+  // Fill every element marked <div data-faq="id1,id2"></div>.
+  renderFaqSlots(root = document) {
+    root.querySelectorAll("[data-faq]").forEach((el) => { el.outerHTML = GTM.faqMini(el.dataset.faq.split(",")); });
+  },
+
+  // ---------- "Why this account?" ----------
+  // One plain-English summary built from the account's real data, worded
+  // differently for each type of help.
+  whyThisAccount(a) {
+    const m = GTM.data.accounts.meta, win = m.signal_windows_days.new_developers;
+    const [DEEP, SCALED, BET] = m.quadrants;
+    const usd = GTM.usd, pct = GTM.pct;
+    const used = pct(a.commit_consumed_usd / a.annual_commit_usd), passed = pct(a.contract_elapsed_share);
+    const builders = `${a.new_developers_30d} new builder${a.new_developers_30d === 1 ? "" : "s"} in ${win} days`;
+    const usage = `${used} of its ${usd(a.annual_commit_usd)} commit used with ${passed} of the year passed`;
+    const alerts = a.flags.length ? ` and alerts for ${a.flags.join(" and ")}` : "";
+    let text;
+    if (a.quadrant === DEEP) {
+      text = `${a.account_name} gets ${DEEP}: it has ${usage}, renews in ${a.days_to_renewal} days, and has ${builders}. ` +
+        `With a ${usd(a.pool_of_funds)} Pool of funds${alerts}, an SA leading the design and an FDE building alongside its developers is the fastest way to unlock it.`;
+    } else if (a.quadrant === SCALED) {
+      text = `${a.account_name} gets ${SCALED}: its growth signals are strong (${builders}; ${usage}), ` +
+        `but its ${usd(a.pool_of_funds)} Pool of funds is too small for dedicated SA/FDE time. Office hours, workshops and reference architectures can help it grow at low cost.`;
+    } else if (a.quadrant === BET) {
+      text = `${a.account_name} is a ${BET}: a ${usd(a.pool_of_funds)} Pool of funds is at stake (${usd(a.unused_commit)} unused commit, renewal in ${a.days_to_renewal} days), ` +
+        `but its signals are weak (${builders}; ${usage}). SA-led discovery with the account team comes first; an FDE joins only if a real project appears.`;
+    } else {
+      text = `${a.account_name} is best served by ${m.quadrants[3]}: a ${usd(a.pool_of_funds)} Pool of funds and modest signals (${builders}; ${usage}) ` +
+        `mean SA/FDE time would not change the outcome. Docs, templates and alerts keep it moving.`;
+    }
+    if (a.override_reason) text += ` The scorecard said ${a.model_quadrant}; it was overridden: ${a.override_reason}.`;
+    return text;
+  },
+  whyThisAccountBox(a) {
+    return `<div class="why-account"><strong>Why this account?</strong> ${GTM.esc(GTM.whyThisAccount(a))}</div>`;
   },
 
   // ---------- "Why?" links to the decision log ----------

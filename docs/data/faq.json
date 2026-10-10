@@ -1,0 +1,130 @@
+[
+  {
+    "id": "propensity",
+    "category": "Basics",
+    "question": "What is a propensity score?",
+    "answer": "A 0–100 score for how likely a customer is to grow soon if we invest technical time. It weighs usage growth, new builders, SA engagement and On-track %, each compared with every other account. It is how we read account propensity and identify the right customer opportunities.",
+    "pages": [
+      "prioritization.html",
+      "index.html"
+    ]
+  },
+  {
+    "id": "pool-of-funds",
+    "category": "Basics",
+    "question": "What is the pool of funds, and why include open pipeline?",
+    "answer": "Pool of funds is the money available to unlock: unused commit plus open pipeline. Unused commit protects the renewal; open pipeline is new revenue our help can speed up. Together they are the technical revenue pipeline an SA or FDE can accelerate.",
+    "pages": [
+      "prioritization.html",
+      "executive.html"
+    ]
+  },
+  {
+    "id": "commit-burn",
+    "category": "Basics",
+    "question": "What is commit burn, and why does being behind matter?",
+    "answer": "Commit burn is how fast a customer uses the spend they committed to; we show it as Monthly spend and On-track %. Below {on_track_warn} On-track %, a customer is likely to finish the year with unused commit and renew smaller. Catching it early is the cheapest way to protect the renewal and accelerate consumption.",
+    "pages": [
+      "programs.html",
+      "prioritization.html"
+    ]
+  },
+  {
+    "id": "new-builders",
+    "category": "Basics",
+    "question": "What are \"new builders\", and how are they counted?",
+    "answer": "We call them New builders: developers who started building on the platform at this customer in the last {win_newdev} days, counted from product usage. {newdev_min} or more in that window raises an alert, because it usually means a new team or project is starting.",
+    "pages": [
+      "prioritization.html",
+      "index.html"
+    ]
+  },
+  {
+    "id": "data-sources",
+    "category": "Basics",
+    "question": "What data comes from Salesforce vs product usage?",
+    "answer": "Salesforce CRM gives account details, annual commit, contract dates and open pipeline. Product usage gives spend to date, usage growth, spikes and new builders. We could join them in BigQuery with Revenue Engineering and Data, so each customer is one row.",
+    "pages": [
+      "index.html"
+    ]
+  },
+  {
+    "id": "why-send-sa",
+    "category": "People",
+    "question": "If the customer already has developers, why send an SA or FDE?",
+    "answer": "Their developers know their own systems; SAs and FDEs know the platform patterns that work at scale. An SA shortens design decisions, and an FDE builds alongside the team until the first production workload is live. The goal is to clear blockers faster, not to replace their developers.",
+    "pages": [
+      "engagement.html"
+    ]
+  },
+  {
+    "id": "sa-vs-fde",
+    "category": "People",
+    "question": "What's the difference between an SA and an FDE?",
+    "answer": "An SA leads design and the customer relationship, usually across several accounts. An FDE writes code with the customer's developers on one account until a workload is in production. Deep engagement (SA + FDE) uses both; Scaled SA programs use SAs only.",
+    "pages": [
+      "engagement.html",
+      "index.html"
+    ]
+  },
+  {
+    "id": "not-every-account",
+    "category": "Decisions",
+    "question": "Why not send SAs/FDEs to every account?",
+    "answer": "Team capacity is fixed: the team can actively cover about the top {capacity} accounts by Opportunity value. Spreading people across every account dilutes help where it would change the outcome. Other accounts still get help through Scaled SA programs or Digital / self-serve.",
+    "pages": [
+      "prioritization.html",
+      "executive.html"
+    ]
+  },
+  {
+    "id": "capacity",
+    "category": "Decisions",
+    "question": "How is team capacity decided?",
+    "answer": "Today it is an assumption: Team capacity covers the top {capacity} accounts by Opportunity value. In practice we could set it from real SA/FDE hours per engagement and the staffing plan. The slider on Prioritization shows what a bigger or smaller team would reach.",
+    "pages": [
+      "prioritization.html",
+      "decisions.html"
+    ]
+  },
+  {
+    "id": "scorecard-not-ml",
+    "category": "Decisions",
+    "question": "Why a simple scorecard instead of machine learning?",
+    "answer": "A scorecard is easy to explain and check: every point traces to a named signal and weight. We don't yet have outcomes (which accounts grew after help) to train a model fairly. Possibly we can move to a model once the comparison group gives us those outcomes.",
+    "pages": [
+      "decisions.html",
+      "prioritization.html"
+    ]
+  },
+  {
+    "id": "score-wrong",
+    "category": "Decisions",
+    "question": "What if the score is wrong?",
+    "answer": "The SA lead or account team can override the type of help, but must log a reason, owner and date. The override is written back to Salesforce next to the score, so we can review overrides and improve the weights. Example: Willow Markets moved to Deep engagement (SA + FDE) once a funded project was confirmed.",
+    "pages": [
+      "prioritization.html",
+      "decisions.html"
+    ]
+  },
+  {
+    "id": "prove-revenue",
+    "category": "Proof",
+    "question": "How do we prove SA/FDE work drives revenue?",
+    "answer": "We pick {holdout_share} of eligible accounts at random as a comparison group: measured, but not enrolled. Impact is how much more the enrolled accounts improve than the comparison group, so we only count revenue that wouldn't have happened anyway. That makes the work a measurable program with an investment ROI.",
+    "pages": [
+      "executive.html",
+      "programs.html"
+    ]
+  },
+  {
+    "id": "handoff",
+    "category": "Proof",
+    "question": "When does a program get handed to a durable owner?",
+    "answer": "When the comparison group shows impact for two cycles in a row, the playbook is documented and automated, and an owner has the people and a quarterly review. Then the Scaled SA team lead owns it and GTM Strategy keeps measuring. That is what measurable and ready for durable ownership means here.",
+    "pages": [
+      "programs.html",
+      "executive.html"
+    ]
+  }
+]

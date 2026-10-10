@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Common Questions</title>
+  <meta name="description" content="Short answers to common questions about the scores, decisions, people and proof behind the command center.">
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="inner">
+      <a class="brand" href="index.html">Technical GTM Command Center</a>
+      <nav aria-label="Main" id="nav"></nav>
+    </div>
+  </header>
+
+  <main>
+    <span class="responsibility">Leadership visibility · Prioritize work and inform decisions</span>
+    <h1>Common questions</h1>
+    <p class="lede">This page answers the questions a leader or seller is most likely to ask, in two or three sentences each, with a link to where each topic appears.</p>
+
+    <div class="controls">
+      <label for="q-search">Search</label>
+      <input type="search" id="q-search" placeholder="e.g. capacity, holdout, FDE" style="width:280px;max-width:100%">
+      <span class="small muted" id="q-count" role="status"></span>
+    </div>
+    <div id="groups"></div>
+  </main>
+
+  <script src="assets/common.js"></script>
+  <script>
+    (async function () {
+      let faq;
+      try { ({ faq } = await GTM.init("questions.html")); }
+      catch (err) { GTM.showError(document.querySelector("main"), err); return; }
+
+      const CATEGORIES = ["Basics", "Decisions", "People", "Proof"];
+      const pageName = (file) => (PAGES.find((p) => p.file === file) || { nav: file }).nav;
+      const groups = document.getElementById("groups");
+
+      function render(query) {
+        const q = query.trim().toLowerCase();
+        const match = (f) => !q || `${f.question} ${GTM.fill(f.answer)}`.toLowerCase().includes(q);
+        let shown = 0;
+        groups.innerHTML = CATEGORIES.map((cat) => {
+          const items = faq.filter((f) => f.category === cat && match(f));
+          shown += items.length;
+          if (!items.length) return "";
+          return `<section class="faq-group faq-full"><h2>${cat}</h2>${items.map((f) => `
+            <details id="${f.id}"${q || location.hash === `#${f.id}` ? " open" : ""}>
+              <summary>${GTM.esc(f.question)}</summary>
+              <div>
+                <p style="margin:0 0 6px">${GTM.esc(GTM.fill(f.answer))}</p>
+                <p class="small" style="margin:0">See it on: ${f.pages.map((p) => `<a href="${p}">${pageName(p)}</a>`).join(" · ")}</p>
+              </div>
+            </details>`).join("")}</section>`;
+        }).join("") || '<p class="muted">No questions match. Try a shorter word.</p>';
+        document.getElementById("q-count").textContent = q ? `${shown} of ${faq.length} questions` : `${faq.length} questions`;
+      }
+
+      document.getElementById("q-search").addEventListener("input", (e) => render(e.target.value));
+      render("");
+      GTM.scrollToHash();
+    })();
+  </script>
+</body>
+</html>

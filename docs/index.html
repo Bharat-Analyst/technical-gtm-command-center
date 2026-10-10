@@ -45,8 +45,11 @@
     <p class="howto" style="margin:-8px 0 16px"><strong>How to read this:</strong> steps run left to right, top to bottom. Grey steps gather data, purple steps make a decision, green steps act and earn revenue. Click one to see it below.</p>
 
     <!-- 3. Metric cards + step detail -->
-    <div class="grid grid-metrics" id="metrics" style="margin-bottom:12px"></div>
+    <div class="grid grid-metrics" id="metrics"></div>
+    <div id="why-account" style="margin-bottom:12px"></div>
     <section class="card step-panel" id="panel" aria-live="polite"></section>
+
+    <div data-faq="propensity,pool-of-funds,sa-vs-fde"></div>
 
     <h2>Job responsibility → where to see it</h2>
     <div class="table-wrap">
@@ -63,6 +66,7 @@
       </table>
     </div>
     <p class="howto"><strong>How to read this:</strong> each row is one duty from the job description and the page that shows it.</p>
+    <p class="small muted" style="margin-top:32px">Built with AI: designed and reviewed by me, coded with Claude Code.</p>
   </main>
 
 
@@ -158,6 +162,8 @@
           card(GTM.term("expected_value"), GTM.usd(a.expected_value_usd), `Rank #${a.priority_rank} of ${all.length}`),
           card(GTM.term("quadrant"), `<span style="font-size:18px;line-height:1.3;display:block">${GTM.term(a.quadrant)}</span>`, `${a.in_capacity ? "Inside team capacity" : "Outside team capacity"} ${GTM.why("quadrants")}`),
         ].join("");
+
+        document.getElementById("why-account").innerHTML = GTM.whyThisAccountBox(a) + GTM.seasonalNote(a);
 
         const s = steps[step];
         const [page, hash] = s.screen;

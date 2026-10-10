@@ -126,9 +126,9 @@
     "handoff": {
       "owner": "Scaled SA team lead owns the program; GTM Strategy keeps the measurement.",
       "ready_when": [
-        "Holdout comparison shows lift for two cycles in a row",
+        "The comparison group shows impact for two cycles in a row",
         "Playbook, templates and enrollment are documented and automated",
-        "Owner has the headcount and a quarterly review on the calendar"
+        "The owner has the people and a quarterly review on the calendar"
       ]
     },
     "eligible_unused_commit": 8677300

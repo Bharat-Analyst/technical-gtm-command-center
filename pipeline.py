@@ -86,6 +86,9 @@ SEED = 42                          # same seed as the data, so the holdout is re
 
 ROOT = Path(__file__).parent
 RAW = ROOT / "data" / "raw" / "accounts.csv"
+# Human overrides of the type of help. Every override must carry a reason, an
+# owner and a date, and is written back to Salesforce next to the score.
+OVERRIDES = ROOT / "data" / "raw" / "overrides.csv"
 PROCESSED = ROOT / "data" / "processed" / "account_scores.csv"
 WRITEBACK = ROOT / "data" / "output" / "salesforce_writeback.csv"
 SITE_JSON = ROOT / "docs" / "data" / "accounts.json"
@@ -241,6 +244,19 @@ def add_quadrant(df: pd.DataFrame) -> pd.DataFrame:
     high_score = df["propensity_score"] >= SCORE_HIGH
     high_value = df["pool_of_funds"] >= POOL_OF_FUNDS_HIGH
     df["quadrant"] = [QUADRANTS[(s, v)] for s, v in zip(high_score, high_value)]
+    df["model_quadrant"] = df["quadrant"]  # what the scorecard said, kept for review
+    df["override_reason"] = None
+
+    # Apply logged human overrides. The model is a starting point, not the last
+    # word; logging the reason lets us learn where the scorecard is wrong.
+    if OVERRIDES.exists():
+        for o in pd.read_csv(OVERRIDES).itertuples():
+            assert o.override_type_of_help in QUADRANTS.values(), f"unknown type of help: {o.override_type_of_help}"
+            assert isinstance(o.reason, str) and o.reason.strip(), f"override for {o.account_id} has no reason"
+            hit = df["account_id"] == o.account_id
+            assert hit.any(), f"override for unknown account {o.account_id}"
+            df.loc[hit, "quadrant"] = o.override_type_of_help
+            df.loc[hit, "override_reason"] = f"{o.reason} ({o.owner}, {o.date})"
     return df
 
 
@@ -333,6 +349,7 @@ def export(df: pd.DataFrame) -> None:
         "GTM_Program__c": df["program"],
         "GTM_PS_Recommendation__c": df["ps_recommended_tier"],
         "GTM_Holdout__c": df["holdout"],
+        "GTM_Override_Reason__c": df["override_reason"],
         "GTM_Scored_Date__c": AS_OF_DATE.date().isoformat(),
     })
     writeback.to_csv(WRITEBACK, index=False)
@@ -347,7 +364,7 @@ def export(df: pd.DataFrame) -> None:
         "burn_pace", "contract_elapsed_share", "days_to_renewal",
         "usage_growth_90d_pct", "usage_spike_ratio", "active_developers",
         "new_developers_30d", "sa_meetings_90d", "contract_end_date",
-        "motion", "program", "ps_recommended_tier", "holdout",
+        "motion", "program", "ps_recommended_tier", "holdout", "model_quadrant", "override_reason",
     ]
     records = df[site_cols].round({"burn_pace": 2, "contract_elapsed_share": 2, "usage_spike_ratio": 2,
                                    "pool_of_funds": 0, "unused_commit": 0})

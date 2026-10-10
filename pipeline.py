@@ -9,7 +9,7 @@ Flow (mirrors warehouse layers):
 
 Steps:
     1. Propensity score (0–100) from a weighted scorecard + top 3 reasons
-    2. Headroom and Expected Value
+    2. Pool of funds and Expected Value
     3. Flags: Commit at Risk, Renewal Window, Usage Spike, New Developers
     4. Quadrant (who should own the account: FDE, SA program, etc.)
     5. Rank by Expected Value; the top N fit current SA/FDE capacity
@@ -48,6 +48,11 @@ WEIGHTS = {
 }
 assert abs(sum(WEIGHTS.values()) - 1.0) < 1e-9, "Weights must sum to 1"
 
+# Signal look-back windows (they match how the telemetry extract defines its columns).
+USAGE_GROWTH_WINDOW_DAYS = 90      # one quarter: smooths weekly noise but still reflects today
+ENGAGEMENT_WINDOW_DAYS = 90        # same quarter, so SA meetings line up with usage
+NEW_DEVELOPERS_WINDOW_DAYS = 30    # new teams show up fast; a month catches them early
+
 # Flag thresholds.
 COMMIT_AT_RISK_MIN_ELAPSED = 0.25  # too early in the contract to judge before 25% elapsed
 COMMIT_AT_RISK_MAX_PACE = 0.70     # consuming <70% of expected pace → large unused commit at renewal
@@ -57,7 +62,7 @@ NEW_DEVELOPERS_MIN = 10            # ≥10 new developers in 30 days = a new tea
 
 # Quadrant cut-offs.
 SCORE_HIGH = 60                    # roughly the top third of accounts by propensity
-HEADROOM_HIGH = 300_000            # dollar headroom big enough to justify FDE-level effort
+POOL_OF_FUNDS_HIGH = 300_000       # pool of funds big enough to justify FDE-level effort
 
 # How many accounts current SA/FDE headcount can actively cover.
 CAPACITY_TOP_N = 30
@@ -67,6 +72,11 @@ CAPACITY_TOP_N = 30
 PS_ASSESS_BELOW = 200_000          # small gap → 2-week assessment is enough
 PS_MIGRATE_BELOW = 1_000_000       # mid gap → migrate one production workload
                                    # ≥ $1M → multi-workload "Scale" tier
+
+# Holdout: share of Commit Burn Sprint accounts deliberately NOT enrolled, so we
+# can compare outcomes and credit only the incremental lift as ROI.
+HOLDOUT_SHARE = 0.20
+SEED = 42                          # same seed as the data, so the holdout is reproducible
 
 ROOT = Path(__file__).parent
 RAW = ROOT / "data" / "raw" / "accounts.csv"
@@ -155,16 +165,16 @@ def top_reasons(row: pd.Series) -> list[str]:
 
 
 # =============================================================================
-# 2. HEADROOM & EXPECTED VALUE
+# 2. POOL OF FUNDS & EXPECTED VALUE
 # =============================================================================
 def add_value(df: pd.DataFrame) -> pd.DataFrame:
     # Unconsumed commit: money the customer already agreed to spend but hasn't.
     # Helping them use it protects the renewal. Can't go below zero.
     df["unconsumed_commit_usd"] = (df["annual_commit_usd"] - df["commit_consumed_usd"]).clip(lower=0)
-    # Headroom = what's at stake: unused commit + new deals in flight.
-    df["headroom_usd"] = df["unconsumed_commit_usd"] + df["open_pipeline_usd"]
-    # Expected Value = headroom weighted by how likely we are to realize it.
-    df["expected_value_usd"] = (df["propensity_score"] / 100 * df["headroom_usd"]).round(0)
+    # Pool of funds = money available to unlock: unused commit + open deals.
+    df["pool_of_funds_usd"] = df["unconsumed_commit_usd"] + df["open_pipeline_usd"]
+    # Expected Value = pool of funds weighted by how likely we are to realize it.
+    df["expected_value_usd"] = (df["propensity_score"] / 100 * df["pool_of_funds_usd"]).round(0)
     return df
 
 
@@ -189,10 +199,10 @@ def add_flags(df: pd.DataFrame) -> pd.DataFrame:
 # 4. QUADRANT
 # =============================================================================
 def add_quadrant(df: pd.DataFrame) -> pd.DataFrame:
-    # Value axis uses headroom (not Expected Value) so the two axes stay
+    # Value axis uses pool of funds (not Expected Value) so the two axes stay
     # independent: EV already contains the score.
     high_score = df["propensity_score"] >= SCORE_HIGH
-    high_value = df["headroom_usd"] >= HEADROOM_HIGH
+    high_value = df["pool_of_funds_usd"] >= POOL_OF_FUNDS_HIGH
     df["quadrant"] = [QUADRANTS[(s, v)] for s, v in zip(high_score, high_value)]
     return df
 
@@ -240,6 +250,15 @@ def add_routing(df: pd.DataFrame) -> pd.DataFrame:
         [df["flag_commit_at_risk"] & df["in_capacity"], df["flag_commit_at_risk"]],
         ["FDE-led burn recovery", "Commit Burn Sprint"], default=None)
     df["ps_recommended_tier"] = df.apply(ps_tier_for, axis=1)
+
+    # Randomly hold out a share of Sprint accounts. Random (not hand-picked) so
+    # the two groups are alike, and the difference in outcomes is the program's effect.
+    # FDE-covered accounts are never held out: we don't withhold dedicated help.
+    sprint_ids = sorted(df.loc[df["program"] == "Commit Burn Sprint", "account_id"])
+    n_holdout = round(len(sprint_ids) * HOLDOUT_SHARE)
+    holdout_ids = set(np.random.default_rng(SEED).choice(sprint_ids, size=n_holdout, replace=False))
+    df["holdout"] = df["account_id"].isin(holdout_ids)
+    df.loc[df["holdout"], "program"] = "Holdout (measured, not enrolled)"
     # URL-friendly id for links between pages, e.g. ?account=northwind-commerce
     df["slug"] = df["account_name"].str.lower().str.replace(r"[^a-z0-9]+", "-", regex=True).str.strip("-")
     assert df["slug"].is_unique, "Account slugs must be unique"
@@ -265,7 +284,7 @@ def export(df: pd.DataFrame) -> None:
         "Id": df["account_id"],
         "GTM_Propensity_Score__c": df["propensity_score"],
         "GTM_Top_Reasons__c": df["top_reasons"].str.join(" | "),
-        "GTM_Headroom__c": df["headroom_usd"].round(0),
+        "GTM_Pool_Of_Funds__c": df["pool_of_funds_usd"].round(0),
         "GTM_Expected_Value__c": df["expected_value_usd"],
         "GTM_Priority_Rank__c": df["priority_rank"],
         "GTM_Quadrant__c": df["quadrant"],
@@ -274,6 +293,7 @@ def export(df: pd.DataFrame) -> None:
         "GTM_Motion__c": df["motion"],
         "GTM_Program__c": df["program"],
         "GTM_PS_Recommendation__c": df["ps_recommended_tier"],
+        "GTM_Holdout__c": df["holdout"],
         "GTM_Scored_Date__c": AS_OF_DATE.date().isoformat(),
     })
     writeback.to_csv(WRITEBACK, index=False)
@@ -281,22 +301,22 @@ def export(df: pd.DataFrame) -> None:
     # Website JSON: compact, rounded, only what the pages display.
     site_cols = [
         "account_id", "slug", "account_name", "industry", "region", "segment",
-        "propensity_score", "top_reasons", "headroom_usd", "unconsumed_commit_usd",
+        "propensity_score", "top_reasons", "pool_of_funds_usd", "unconsumed_commit_usd",
         "open_pipeline_usd", "expected_value_usd", "flags", "quadrant",
         "priority_rank", "in_capacity", "annual_commit_usd", "commit_consumed_usd",
         "burn_pace", "contract_elapsed_share", "days_to_renewal",
         "usage_growth_90d_pct", "usage_spike_ratio", "active_developers",
         "new_developers_30d", "sa_meetings_90d", "contract_end_date",
-        "motion", "program", "ps_recommended_tier",
+        "motion", "program", "ps_recommended_tier", "holdout",
     ]
     records = df[site_cols].round({"burn_pace": 2, "contract_elapsed_share": 2, "usage_spike_ratio": 2,
-                                   "headroom_usd": 0, "unconsumed_commit_usd": 0})
+                                   "pool_of_funds_usd": 0, "unconsumed_commit_usd": 0})
     payload = {
         "meta": {
             "as_of_date": AS_OF_DATE.date().isoformat(),
             "weights": WEIGHTS,
             "thresholds": {
-                "score_high": SCORE_HIGH, "headroom_high": HEADROOM_HIGH,
+                "score_high": SCORE_HIGH, "pool_of_funds_high": POOL_OF_FUNDS_HIGH,
                 "capacity_top_n": CAPACITY_TOP_N,
                 "commit_at_risk_max_pace": COMMIT_AT_RISK_MAX_PACE,
                 "renewal_window_days": RENEWAL_WINDOW_DAYS,
@@ -305,6 +325,12 @@ def export(df: pd.DataFrame) -> None:
                 "ps_assess_below": PS_ASSESS_BELOW, "ps_migrate_below": PS_MIGRATE_BELOW,
             },
             "featured": [FEATURED[q] for q in QUADRANTS.values()],
+            "signal_windows_days": {
+                "usage_growth": USAGE_GROWTH_WINDOW_DAYS,
+                "engagement": ENGAGEMENT_WINDOW_DAYS,
+                "new_developers": NEW_DEVELOPERS_WINDOW_DAYS,
+            },
+            "holdout_share": HOLDOUT_SHARE,
         },
         "accounts": json.loads(records.to_json(orient="records")),
     }
@@ -344,6 +370,7 @@ def main() -> None:
     # --- Console summary ----------------------------------------------------
     print(f"Scored {len(df)} accounts as of {AS_OF_DATE.date()}")
     print("\nQuadrants:\n" + df["quadrant"].value_counts().to_string())
+    print(f"\nProgram: {df['program'].value_counts().to_dict()}")
     print("\nFlag counts:")
     for f in ["Commit at Risk", "Renewal Window", "Usage Spike", "New Developers"]:
         print(f"  {f:16s} {df['flags'].apply(lambda x: f in x).sum()}")
@@ -352,7 +379,7 @@ def main() -> None:
     print("\nFeatured accounts:")
     for quadrant, name in FEATURED.items():
         a = df[df["account_name"] == name].iloc[0]
-        print(f"  {name:20s} score {a.propensity_score:3d} | headroom ${a.headroom_usd:>10,.0f} | "
+        print(f"  {name:20s} score {a.propensity_score:3d} | pool ${a.pool_of_funds_usd:>10,.0f} | "
               f"EV ${a.expected_value_usd:>10,.0f} | rank #{a.priority_rank:<3d} | {a.quadrant} | "
               f"flags: {', '.join(a['flags']) or '-'}")
         assert a.quadrant == quadrant, f"{name} should be {quadrant}, got {a.quadrant}"

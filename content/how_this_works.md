@@ -195,7 +195,7 @@ Alerts are simple rules that say why an account needs attention now, and an acco
 | Alert | Fires when | Suggested action | Owner | Respond within | Accounts today |
 |---|---|---|---|---|---|
 | Commit at risk | On-track % below 70% | Plan to move workloads to production; consider the Commit Burn Sprint | SA | 5 business days | 37 |
-| Renewal coming | 180 days or less to renewal | Review usage and value with the customer before renewal talks | Account team + SA | 10 business days | 249 |
+| Renewal coming | 180 days or less to renewal for Enterprise accounts, 90 days for everyone else | Review usage and value with the customer before renewal talks | Account team + SA | 10 business days | 140 |
 | Builder surge | 15 or more new builders in 60 days | Reach out to help the new builders get to production | SA | 5 business days | 26 |
 | Usage spike | Monthly spend up 50% or more in one month | Check the setup can scale; look for expansion | SA | 3 business days | 17 |
 | New product | First use of a new product in the last 60 days | Share best practices for that product | SA or scaled program | 10 business days | 26 |
@@ -484,7 +484,7 @@ Top reasons: 28 new builders in 60 days; Usage up 38% in 3 months; Uses 3 develo
 ### Step 5: Opportunity value, alerts, and type of help
 
 - **Opportunity value:** 0.81 × $1.31M = about $1.06M, rank #2 of 503.
-- **Alerts:** Commit at risk (On-track % of 47% is below 70%), Renewal coming (145 days is within 180), Builder surge (28 new builders is 15 or more).
+- **Alerts:** Commit at risk (On-track % of 47% is below 70%), Renewal coming (145 days is within 180 for Enterprise accounts), Builder surge (28 new builders is 15 or more).
 - **Type of help:** propensity score 81 (60 or more) and pool of funds $1.31M ($250K or more) → Deep engagement (SA + FDE).
 - **Team capacity:** high opportunity value plus 3 alerts put Northwind in one of the 8 FDE slots (coverage: SA + FDE).
 
@@ -633,11 +633,11 @@ Possibly we can weight pipeline by deal stage and divide opportunity value by th
 
 **Decision**
 
-Commit at risk below 70% On-track %; Renewal coming within 180 days; Builder surge 15+ in 60 days; Usage spike +50% in a month; Usage drop −30% over 3 months; New product in 60 days.
+Commit at risk below 70% On-track %; Renewal coming within 180 days for Enterprise and 90 days for everyone else; Builder surge 15+ in 60 days; Usage spike +50% in a month; Usage drop −30% over 3 months; New product in 60 days.
 
 **Why**
 
-Scores say who; alerts say when. Six alerts is enough, and each one has an owner and an action.
+Scores say who; alerts say when. Six alerts is enough, and each one has an owner and an action. Enterprise gets a longer renewal window because big contracts enter procurement months ahead; one 180-day window would flag half of all accounts.
 
 **Possibly we can**
 

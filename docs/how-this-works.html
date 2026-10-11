@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>How This Works</title>
   <meta name="description" content="The full method behind the Technical GTM Command Center: data, scoring, alerts, type of help, team capacity, programs, measurement, and a Northwind Commerce case study.">
-  <link rel="stylesheet" href="assets/style.css?v=2026101104">
+  <link rel="stylesheet" href="assets/style.css?v=2026101105">
 </head>
 <body>
   <header class="site-header" id="top">
@@ -535,7 +535,7 @@
     </article>
   </main>
 
-  <script src="assets/common.js?v=2026101104"></script>
+  <script src="assets/common.js?v=2026101105"></script>
   <script>
     (async function () {
       let accounts, content, decisions, glossary;
@@ -551,7 +551,7 @@
         <tbody>${rows.map((r) => `<tr>${r.map((c, i) => `<td${numCols.includes(i) ? ' class="num"' : ""}>${c}</td>`).join("")}</tr>`).join("")}</tbody></table></div>`;
       const alertRule = {
         "Commit at risk": `On-track % below ${pct(t.commit_at_risk_max_pace)}`,
-        "Renewal coming": `${t.renewal_coming_days} days or less to renewal`,
+        "Renewal coming": `${t.renewal_coming_days_enterprise} days or less to renewal for Enterprise accounts, ${t.renewal_coming_days_other} days for everyone else`,
         "Builder surge": `${t.builder_surge_min} or more new builders in ${meta.signal_windows.new_builders_days} days`,
         "Usage spike": `Monthly spend up ${pct(t.usage_spike_min)} or more in one month`,
         "New product": `First use of a new product in the last ${meta.signal_windows.new_product_days} days`,
@@ -573,7 +573,7 @@
         nw_reason_1: nw.top_reasons[0], nw_reasons: nw.top_reasons.join("; "),
         nw_alert_detail: nw.flags.map((f) => `${f} (${{
           "Commit at risk": `On-track % of ${pct(nw.burn_pace)} is below ${pct(t.commit_at_risk_max_pace)}`,
-          "Renewal coming": `${nw.days_to_renewal} days is within ${t.renewal_coming_days}`,
+          "Renewal coming": `${nw.days_to_renewal} days is within ${nw.segment === "Enterprise" ? t.renewal_coming_days_enterprise : t.renewal_coming_days_other} for ${nw.segment} accounts`,
           "Builder surge": `${nw.new_builders_60d} new builders is ${t.builder_surge_min} or more`,
         }[f] || alertRule[f]})`).join(", "),
         nw_monthly: usd(nw.burn_rate_monthly), nw_needed: usd(nw.required_monthly_burn),

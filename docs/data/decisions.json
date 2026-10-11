@@ -27,8 +27,8 @@
     "id": "flags",
     "section": "alerts",
     "title": "Alert thresholds",
-    "decision": "Commit at risk below {car_pace} On-track %; Renewal coming within {renewal_days} days; Builder surge {surge_min}+ in {win_builders} days; Usage spike +{spike_min} in a month; Usage drop −{drop_max} over 3 months; New product in {win_newprod} days.",
-    "why": "Scores say who; alerts say when. Six alerts is enough, and each one has an owner and an action.",
+    "decision": "Commit at risk below {car_pace} On-track %; Renewal coming within {renewal_days_ent} days for Enterprise and {renewal_days_other} days for everyone else; Builder surge {surge_min}+ in {win_builders} days; Usage spike +{spike_min} in a month; Usage drop −{drop_max} over 3 months; New product in {win_newprod} days.",
+    "why": "Scores say who; alerts say when. Six alerts is enough, and each one has an owner and an action. Enterprise gets a longer renewal window because big contracts enter procurement months ahead; one 180-day window would flag half of all accounts.",
     "possibly": "Possibly we can tune thresholds by checking which alerts led to real growth."
   },
   {

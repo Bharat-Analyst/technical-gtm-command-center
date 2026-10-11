@@ -102,7 +102,7 @@
   },
   "renewal_coming": {
     "label": "Renewal coming",
-    "text": "{renewal_days} days or less to renewal."
+    "text": "{renewal_days_ent} days or less to renewal for Enterprise accounts (procurement starts early), {renewal_days_other} days for everyone else."
   },
   "builder_surge": {
     "label": "Builder surge",

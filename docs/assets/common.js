@@ -47,7 +47,7 @@ const GTM = {
       total_accounts: accounts.accounts.length,
       score_high: t.score_high, pool_high: GTM.usd(t.pool_of_funds_high),
       car_pace: GTM.pct(t.commit_at_risk_max_pace), car_min_elapsed: GTM.pct(t.commit_at_risk_min_elapsed),
-      renewal_days: t.renewal_coming_days, surge_min: t.builder_surge_min,
+      renewal_days_ent: t.renewal_coming_days_enterprise, renewal_days_other: t.renewal_coming_days_other, surge_min: t.builder_surge_min,
       spike_min: GTM.pct(t.usage_spike_min), drop_max: GTM.pct(-t.usage_drop_max),
       on_track_good: GTM.pct(t.on_track_good), on_track_warn: GTM.pct(t.on_track_warn),
       sprint_min_unused: GTM.usd(t.sprint_min_unused),

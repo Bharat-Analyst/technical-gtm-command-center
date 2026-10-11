@@ -156,7 +156,7 @@ def run() -> None:
         # ---------------- 6. Alerts and type of help ---------------------------
         alerts = {
             "Commit at risk": a["burn_pace"] < t["commit_at_risk_max_pace"] and elapsed >= t["commit_at_risk_min_elapsed"],
-            "Renewal coming": 0 <= dtr <= t["renewal_coming_days"],
+            "Renewal coming": 0 <= dtr <= (t["renewal_coming_days_enterprise"] if a["segment"] == "Enterprise" else t["renewal_coming_days_other"]),
             "Builder surge": nb >= t["builder_surge_min"],
             "Usage spike": round(mom, 4) >= t["usage_spike_min"],
             "New product": bool(new_prod),

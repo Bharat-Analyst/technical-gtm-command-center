@@ -64,7 +64,11 @@ POOL_OF_FUNDS_HIGH = 250_000
 # Alerts
 COMMIT_AT_RISK_MAX_PACE = 0.70
 COMMIT_AT_RISK_MIN_ELAPSED = 0.25   # On-track % is too noisy in the first quarter of a contract
-RENEWAL_COMING_DAYS = 180
+# Renewal coming: big contracts enter procurement months ahead, so Enterprise gets a
+# longer runway. One window for everyone would flag half of all accounts (180 days)
+# or warn Enterprise teams too late (90 days).
+RENEWAL_COMING_DAYS_ENTERPRISE = 180
+RENEWAL_COMING_DAYS_OTHER = 90
 BUILDER_SURGE_MIN = 15
 USAGE_SPIKE_MIN = 0.50              # monthly spend up 50%+ in one month
 USAGE_DROP_MAX = -0.30              # monthly spend down 30%+ over 3 months
@@ -314,7 +318,8 @@ def size_the_prize(df: pd.DataFrame) -> pd.DataFrame:
 def add_alerts(df: pd.DataFrame) -> pd.DataFrame:
     rules = {
         "Commit at risk": (df["burn_pace"] < COMMIT_AT_RISK_MAX_PACE) & (df["contract_elapsed_share"] >= COMMIT_AT_RISK_MIN_ELAPSED),
-        "Renewal coming": df["days_to_renewal"].between(0, RENEWAL_COMING_DAYS),
+        "Renewal coming": (df["days_to_renewal"] >= 0) & (df["days_to_renewal"] <= np.where(
+            df["segment"] == "Enterprise", RENEWAL_COMING_DAYS_ENTERPRISE, RENEWAL_COMING_DAYS_OTHER)),
         "Builder surge": df["new_builders_60d"] >= BUILDER_SURGE_MIN,
         "Usage spike": df["spend_mom_change"] >= USAGE_SPIKE_MIN,
         "New product": df["new_product"].notna(),
@@ -484,7 +489,8 @@ def export(df: pd.DataFrame, account_month: pd.DataFrame, stats: dict) -> None:
         "thresholds": {
             "score_high": SCORE_HIGH, "pool_of_funds_high": POOL_OF_FUNDS_HIGH,
             "commit_at_risk_max_pace": COMMIT_AT_RISK_MAX_PACE, "commit_at_risk_min_elapsed": COMMIT_AT_RISK_MIN_ELAPSED,
-            "renewal_coming_days": RENEWAL_COMING_DAYS, "builder_surge_min": BUILDER_SURGE_MIN,
+            "renewal_coming_days_enterprise": RENEWAL_COMING_DAYS_ENTERPRISE,
+            "renewal_coming_days_other": RENEWAL_COMING_DAYS_OTHER, "builder_surge_min": BUILDER_SURGE_MIN,
             "usage_spike_min": USAGE_SPIKE_MIN, "usage_drop_max": USAGE_DROP_MAX,
             "on_track_good": ON_TRACK_GOOD, "on_track_warn": ON_TRACK_WARN,
             "sprint_min_unused": SPRINT_MIN_UNUSED,

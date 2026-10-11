@@ -88,7 +88,8 @@
    "pool_of_funds_high": 250000,
    "commit_at_risk_max_pace": 0.7,
    "commit_at_risk_min_elapsed": 0.25,
-   "renewal_coming_days": 180,
+   "renewal_coming_days_enterprise": 180,
+   "renewal_coming_days_other": 90,
    "builder_surge_min": 15,
    "usage_spike_min": 0.5,
    "usage_drop_max": -0.3,
@@ -6099,9 +6100,7 @@
     "3 meetings and calls in 90 days"
    ],
    "expected_value_usd": 128662.0,
-   "flags": [
-    "Renewal coming"
-   ],
+   "flags": [],
    "quadrant": "Strategic bet",
    "model_quadrant": "Strategic bet",
    "override_reason": null,
@@ -6658,9 +6657,7 @@
     "Uses 3 developer platform products"
    ],
    "expected_value_usd": 113600.0,
-   "flags": [
-    "Renewal coming"
-   ],
+   "flags": [],
    "quadrant": "Digital / self-serve",
    "model_quadrant": "Digital / self-serve",
    "override_reason": null,
@@ -7012,9 +7009,7 @@
     "Uses 3 developer platform products"
    ],
    "expected_value_usd": 107203.0,
-   "flags": [
-    "Renewal coming"
-   ],
+   "flags": [],
    "quadrant": "Digital / self-serve",
    "model_quadrant": "Digital / self-serve",
    "override_reason": null,
@@ -7873,7 +7868,6 @@
    ],
    "expected_value_usd": 94188.0,
    "flags": [
-    "Renewal coming",
     "Builder surge",
     "New product"
    ],
@@ -8300,9 +8294,7 @@
     "Uses 1 developer platform product"
    ],
    "expected_value_usd": 87630.0,
-   "flags": [
-    "Renewal coming"
-   ],
+   "flags": [],
    "quadrant": "Digital / self-serve",
    "model_quadrant": "Digital / self-serve",
    "override_reason": null,
@@ -9716,9 +9708,7 @@
     "Uses 3 developer platform products"
    ],
    "expected_value_usd": 70528.0,
-   "flags": [
-    "Renewal coming"
-   ],
+   "flags": [],
    "quadrant": "Digital / self-serve",
    "model_quadrant": "Digital / self-serve",
    "override_reason": null,
@@ -10647,9 +10637,7 @@
     "2 meetings and calls in 90 days"
    ],
    "expected_value_usd": 58380.0,
-   "flags": [
-    "Renewal coming"
-   ],
+   "flags": [],
    "quadrant": "Digital / self-serve",
    "model_quadrant": "Digital / self-serve",
    "override_reason": null,
@@ -10796,8 +10784,7 @@
    ],
    "expected_value_usd": 57387.0,
    "flags": [
-    "Commit at risk",
-    "Renewal coming"
+    "Commit at risk"
    ],
    "quadrant": "Digital / self-serve",
    "model_quadrant": "Digital / self-serve",
@@ -11151,9 +11138,7 @@
     "4 new builders in 60 days"
    ],
    "expected_value_usd": 56538.0,
-   "flags": [
-    "Renewal coming"
-   ],
+   "flags": [],
    "quadrant": "Digital / self-serve",
    "model_quadrant": "Digital / self-serve",
    "override_reason": null,
@@ -11366,7 +11351,6 @@
    ],
    "expected_value_usd": 54800.0,
    "flags": [
-    "Renewal coming",
     "Builder surge"
    ],
    "quadrant": "Scaled SA programs",
@@ -11439,7 +11423,6 @@
    ],
    "expected_value_usd": 54784.0,
    "flags": [
-    "Renewal coming",
     "Usage spike"
    ],
    "quadrant": "Scaled SA programs",
@@ -12146,9 +12129,7 @@
     "2 meetings and calls in 90 days"
    ],
    "expected_value_usd": 49750.0,
-   "flags": [
-    "Renewal coming"
-   ],
+   "flags": [],
    "quadrant": "Digital / self-serve",
    "model_quadrant": "Digital / self-serve",
    "override_reason": null,
@@ -12219,9 +12200,7 @@
     "Usage up 7% in 3 months"
    ],
    "expected_value_usd": 49248.0,
-   "flags": [
-    "Renewal coming"
-   ],
+   "flags": [],
    "quadrant": "Digital / self-serve",
    "model_quadrant": "Digital / self-serve",
    "override_reason": null,
@@ -12291,9 +12270,7 @@
     "Uses 3 developer platform products"
    ],
    "expected_value_usd": 49232.0,
-   "flags": [
-    "Renewal coming"
-   ],
+   "flags": [],
    "quadrant": "Scaled SA programs",
    "model_quadrant": "Scaled SA programs",
    "override_reason": null,
@@ -12361,9 +12338,7 @@
     "Uses 1 developer platform product"
    ],
    "expected_value_usd": 48392.0,
-   "flags": [
-    "Renewal coming"
-   ],
+   "flags": [],
    "quadrant": "Digital / self-serve",
    "model_quadrant": "Digital / self-serve",
    "override_reason": null,
@@ -12505,8 +12480,7 @@
    ],
    "expected_value_usd": 47745.0,
    "flags": [
-    "Commit at risk",
-    "Renewal coming"
+    "Commit at risk"
    ],
    "quadrant": "Digital / self-serve",
    "model_quadrant": "Digital / self-serve",
@@ -12648,9 +12622,7 @@
     "Uses 3 developer platform products"
    ],
    "expected_value_usd": 47270.0,
-   "flags": [
-    "Renewal coming"
-   ],
+   "flags": [],
    "quadrant": "Digital / self-serve",
    "model_quadrant": "Digital / self-serve",
    "override_reason": null,
@@ -13571,8 +13543,7 @@
    ],
    "expected_value_usd": 41880.0,
    "flags": [
-    "Commit at risk",
-    "Renewal coming"
+    "Commit at risk"
    ],
    "quadrant": "Scaled SA programs",
    "model_quadrant": "Scaled SA programs",
@@ -13924,9 +13895,7 @@
     "2 meetings and calls in 90 days"
    ],
    "expected_value_usd": 40356.0,
-   "flags": [
-    "Renewal coming"
-   ],
+   "flags": [],
    "quadrant": "Digital / self-serve",
    "model_quadrant": "Digital / self-serve",
    "override_reason": null,
@@ -14135,8 +14104,7 @@
    ],
    "expected_value_usd": 38732.0,
    "flags": [
-    "Commit at risk",
-    "Renewal coming"
+    "Commit at risk"
    ],
    "quadrant": "Digital / self-serve",
    "model_quadrant": "Digital / self-serve",
@@ -14347,9 +14315,7 @@
     "4 new builders in 60 days"
    ],
    "expected_value_usd": 38178.0,
-   "flags": [
-    "Renewal coming"
-   ],
+   "flags": [],
    "quadrant": "Digital / self-serve",
    "model_quadrant": "Digital / self-serve",
    "override_reason": null,
@@ -14992,9 +14958,7 @@
     "2 meetings and calls in 90 days"
    ],
    "expected_value_usd": 34625.0,
-   "flags": [
-    "Renewal coming"
-   ],
+   "flags": [],
    "quadrant": "Digital / self-serve",
    "model_quadrant": "Digital / self-serve",
    "override_reason": null,
@@ -15622,9 +15586,7 @@
     "Uses 1 developer platform product"
    ],
    "expected_value_usd": 31563.0,
-   "flags": [
-    "Renewal coming"
-   ],
+   "flags": [],
    "quadrant": "Digital / self-serve",
    "model_quadrant": "Digital / self-serve",
    "override_reason": null,
@@ -15903,9 +15865,7 @@
     "Usage down 1% in 3 months"
    ],
    "expected_value_usd": 31108.0,
-   "flags": [
-    "Renewal coming"
-   ],
+   "flags": [],
    "quadrant": "Digital / self-serve",
    "model_quadrant": "Digital / self-serve",
    "override_reason": null,
@@ -16114,7 +16074,6 @@
    ],
    "expected_value_usd": 29504.0,
    "flags": [
-    "Renewal coming",
     "Usage drop"
    ],
    "quadrant": "Digital / self-serve",
@@ -16608,9 +16567,7 @@
     "3 meetings and calls in 90 days"
    ],
    "expected_value_usd": 27450.0,
-   "flags": [
-    "Renewal coming"
-   ],
+   "flags": [],
    "quadrant": "Digital / self-serve",
    "model_quadrant": "Digital / self-serve",
    "override_reason": null,
@@ -16680,9 +16637,7 @@
     "Usage up 7% in 3 months"
    ],
    "expected_value_usd": 27105.0,
-   "flags": [
-    "Renewal coming"
-   ],
+   "flags": [],
    "quadrant": "Digital / self-serve",
    "model_quadrant": "Digital / self-serve",
    "override_reason": null,
@@ -16897,7 +16852,6 @@
    ],
    "expected_value_usd": 26688.0,
    "flags": [
-    "Renewal coming",
     "New product"
    ],
    "quadrant": "Scaled SA programs",
@@ -16969,9 +16923,7 @@
     "3 meetings and calls in 90 days"
    ],
    "expected_value_usd": 26670.0,
-   "flags": [
-    "Renewal coming"
-   ],
+   "flags": [],
    "quadrant": "Digital / self-serve",
    "model_quadrant": "Digital / self-serve",
    "override_reason": null,
@@ -17394,9 +17346,7 @@
     "Uses 1 developer platform product"
    ],
    "expected_value_usd": 25950.0,
-   "flags": [
-    "Renewal coming"
-   ],
+   "flags": [],
    "quadrant": "Digital / self-serve",
    "model_quadrant": "Digital / self-serve",
    "override_reason": null,
@@ -17678,9 +17628,7 @@
     "1 meeting and calls in 90 days"
    ],
    "expected_value_usd": 25250.0,
-   "flags": [
-    "Renewal coming"
-   ],
+   "flags": [],
    "quadrant": "Digital / self-serve",
    "model_quadrant": "Digital / self-serve",
    "override_reason": null,
@@ -17821,7 +17769,6 @@
    ],
    "expected_value_usd": 25075.0,
    "flags": [
-    "Renewal coming",
     "Builder surge"
    ],
    "quadrant": "Digital / self-serve",
@@ -18180,9 +18127,7 @@
     "1 meeting and calls in 90 days"
    ],
    "expected_value_usd": 23625.0,
-   "flags": [
-    "Renewal coming"
-   ],
+   "flags": [],
    "quadrant": "Digital / self-serve",
    "model_quadrant": "Digital / self-serve",
    "override_reason": null,
@@ -18253,7 +18198,6 @@
    ],
    "expected_value_usd": 23534.0,
    "flags": [
-    "Renewal coming",
     "Builder surge",
     "Usage spike"
    ],
@@ -18535,7 +18479,6 @@
    ],
    "expected_value_usd": 23100.0,
    "flags": [
-    "Renewal coming",
     "New product"
    ],
    "quadrant": "Digital / self-serve",
@@ -19028,7 +18971,6 @@
    ],
    "expected_value_usd": 21280.0,
    "flags": [
-    "Renewal coming",
     "Usage drop"
    ],
    "quadrant": "Digital / self-serve",
@@ -19663,9 +19605,7 @@
     "Usage up 7% in 3 months"
    ],
    "expected_value_usd": 19092.0,
-   "flags": [
-    "Renewal coming"
-   ],
+   "flags": [],
    "quadrant": "Digital / self-serve",
    "model_quadrant": "Digital / self-serve",
    "override_reason": null,
@@ -19806,7 +19746,6 @@
    ],
    "expected_value_usd": 18864.0,
    "flags": [
-    "Renewal coming",
     "New product"
    ],
    "quadrant": "Scaled SA programs",
@@ -20368,9 +20307,7 @@
     "Uses 1 developer platform product"
    ],
    "expected_value_usd": 17640.0,
-   "flags": [
-    "Renewal coming"
-   ],
+   "flags": [],
    "quadrant": "Digital / self-serve",
    "model_quadrant": "Digital / self-serve",
    "override_reason": null,
@@ -20716,9 +20653,7 @@
     "Usage down 14% in 3 months"
    ],
    "expected_value_usd": 17248.0,
-   "flags": [
-    "Renewal coming"
-   ],
+   "flags": [],
    "quadrant": "Digital / self-serve",
    "model_quadrant": "Digital / self-serve",
    "override_reason": null,
@@ -21199,9 +21134,7 @@
     "Uses 2 developer platform products"
    ],
    "expected_value_usd": 16002.0,
-   "flags": [
-    "Renewal coming"
-   ],
+   "flags": [],
    "quadrant": "Scaled SA programs",
    "model_quadrant": "Scaled SA programs",
    "override_reason": null,
@@ -21272,7 +21205,6 @@
    ],
    "expected_value_usd": 16000.0,
    "flags": [
-    "Renewal coming",
     "New product"
    ],
    "quadrant": "Scaled SA programs",
@@ -21415,9 +21347,7 @@
     "Usage down 28% in 3 months"
    ],
    "expected_value_usd": 15370.0,
-   "flags": [
-    "Renewal coming"
-   ],
+   "flags": [],
    "quadrant": "Digital / self-serve",
    "model_quadrant": "Digital / self-serve",
    "override_reason": null,
@@ -21623,9 +21553,7 @@
     "1 meeting and calls in 90 days"
    ],
    "expected_value_usd": 15078.0,
-   "flags": [
-    "Renewal coming"
-   ],
+   "flags": [],
    "quadrant": "Digital / self-serve",
    "model_quadrant": "Digital / self-serve",
    "override_reason": null,
@@ -22186,9 +22114,7 @@
     "2 meetings and calls in 90 days"
    ],
    "expected_value_usd": 13608.0,
-   "flags": [
-    "Renewal coming"
-   ],
+   "flags": [],
    "quadrant": "Digital / self-serve",
    "model_quadrant": "Digital / self-serve",
    "override_reason": null,
@@ -22537,9 +22463,7 @@
     "Uses 2 developer platform products"
    ],
    "expected_value_usd": 12906.0,
-   "flags": [
-    "Renewal coming"
-   ],
+   "flags": [],
    "quadrant": "Digital / self-serve",
    "model_quadrant": "Digital / self-serve",
    "override_reason": null,
@@ -22676,9 +22600,7 @@
     "3 meetings and calls in 90 days"
    ],
    "expected_value_usd": 12595.0,
-   "flags": [
-    "Renewal coming"
-   ],
+   "flags": [],
    "quadrant": "Digital / self-serve",
    "model_quadrant": "Digital / self-serve",
    "override_reason": null,
@@ -23166,9 +23088,7 @@
     "4 meetings and calls in 90 days"
    ],
    "expected_value_usd": 12144.0,
-   "flags": [
-    "Renewal coming"
-   ],
+   "flags": [],
    "quadrant": "Digital / self-serve",
    "model_quadrant": "Digital / self-serve",
    "override_reason": null,
@@ -23380,9 +23300,7 @@
     "Uses 3 developer platform products"
    ],
    "expected_value_usd": 12042.0,
-   "flags": [
-    "Renewal coming"
-   ],
+   "flags": [],
    "quadrant": "Digital / self-serve",
    "model_quadrant": "Digital / self-serve",
    "override_reason": null,
@@ -23451,9 +23369,7 @@
     "2 meetings and calls in 90 days"
    ],
    "expected_value_usd": 12002.0,
-   "flags": [
-    "Renewal coming"
-   ],
+   "flags": [],
    "quadrant": "Digital / self-serve",
    "model_quadrant": "Digital / self-serve",
    "override_reason": null,
@@ -23523,9 +23439,7 @@
     "Uses 3 developer platform products"
    ],
    "expected_value_usd": 12000.0,
-   "flags": [
-    "Renewal coming"
-   ],
+   "flags": [],
    "quadrant": "Digital / self-serve",
    "model_quadrant": "Digital / self-serve",
    "override_reason": null,
@@ -23593,9 +23507,7 @@
     "3 meetings and calls in 90 days"
    ],
    "expected_value_usd": 11914.0,
-   "flags": [
-    "Renewal coming"
-   ],
+   "flags": [],
    "quadrant": "Digital / self-serve",
    "model_quadrant": "Digital / self-serve",
    "override_reason": null,
@@ -23800,9 +23712,7 @@
     "Uses 2 developer platform products"
    ],
    "expected_value_usd": 11685.0,
-   "flags": [
-    "Renewal coming"
-   ],
+   "flags": [],
    "quadrant": "Digital / self-serve",
    "model_quadrant": "Digital / self-serve",
    "override_reason": null,
@@ -23871,9 +23781,7 @@
     "Uses 2 developer platform products"
    ],
    "expected_value_usd": 11656.0,
-   "flags": [
-    "Renewal coming"
-   ],
+   "flags": [],
    "quadrant": "Digital / self-serve",
    "model_quadrant": "Digital / self-serve",
    "override_reason": null,
@@ -24154,9 +24062,7 @@
     "Uses 3 developer platform products"
    ],
    "expected_value_usd": 10584.0,
-   "flags": [
-    "Renewal coming"
-   ],
+   "flags": [],
    "quadrant": "Digital / self-serve",
    "model_quadrant": "Digital / self-serve",
    "override_reason": null,
@@ -24576,7 +24482,6 @@
    ],
    "expected_value_usd": 9955.0,
    "flags": [
-    "Renewal coming",
     "New product"
    ],
    "quadrant": "Digital / self-serve",
@@ -24647,9 +24552,7 @@
     "Uses 2 developer platform products"
    ],
    "expected_value_usd": 9922.0,
-   "flags": [
-    "Renewal coming"
-   ],
+   "flags": [],
    "quadrant": "Digital / self-serve",
    "model_quadrant": "Digital / self-serve",
    "override_reason": null,
@@ -24926,9 +24829,7 @@
     "3 meetings and calls in 90 days"
    ],
    "expected_value_usd": 9702.0,
-   "flags": [
-    "Renewal coming"
-   ],
+   "flags": [],
    "quadrant": "Digital / self-serve",
    "model_quadrant": "Digital / self-serve",
    "override_reason": null,
@@ -25067,9 +24968,7 @@
     "No new builders in 60 days"
    ],
    "expected_value_usd": 9652.0,
-   "flags": [
-    "Renewal coming"
-   ],
+   "flags": [],
    "quadrant": "Digital / self-serve",
    "model_quadrant": "Digital / self-serve",
    "override_reason": null,
@@ -25206,9 +25105,7 @@
     "Usage down 20% in 3 months"
    ],
    "expected_value_usd": 9504.0,
-   "flags": [
-    "Renewal coming"
-   ],
+   "flags": [],
    "quadrant": "Digital / self-serve",
    "model_quadrant": "Digital / self-serve",
    "override_reason": null,
@@ -25348,9 +25245,7 @@
     "Uses 3 developer platform products"
    ],
    "expected_value_usd": 9315.0,
-   "flags": [
-    "Renewal coming"
-   ],
+   "flags": [],
    "quadrant": "Digital / self-serve",
    "model_quadrant": "Digital / self-serve",
    "override_reason": null,
@@ -25559,9 +25454,7 @@
     "Uses 3 developer platform products"
    ],
    "expected_value_usd": 9090.0,
-   "flags": [
-    "Renewal coming"
-   ],
+   "flags": [],
    "quadrant": "Digital / self-serve",
    "model_quadrant": "Digital / self-serve",
    "override_reason": null,
@@ -25772,7 +25665,6 @@
    ],
    "expected_value_usd": 8912.0,
    "flags": [
-    "Renewal coming",
     "Usage drop"
    ],
    "quadrant": "Digital / self-serve",
@@ -26192,9 +26084,7 @@
     "Usage up 7% in 3 months"
    ],
    "expected_value_usd": 8463.0,
-   "flags": [
-    "Renewal coming"
-   ],
+   "flags": [],
    "quadrant": "Digital / self-serve",
    "model_quadrant": "Digital / self-serve",
    "override_reason": null,
@@ -26471,9 +26361,7 @@
     "Uses 2 developer platform products"
    ],
    "expected_value_usd": 8372.0,
-   "flags": [
-    "Renewal coming"
-   ],
+   "flags": [],
    "quadrant": "Digital / self-serve",
    "model_quadrant": "Digital / self-serve",
    "override_reason": null,
@@ -26894,9 +26782,7 @@
     "Uses 1 developer platform product"
    ],
    "expected_value_usd": 7812.0,
-   "flags": [
-    "Renewal coming"
-   ],
+   "flags": [],
    "quadrant": "Digital / self-serve",
    "model_quadrant": "Digital / self-serve",
    "override_reason": null,
@@ -27662,9 +27548,7 @@
     "Usage down 1% in 3 months"
    ],
    "expected_value_usd": 7328.0,
-   "flags": [
-    "Renewal coming"
-   ],
+   "flags": [],
    "quadrant": "Digital / self-serve",
    "model_quadrant": "Digital / self-serve",
    "override_reason": null,
@@ -27805,9 +27689,7 @@
     "Uses 1 developer platform product"
    ],
    "expected_value_usd": 7141.0,
-   "flags": [
-    "Renewal coming"
-   ],
+   "flags": [],
    "quadrant": "Digital / self-serve",
    "model_quadrant": "Digital / self-serve",
    "override_reason": null,
@@ -27876,8 +27758,7 @@
    ],
    "expected_value_usd": 7110.0,
    "flags": [
-    "Commit at risk",
-    "Renewal coming"
+    "Commit at risk"
    ],
    "quadrant": "Digital / self-serve",
    "model_quadrant": "Digital / self-serve",
@@ -28021,8 +27902,7 @@
    ],
    "expected_value_usd": 6902.0,
    "flags": [
-    "Commit at risk",
-    "Renewal coming"
+    "Commit at risk"
    ],
    "quadrant": "Digital / self-serve",
    "model_quadrant": "Digital / self-serve",
@@ -28232,9 +28112,7 @@
     "Uses 3 developer platform products"
    ],
    "expected_value_usd": 6615.0,
-   "flags": [
-    "Renewal coming"
-   ],
+   "flags": [],
    "quadrant": "Digital / self-serve",
    "model_quadrant": "Digital / self-serve",
    "override_reason": null,
@@ -28585,9 +28463,7 @@
     "Usage down 30% in 3 months"
    ],
    "expected_value_usd": 6192.0,
-   "flags": [
-    "Renewal coming"
-   ],
+   "flags": [],
    "quadrant": "Digital / self-serve",
    "model_quadrant": "Digital / self-serve",
    "override_reason": null,
@@ -28869,9 +28745,7 @@
     "Usage up 0% in 3 months"
    ],
    "expected_value_usd": 5984.0,
-   "flags": [
-    "Renewal coming"
-   ],
+   "flags": [],
    "quadrant": "Digital / self-serve",
    "model_quadrant": "Digital / self-serve",
    "override_reason": null,
@@ -29223,9 +29097,7 @@
     "No new builders in 60 days"
    ],
    "expected_value_usd": 5474.0,
-   "flags": [
-    "Renewal coming"
-   ],
+   "flags": [],
    "quadrant": "Digital / self-serve",
    "model_quadrant": "Digital / self-serve",
    "override_reason": null,
@@ -29505,9 +29377,7 @@
     "No new builders in 60 days"
    ],
    "expected_value_usd": 5076.0,
-   "flags": [
-    "Renewal coming"
-   ],
+   "flags": [],
    "quadrant": "Digital / self-serve",
    "model_quadrant": "Digital / self-serve",
    "override_reason": null,
@@ -29577,9 +29447,7 @@
     "Uses 3 developer platform products"
    ],
    "expected_value_usd": 4950.0,
-   "flags": [
-    "Renewal coming"
-   ],
+   "flags": [],
    "quadrant": "Digital / self-serve",
    "model_quadrant": "Digital / self-serve",
    "override_reason": null,
@@ -29922,9 +29790,7 @@
     "Uses 1 developer platform product"
    ],
    "expected_value_usd": 4477.0,
-   "flags": [
-    "Renewal coming"
-   ],
+   "flags": [],
    "quadrant": "Digital / self-serve",
    "model_quadrant": "Digital / self-serve",
    "override_reason": null,
@@ -30133,9 +29999,7 @@
     "Usage down 6% in 3 months"
    ],
    "expected_value_usd": 4200.0,
-   "flags": [
-    "Renewal coming"
-   ],
+   "flags": [],
    "quadrant": "Digital / self-serve",
    "model_quadrant": "Digital / self-serve",
    "override_reason": null,
@@ -30275,9 +30139,7 @@
     "Uses 1 developer platform product"
    ],
    "expected_value_usd": 4180.0,
-   "flags": [
-    "Renewal coming"
-   ],
+   "flags": [],
    "quadrant": "Digital / self-serve",
    "model_quadrant": "Digital / self-serve",
    "override_reason": null,
@@ -30347,9 +30209,7 @@
     "1 meeting and calls in 90 days"
    ],
    "expected_value_usd": 4060.0,
-   "flags": [
-    "Renewal coming"
-   ],
+   "flags": [],
    "quadrant": "Digital / self-serve",
    "model_quadrant": "Digital / self-serve",
    "override_reason": null,
@@ -30417,9 +30277,7 @@
     "Uses 1 developer platform product"
    ],
    "expected_value_usd": 3948.0,
-   "flags": [
-    "Renewal coming"
-   ],
+   "flags": [],
    "quadrant": "Digital / self-serve",
    "model_quadrant": "Digital / self-serve",
    "override_reason": null,
@@ -30488,9 +30346,7 @@
     "No new builders in 60 days"
    ],
    "expected_value_usd": 3933.0,
-   "flags": [
-    "Renewal coming"
-   ],
+   "flags": [],
    "quadrant": "Digital / self-serve",
    "model_quadrant": "Digital / self-serve",
    "override_reason": null,
@@ -30629,7 +30485,6 @@
    ],
    "expected_value_usd": 3630.0,
    "flags": [
-    "Renewal coming",
     "Builder surge"
    ],
    "quadrant": "Digital / self-serve",
@@ -30701,7 +30556,6 @@
    ],
    "expected_value_usd": 3540.0,
    "flags": [
-    "Renewal coming",
     "Usage drop"
    ],
    "quadrant": "Digital / self-serve",
@@ -30773,9 +30627,7 @@
     "Uses 3 developer platform products"
    ],
    "expected_value_usd": 3510.0,
-   "flags": [
-    "Renewal coming"
-   ],
+   "flags": [],
    "quadrant": "Digital / self-serve",
    "model_quadrant": "Digital / self-serve",
    "override_reason": null,
@@ -31403,9 +31255,7 @@
     "Usage down 22% in 3 months"
    ],
    "expected_value_usd": 3008.0,
-   "flags": [
-    "Renewal coming"
-   ],
+   "flags": [],
    "quadrant": "Digital / self-serve",
    "model_quadrant": "Digital / self-serve",
    "override_reason": null,
@@ -31546,9 +31396,7 @@
     "1 meeting and calls in 90 days"
    ],
    "expected_value_usd": 2736.0,
-   "flags": [
-    "Renewal coming"
-   ],
+   "flags": [],
    "quadrant": "Digital / self-serve",
    "model_quadrant": "Digital / self-serve",
    "override_reason": null,
@@ -31688,7 +31536,6 @@
    ],
    "expected_value_usd": 2576.0,
    "flags": [
-    "Renewal coming",
     "Usage drop"
    ],
    "quadrant": "Digital / self-serve",
@@ -31758,9 +31605,7 @@
     "No new builders in 60 days"
    ],
    "expected_value_usd": 2550.0,
-   "flags": [
-    "Renewal coming"
-   ],
+   "flags": [],
    "quadrant": "Digital / self-serve",
    "model_quadrant": "Digital / self-serve",
    "override_reason": null,
@@ -31973,9 +31818,7 @@
     "Uses 1 developer platform product"
    ],
    "expected_value_usd": 2376.0,
-   "flags": [
-    "Renewal coming"
-   ],
+   "flags": [],
    "quadrant": "Digital / self-serve",
    "model_quadrant": "Digital / self-serve",
    "override_reason": null,
@@ -32184,9 +32027,7 @@
     "No new builders in 60 days"
    ],
    "expected_value_usd": 2160.0,
-   "flags": [
-    "Renewal coming"
-   ],
+   "flags": [],
    "quadrant": "Digital / self-serve",
    "model_quadrant": "Digital / self-serve",
    "override_reason": null,
@@ -32255,9 +32096,7 @@
     "No new builders in 60 days"
    ],
    "expected_value_usd": 2072.0,
-   "flags": [
-    "Renewal coming"
-   ],
+   "flags": [],
    "quadrant": "Digital / self-serve",
    "model_quadrant": "Digital / self-serve",
    "override_reason": null,
@@ -32325,9 +32164,7 @@
     "Uses 1 developer platform product"
    ],
    "expected_value_usd": 1998.0,
-   "flags": [
-    "Renewal coming"
-   ],
+   "flags": [],
    "quadrant": "Digital / self-serve",
    "model_quadrant": "Digital / self-serve",
    "override_reason": null,
@@ -32469,9 +32306,7 @@
     "Usage down 9% in 3 months"
    ],
    "expected_value_usd": 1953.0,
-   "flags": [
-    "Renewal coming"
-   ],
+   "flags": [],
    "quadrant": "Digital / self-serve",
    "model_quadrant": "Digital / self-serve",
    "override_reason": null,
@@ -32541,9 +32376,7 @@
     "Usage down 15% in 3 months"
    ],
    "expected_value_usd": 1920.0,
-   "flags": [
-    "Renewal coming"
-   ],
+   "flags": [],
    "quadrant": "Digital / self-serve",
    "model_quadrant": "Digital / self-serve",
    "override_reason": null,
@@ -32611,9 +32444,7 @@
     "Usage down 15% in 3 months"
    ],
    "expected_value_usd": 1904.0,
-   "flags": [
-    "Renewal coming"
-   ],
+   "flags": [],
    "quadrant": "Digital / self-serve",
    "model_quadrant": "Digital / self-serve",
    "override_reason": null,
@@ -32818,9 +32649,7 @@
     "Usage down 19% in 3 months"
    ],
    "expected_value_usd": 1809.0,
-   "flags": [
-    "Renewal coming"
-   ],
+   "flags": [],
    "quadrant": "Digital / self-serve",
    "model_quadrant": "Digital / self-serve",
    "override_reason": null,
@@ -32960,9 +32789,7 @@
     "No new builders in 60 days"
    ],
    "expected_value_usd": 1736.0,
-   "flags": [
-    "Renewal coming"
-   ],
+   "flags": [],
    "quadrant": "Digital / self-serve",
    "model_quadrant": "Digital / self-serve",
    "override_reason": null,
@@ -33031,9 +32858,7 @@
     "2 meetings and calls in 90 days"
    ],
    "expected_value_usd": 1725.0,
-   "flags": [
-    "Renewal coming"
-   ],
+   "flags": [],
    "quadrant": "Digital / self-serve",
    "model_quadrant": "Digital / self-serve",
    "override_reason": null,
@@ -33172,9 +32997,7 @@
     "Usage down 12% in 3 months"
    ],
    "expected_value_usd": 1536.0,
-   "flags": [
-    "Renewal coming"
-   ],
+   "flags": [],
    "quadrant": "Digital / self-serve",
    "model_quadrant": "Digital / self-serve",
    "override_reason": null,
@@ -33245,7 +33068,6 @@
    ],
    "expected_value_usd": 1530.0,
    "flags": [
-    "Renewal coming",
     "Usage drop"
    ],
    "quadrant": "Digital / self-serve",
@@ -33457,9 +33279,7 @@
     "1 meeting and calls in 90 days"
    ],
    "expected_value_usd": 1488.0,
-   "flags": [
-    "Renewal coming"
-   ],
+   "flags": [],
    "quadrant": "Digital / self-serve",
    "model_quadrant": "Digital / self-serve",
    "override_reason": null,
@@ -33528,9 +33348,7 @@
     "No new builders in 60 days"
    ],
    "expected_value_usd": 1480.0,
-   "flags": [
-    "Renewal coming"
-   ],
+   "flags": [],
    "quadrant": "Digital / self-serve",
    "model_quadrant": "Digital / self-serve",
    "override_reason": null,
@@ -33739,9 +33557,7 @@
     "Usage down 8% in 3 months"
    ],
    "expected_value_usd": 1264.0,
-   "flags": [
-    "Renewal coming"
-   ],
+   "flags": [],
    "quadrant": "Digital / self-serve",
    "model_quadrant": "Digital / self-serve",
    "override_reason": null,
@@ -33881,9 +33697,7 @@
     "Usage up 1% in 3 months"
    ],
    "expected_value_usd": 980.0,
-   "flags": [
-    "Renewal coming"
-   ],
+   "flags": [],
    "quadrant": "Digital / self-serve",
    "model_quadrant": "Digital / self-serve",
    "override_reason": null,
@@ -33951,9 +33765,7 @@
     "Usage down 11% in 3 months"
    ],
    "expected_value_usd": 918.0,
-   "flags": [
-    "Renewal coming"
-   ],
+   "flags": [],
    "quadrant": "Digital / self-serve",
    "model_quadrant": "Digital / self-serve",
    "override_reason": null,
@@ -34736,9 +34548,7 @@
     "Uses 1 developer platform product"
    ],
    "expected_value_usd": 0.0,
-   "flags": [
-    "Renewal coming"
-   ],
+   "flags": [],
    "quadrant": "Digital / self-serve",
    "model_quadrant": "Digital / self-serve",
    "override_reason": null,
@@ -35519,9 +35329,7 @@
     "2 meetings and calls in 90 days"
    ],
    "expected_value_usd": 0.0,
-   "flags": [
-    "Renewal coming"
-   ],
+   "flags": [],
    "quadrant": "Digital / self-serve",
    "model_quadrant": "Digital / self-serve",
    "override_reason": null,
@@ -35734,9 +35542,7 @@
     "No new builders in 60 days"
    ],
    "expected_value_usd": 0.0,
-   "flags": [
-    "Renewal coming"
-   ],
+   "flags": [],
    "quadrant": "Digital / self-serve",
    "model_quadrant": "Digital / self-serve",
    "override_reason": null,

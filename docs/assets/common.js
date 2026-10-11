@@ -79,7 +79,7 @@ const GTM = {
     if (!header || document.querySelector(".credit-bar")) return;
     const bar = document.createElement("div");
     bar.className = "credit-bar";
-    bar.innerHTML = `<div class="inner"><strong>Built with AI</strong> · Owned and reviewed by Bharat · Coded using AI (Claude Code)</div>`;
+    bar.innerHTML = `<div class="inner"><strong>Built with AI:</strong> Designed and reviewed by me</div>`;
     header.after(bar);
   },
 

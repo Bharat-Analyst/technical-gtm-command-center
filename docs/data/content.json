@@ -95,12 +95,12 @@
     "date": "Oct 21, 2026 (full day, customer HQ)",
     "intake": "Submitted by the account executive: goal, stakeholders (head of platform engineering, checkout team lead), the decision Northwind needs to make (build checkout personalization on Workers or keep the legacy service), and timing (before the holiday code freeze).",
     "agenda": [
-      "09:00  The decision for today and what success looks like",
-      "09:30  Current checkout architecture (customer-led)",
-      "10:45  Target design: personalization logic on Workers",
-      "13:00  Working session: build one personalization rule together",
-      "15:00  Build plan, risks, and owners on both sides",
-      "16:00  Readout with the head of platform engineering"
+      "09:00 – The decision for today and what success looks like",
+      "09:30 – Current checkout architecture (customer-led)",
+      "10:45 – Target design: personalization logic on Workers",
+      "13:00 – Working session: build one personalization rule together",
+      "15:00 – Build plan, risks, and owners on both sides",
+      "16:00 – Readout with the head of platform engineering"
     ],
     "attendees": {
       "customer": [

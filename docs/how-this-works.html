@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>How This Works</title>
   <meta name="description" content="The full method behind the Technical GTM Command Center: data, scoring, alerts, type of help, team capacity, programs, measurement, and a Northwind Commerce case study.">
-  <link rel="stylesheet" href="assets/style.css?v=20261011">
+  <link rel="stylesheet" href="assets/style.css?v=2026101103">
 </head>
 <body>
   <header class="site-header" id="top">
@@ -534,7 +534,7 @@
     </article>
   </main>
 
-  <script src="assets/common.js?v=20261011"></script>
+  <script src="assets/common.js?v=2026101103"></script>
   <script>
     (async function () {
       let accounts, content, decisions, glossary;
@@ -624,7 +624,7 @@
           const p = content.program;
           return table(["Part", "Detail"], [
             ["Trigger", esc(GTM.fill(p.trigger))], ["Who", esc(p.owner)], ["Length", esc(p.length)],
-            ...p.steps.map((s) => { const [k, ...r] = s.split(": "); return [esc(k), esc(r.join(": "))]; }),
+            ...p.steps.map((s) => { const [k, ...r] = s.split(": "); const d = r.join(": "); return [esc(k), esc(d.charAt(0).toUpperCase() + d.slice(1))]; }),
             ["Success measure", esc(GTM.fill(p.success_metric))],
             ["Eligible accounts", `${p.eligible_accounts} today (<a href="programs.html">Programs page</a>)`],
           ]);

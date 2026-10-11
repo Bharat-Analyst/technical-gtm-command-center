@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Executive View</title>
   <meta name="description" content="Leadership view: money in play, coverage, engagement health, account propensity and the comparison group for proving ROI.">
-  <link rel="stylesheet" href="assets/style.css?v=20261011">
+  <link rel="stylesheet" href="assets/style.css?v=2026101103">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/plotly.js/2.35.3/plotly.min.js"></script>
 </head>
 <body>
@@ -20,6 +20,8 @@
     <span class="responsibility">Leadership visibility / ROI</span>
     <h1>Executive view</h1>
     <p class="lede">This page shows what leadership could see each week: money in play, how much of it the team covers, engagement health, and how we plan to prove ROI.</p>
+
+    <section class="card callout" id="selected" style="margin-bottom:12px"></section>
 
     <div class="grid grid-4" id="kpis"></div>
     <p class="howto"><strong>How to read this:</strong> four numbers for a weekly review. Money in play is the total opportunity; coverage shows how much of it current team capacity reaches. <span id="why-kpis"></span></p>
@@ -48,7 +50,7 @@
   </main>
 
 
-  <script src="assets/common.js?v=20261011"></script>
+  <script src="assets/common.js?v=2026101103"></script>
   <script>
     (async function () {
       let accounts, content;
@@ -61,6 +63,13 @@
       const selected = GTM.selectedAccount(all);
       GTM.carryAccountInNav(selected.slug);
       GTM.backToLifecycle(selected);
+
+      // Selected account: where it sits in the leadership view.
+      const share = selected.expected_value_usd / sum(all, "expected_value_usd");
+      document.getElementById("selected").innerHTML = `
+        <span class="responsibility" style="margin:0">Selected account</span>
+        <h3 style="font-size:18px">${GTM.esc(selected.account_name)} <span class="muted small" style="font-weight:400">${GTM.term(selected.quadrant)} · ${GTM.esc(selected.coverage)}</span></h3>
+        <p style="margin:0">Rank #${selected.priority_rank} of ${all.length}: ${GTM.usd(selected.pool_of_funds)} pool of funds (${GTM.poolBreakdown(selected)}) and ${GTM.usd(selected.expected_value_usd)} opportunity value, ${GTM.pct(share, 1)} of the total. ${selected.holdout ? "It is in the comparison group." : selected.qualifies_for_scaled_help ? "It is in the helped group." : selected.sa_slot ? "It holds a dedicated slot, so it is never in the comparison group." : ""}</p>`;
 
       document.getElementById("why-kpis").innerHTML = GTM.why("pool-of-funds") + GTM.why("capacity");
       document.getElementById("why-bars").innerHTML = GTM.why("quadrants");
@@ -94,7 +103,8 @@
           unused: sum(rows, "unused_commit"), pipe: sum(rows, "open_pipeline_usd"),
           pool: sum(rows, "pool_of_funds"), ev: sum(rows, "expected_value_usd"),
           inCap: rows.filter((a) => a.in_capacity).length,
-          motions: [...new Set(rows.map((a) => a.motion))],
+          // Each help plan in this type, with how many accounts get it.
+          motions: Object.entries(rows.reduce((m, a) => ((m[a.motion] = (m[a.motion] || 0) + 1), m), {})).sort((x, y) => y[1] - x[1]),
         };
       });
 
@@ -128,7 +138,7 @@
           <td class="num">${GTM.usd(r.pool)}<span class="breakdown">${GTM.usd(r.unused)} + ${GTM.usd(r.pipe)}</span></td>
           <td class="num">${GTM.usd(r.ev)}</td>
           <td class="num">${r.inCap}</td>
-          <td class="small">${r.motions.map(GTM.esc).join("<br>")}</td>
+          <td class="small"><ul class="plan-list">${r.motions.map(([m, n]) => `<li>${GTM.esc(m)} <span class="muted">(${n})</span></li>`).join("")}</ul></td>
         </tr>`).join("");
 
       // ---------- Measure and learn: comparison group ----------

@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Account Prioritization</title>
   <meta name="description" content="Propensity score × pool of funds matrix, alerts and SA/FDE team capacity.">
-  <link rel="stylesheet" href="assets/style.css?v=20261011">
+  <link rel="stylesheet" href="assets/style.css?v=2026101103">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/plotly.js/2.35.3/plotly.min.js"></script>
 </head>
 <body>
@@ -23,7 +23,8 @@
 
     <div class="card" style="margin-bottom:12px">
       <div class="controls" style="margin:0">
-        <label for="sas"><span data-term="capacity">Team capacity</span>: SAs
+        <strong><span data-term="capacity">Team capacity</span></strong>
+        <label for="sas">SAs
           <input type="range" id="sas" min="2" max="30" step="1"><strong id="sas-out"></strong>
         </label>
         <label for="fdes">FDEs
@@ -78,7 +79,7 @@
     </p>
   </main>
 
-  <script src="assets/common.js?v=20261011"></script>
+  <script src="assets/common.js?v=2026101103"></script>
   <script>
     (async function () {
       let data;
@@ -140,8 +141,7 @@
             ${fact(GTM.term("rank", "Priority rank"), `#${a.priority_rank} of ${accounts.length}`)}
           </dl>
           <p class="small" style="margin:12px 0 4px"><strong>${GTM.term("top_reasons")}:</strong> ${a.top_reasons.map(GTM.esc).join(" · ")}${GTM.why("weights")}</p>
-          <p class="small" style="margin:0"><strong>${GTM.term("motion")}:</strong> ${GTM.esc(a.motion)}</p>
-          <p class="small" style="margin:4px 0 0">${GTM.why("on-track-bands")}</p>
+          <p class="small" style="margin:0"><strong>${GTM.term("motion")}:</strong> ${GTM.esc(a.motion)}${GTM.why("on-track-bands")}</p>
           ${GTM.whyThisAccountBox(a)}
           ${GTM.seasonalNote(a)}`;
       }
@@ -159,7 +159,7 @@
             `${GTM.usd(sum(accounts, "unused_commit"))} unused commit + ${GTM.usd(sum(accounts, "open_pipeline_usd"))} open pipeline`),
           card(GTM.term("ev_covered"), GTM.usd(sum(covered, "expected_value_usd")),
             `${GTM.pct(sum(covered, "expected_value_usd") / totalEV)} of the total, from ${covered.length} accounts with a slot`),
-          card(`${GTM.term("fde_deep_engagement")} with an FDE`, slots.fde.size,
+          card(`${GTM.term("fde_deep_engagement", "Deep engagement")} accounts with an FDE`, slots.fde.size,
             `of ${accounts.filter((x) => x.quadrant === Q_DEEP).length} accounts with this type of help`),
           card(GTM.term("commit_at_risk"), atRisk.length, `${atRisk.filter((x) => slots.sa.has(x.account_id)).length} hold a slot`),
         ].join("");
@@ -207,7 +207,8 @@
             corner(99, 0.99, "fde_deep_engagement", "right", "top"), corner(1, 0.99, "strategic_bet", "left", "top"),
             corner(99, 0.01, "scaled_sa_program", "right", "bottom"), corner(1, 0.01, "digital", "left", "bottom"),
             { x: selected.propensity_score, y: Math.log10(Math.max(selected.pool_of_funds, MIN_Y)), text: GTM.esc(selected.account_name.split(" ")[0]),
-              showarrow: true, arrowhead: 0, ax: -44, ay: narrow ? 30 : -28, arrowcolor: c.text2, font: { size: 12, color: c.text } },
+            // Label sits below the point so it never covers the corner label.
+              showarrow: true, arrowhead: 0, ax: -48, ay: 32, arrowcolor: c.text2, font: { size: 12, color: c.text } },
           ],
         }, { responsive: true, displayModeBar: false });
       }

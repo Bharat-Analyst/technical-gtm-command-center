@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Engagement and Onsite</title>
   <meta name="description" content="Strategic engagement tracker and the Northwind Commerce technical onsite plan.">
-  <link rel="stylesheet" href="assets/style.css?v=20261011">
+  <link rel="stylesheet" href="assets/style.css?v=2026101103">
 </head>
 <body>
   <header class="site-header">
@@ -30,8 +30,8 @@
       <table>
         <thead><tr>
           <th><span data-term="account">Account</span></th><th><span data-term="goal">Goal</span></th>
-          <th><span data-term="quadrant">Type of help</span></th><th><span data-term="owner">Owners</span></th>
-          <th><span data-term="stakeholders">Customer stakeholders</span></th><th><span data-term="success_criteria">Success criteria</span></th>
+          <th><span data-term="quadrant">Type of help</span></th><th><span data-term="owner">Owners</span> and <span data-term="stakeholders">customer</span></th>
+          <th><span data-term="success_criteria">Success criteria</span></th>
           <th><span data-term="blocker">Risks and blockers</span></th><th><span data-term="status">Status</span></th>
           <th><span data-term="next_step">Next step</span></th>
         </tr></thead>
@@ -46,8 +46,8 @@
     <div id="onsite-plan"></div>
   </main>
 
-  <script src="assets/common.js?v=20261011"></script>
-  <script src="assets/lifecycle.js?v=20261011"></script>
+  <script src="assets/common.js?v=2026101103"></script>
+  <script src="assets/lifecycle.js?v=2026101103"></script>
   <script>
     (async function () {
       let accounts, content;
@@ -78,8 +78,7 @@
           <td><strong>${GTM.esc(e.account)}</strong></td>
           <td>${GTM.esc(e.goal)}</td>
           <td>${a ? GTM.term(a.quadrant) : "—"}</td>
-          <td class="small">${owners.map(GTM.esc).join("<br>")}</td>
-          <td class="small">${GTM.esc(e.stakeholders)}</td>
+          <td class="small">${owners.map(GTM.esc).join("<br>")}<div class="muted" style="margin-top:4px">Customer: ${GTM.esc(e.stakeholders)}</div></td>
           <td class="small">${GTM.esc(GTM.fill(e.success_criteria))}</td>
           <td class="small">${e.blocker && e.blocker !== "None" ? GTM.esc(e.blocker) : '<span class="muted">None</span>'}</td>
           <td>${GTM.status(e.status)}</td>

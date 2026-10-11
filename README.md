@@ -1,5 +1,7 @@
 # Technical GTM Command Center
 
+**Designed and built by Bharat with AI.** I defined the problem, the scoring model and every GTM decision, and reviewed every number; Claude Code (Anthropic's AI coding assistant) wrote the code alongside me, step by step, with a commit after each step.
+
 Solutions Architects and Forward Deployed Engineers are scarce, and their time often goes to whoever asks loudest rather than where it moves revenue most.
 This project is a working command center that scores every account on Propensity score and Pool of funds, raises alerts on risk and opportunity, decides the right type of help for each account, and packages repeatable programs and services.
 It shows how technical GTM team capacity can be run as a ranked, measurable investment that leadership can see and defend, with an interactive lifecycle walkthrough that takes any account from CRM data to measured impact.
@@ -66,10 +68,6 @@ python3.11 -m venv .venv
 .venv/bin/python pipeline.py        # scores, exports, validates, prints the Northwind check table
 python3 -m http.server 8000 -d docs # then open http://localhost:8000
 ```
-
-## How this was built
-
-Built with AI: I designed the approach, made the GTM decisions and reviewed every output, and used Claude Code (Anthropic's AI coding assistant) to write the code, generate the data pipeline and build the site, step by step with a commit after each step.
 
 ## Next steps with real Salesforce data
 

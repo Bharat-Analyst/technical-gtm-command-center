@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Programs and PS Offer</title>
-  <meta name="description" content="Commit Burn Sprint SA program playbook, the Workers Migration Accelerator services offer with business case, and program handoff.">
+  <meta name="description" content="Commit Burn Sprint program playbook, the Workers Migration Accelerator services offer with business case, and program handoff.">
   <link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
@@ -18,7 +18,7 @@
   <main>
     <span class="responsibility">Technical programs · Professional Services packaging</span>
     <h1>Programs &amp; PS offer</h1>
-    <p class="lede">This page shows how we could scale technical engagement beyond what individual SAs can cover: a data-triggered program playbook, a packaged services offer with a business case, and a clear handoff to a long-term owner.</p>
+    <p class="lede">This page shows how we could scale what works: when the same help works for many customers it becomes a repeatable program, and when customers repeatedly need deep hands-on work it becomes a packaged Professional Services offer.</p>
 
     <section class="card callout" id="selected" style="margin-bottom:12px"></section>
 
@@ -33,7 +33,6 @@
     <div data-faq="handoff"></div>
   </main>
 
-
   <script src="assets/common.js"></script>
   <script src="assets/lifecycle.js"></script>
   <script>
@@ -42,66 +41,53 @@
       try { ({ accounts, content } = await GTM.init("programs.html")); }
       catch (err) { GTM.showError(document.querySelector("main"), err); return; }
 
-      const p = content.program;
-      const all = accounts.accounts;
-
-      // Selected account from ?account=… (defaults to Northwind).
+      const p = content.program, all = accounts.accounts;
       const selected = GTM.selectedAccount(all);
       GTM.carryAccountInNav(selected.slug);
       GTM.backToLifecycle(selected);
-      const programStep = LIFECYCLE.steps({ accounts, content })[6]; // "Program & PS Offer"
+      const revenueStep = LIFECYCLE.steps({ accounts, content })[6]; // "Revenue"
       document.getElementById("selected").innerHTML = `
         <span class="responsibility" style="margin:0">Selected account</span>
         <h3 style="font-size:18px">${GTM.esc(selected.account_name)} <span class="muted small" style="font-weight:400">${GTM.term(selected.quadrant)} · rank #${selected.priority_rank}</span></h3>
-        <p style="margin:0">${GTM.esc(programStep.sentence(selected))}</p>
+        <p style="margin:0">${GTM.esc(revenueStep.sentence(selected))}</p>
         ${GTM.seasonalNote(selected)}`;
+
       const list = (items, tag = "ul") => `<${tag} class="tight">${items.map((i) => `<li>${GTM.esc(i)}</li>`).join("")}</${tag}>`;
       const kpi = (label, value, sub) => `<div class="card kpi"><div class="label">${label}</div><div class="value">${value}</div><div class="sub">${sub}</div></div>`;
       const howto = (text) => `<p class="howto"><strong>How to read this:</strong> ${text}</p>`;
 
-      // Largest eligible accounts by unused commit — the first enrollment wave.
-      const eligible = all
-        .filter((a) => a.flags.includes("Commit at Risk"))
-        .sort((a, b) => b.unused_commit - a.unused_commit);
-      const holdoutCount = all.filter((a) => a.holdout).length;
-
+      const eligible = all.filter((a) => a.sprint_eligible).sort((a, b) => b.unused_commit - a.unused_commit);
       document.getElementById("program-title").textContent = `Program playbook: ${p.name}`;
+      const row = (k, v) => `<tr><th scope="row" style="width:160px">${k}</th><td>${v}</td></tr>`;
       document.getElementById("program").innerHTML = `
-        <div class="grid grid-3" style="margin-bottom:4px">
-          ${kpi("Eligible accounts today", p.eligible_accounts, `triggered by the ${GTM.term("commit_at_risk")} alert ${GTM.why("flags")}`)}
-          ${kpi(`Outside ${GTM.term("capacity", "team capacity")}`, p.eligible_outside_capacity, `only reachable through a scaled program; ${holdoutCount} in the comparison group to measure impact ${GTM.why("holdout")}`)}
-          ${kpi(GTM.term("unused_commit", "Unused commit at stake"), GTM.usd(p.eligible_unused_commit), "across eligible accounts")}
+        <div class="table-wrap">
+          <table><tbody>
+            ${row("Trigger", `${GTM.esc(GTM.fill(p.trigger))} ${GTM.why("flags")}`)}
+            ${row("Who", GTM.esc(p.owner))}
+            ${row("Length", GTM.esc(p.length))}
+            ${p.steps.map((s) => { const [when, ...rest] = s.split(": "); return row(GTM.esc(when), GTM.esc(rest.join(": "))); }).join("")}
+            ${row("Success measure", GTM.esc(GTM.fill(p.success_metric)))}
+            ${row("Eligible accounts", `<strong>${p.eligible_accounts}</strong> today (${p.eligible_outside_capacity} without an SA slot), holding ${GTM.usd(p.eligible_unused_commit)} unused commit`)}
+          </tbody></table>
         </div>
-        ${howto("the program finds its own customers: every account with the Commit at Risk alert qualifies, and most of them are beyond what the team can cover one-to-one.")}
-        <div class="grid grid-2" style="margin-top:12px">
-          <div class="card">
-            <dl class="step-panel" style="margin:0">
-              <dt>Trigger</dt><dd style="margin:2px 0 12px">${GTM.esc(GTM.fill(p.trigger))}${GTM.why("flags")}</dd>
-              <dt>Owner</dt><dd style="margin:2px 0 12px">${GTM.esc(p.owner)}</dd>
-              <dt>Cadence</dt><dd style="margin:2px 0 0">${GTM.esc(p.cadence)}</dd>
-            </dl>
-          </div>
-          <div class="card"><h3>Steps</h3>${list(p.steps, "ol")}</div>
-        </div>
-        <div class="card metric" style="margin-top:12px"><h3>Success metric</h3><p style="margin:0">${GTM.esc(GTM.fill(p.success_metric))}</p></div>
-        <h3 style="margin-top:20px">First enrollment wave: top 10 eligible by unused commit</h3>
+        ${howto("the playbook, read top to bottom: what triggers it, who runs it, what happens each week, and how success is judged. The eligible count is live from the data.")}
+        <h3 style="margin-top:20px">Eligible accounts</h3>
         <div class="table-wrap">
           <table>
             <thead><tr>
-              <th>${GTM.term("account")}</th><th>${GTM.term("segment")}</th><th class="num">${GTM.term("burn_pace")}</th>
+              <th>${GTM.term("account")}</th><th>${GTM.term("quadrant")}</th><th class="num">${GTM.term("burn_pace")}</th>
               <th class="num">${GTM.term("unused_commit")}</th><th class="num">${GTM.term("days_to_renewal")}</th><th>${GTM.term("program")}</th>
             </tr></thead>
-            <tbody>${eligible.slice(0, 10).map((a) => `
+            <tbody>${eligible.map((a) => `
               <tr class="${a.slug === selected.slug ? "is-selected" : ""}">
-                <td><strong>${GTM.esc(a.account_name)}</strong></td><td>${GTM.esc(a.segment)}</td>
+                <td><strong>${GTM.esc(a.account_name)}</strong></td><td>${GTM.term(a.quadrant)}</td>
                 <td class="num">${GTM.onTrack(a, false)}</td><td class="num">${GTM.usd(a.unused_commit)}</td>
-                <td class="num">${a.days_to_renewal}</td>
-                <td>${GTM.esc(a.program)}</td>
+                <td class="num">${a.days_to_renewal}</td><td>${GTM.esc(a.program)}</td>
               </tr>`).join("")}
             </tbody>
           </table>
         </div>
-        ${howto(`the biggest unused commits go first. A lower On-track % means further behind schedule; accounts in the comparison group are measured but not enrolled. Retail accounts may look further behind than they are because of Q4 seasonality. ${GTM.why("on-track-bands")}${GTM.why("holdout")}`)}
+        ${howto(`largest unused commit first. Lower On-track % means further behind; retail accounts may look further behind than they are because of Q4 seasonality. ${GTM.why("on-track-bands")}`)}
         ${GTM.faqMini(["commit-burn"])}`;
 
       // ---------- PS offer + business case (computed from content.json inputs) ----------
@@ -109,10 +95,11 @@
       const rows = o.tiers.map((t) => ({
         ...t,
         services: t.price_usd * t.deals_per_year,
+        cost: t.delivery_cost_usd * t.deals_per_year,
         pull: t.consumption_pull_through_usd * t.deals_per_year,
       }));
       const sum = (k) => rows.reduce((s, r) => s + r[k], 0);
-      const services = sum("services"), pull = sum("pull"), deals = sum("deals_per_year");
+      const services = sum("services"), cost = sum("cost"), pull = sum("pull"), deals = sum("deals_per_year");
 
       document.getElementById("offer").innerHTML = `
         <p style="margin:0 0 12px"><strong>${GTM.esc(o.name)}</strong> — ${GTM.esc(o.summary)}</p>
@@ -122,34 +109,32 @@
             <tbody>${rows.map((t) => `<tr><td><strong>${GTM.esc(t.tier)}</strong></td><td>${GTM.esc(t.scope)}</td><td>${GTM.esc(t.duration)}</td><td class="num">${GTM.usd(t.price_usd)}</td></tr>`).join("")}</tbody>
           </table>
         </div>
-        ${howto(`three sizes of the same offer. The pipeline recommends a tier from the account's unused commit: Assess under ${GTM.data.vars.ps_assess}, Migrate under ${GTM.data.vars.ps_migrate}, Scale above.`)}
+        ${howto(`three sizes of the same offer. The pipeline suggests a tier from unused commit: Starter under ${GTM.data.vars.ps_starter}, Standard under ${GTM.data.vars.ps_standard}, Advanced above.`)}
 
         <h3 style="margin-top:20px">Business case (annual)</h3>
         <div class="grid grid-3" style="margin-bottom:12px">
-          ${kpi(GTM.term("services_revenue"), GTM.usd(services), `${deals} engagements per year`)}
-          ${kpi(GTM.term("pull_through"), GTM.usd(pull), "added annual platform usage")}
-          ${kpi("Total revenue impact", GTM.usd(services + pull), `${(pull / services).toFixed(1)}× pull-through per services dollar`)}
+          ${kpi(GTM.term("services_revenue"), GTM.usd(services), `${deals} engagements a year`)}
+          ${kpi(GTM.term("delivery_cost"), GTM.usd(cost), `services margin ${GTM.usd(services - cost)} (${GTM.pct((services - cost) / services)})`)}
+          ${kpi(GTM.term("pull_through"), GTM.usd(pull), "extra yearly platform usage after migrations")}
         </div>
         <div class="table-wrap">
           <table>
-            <thead><tr><th>${GTM.term("tier")}</th><th class="num">${GTM.term("deals_per_year")}</th><th class="num">${GTM.term("services_revenue")}</th><th class="num">${GTM.term("pull_through", "Pull-through / deal")}</th><th class="num">${GTM.term("pull_through", "Pull-through total")}</th><th class="num">${GTM.term("total")}</th></tr></thead>
-            <tbody>${rows.map((r) => `<tr><td>${GTM.esc(r.tier)}</td><td class="num">${r.deals_per_year}</td><td class="num">${GTM.usd(r.services)}</td><td class="num">${GTM.usd(r.consumption_pull_through_usd)}</td><td class="num">${GTM.usd(r.pull)}</td><td class="num">${GTM.usd(r.services + r.pull)}</td></tr>`).join("")}</tbody>
-            <tfoot><tr><td>Total</td><td class="num">${deals}</td><td class="num">${GTM.usd(services)}</td><td class="num"></td><td class="num">${GTM.usd(pull)}</td><td class="num">${GTM.usd(services + pull)}</td></tr></tfoot>
+            <thead><tr><th>${GTM.term("tier")}</th><th class="num">${GTM.term("deals_per_year")}</th><th class="num">${GTM.term("services_revenue")}</th><th class="num">${GTM.term("delivery_cost")}</th><th class="num">${GTM.term("pull_through")}</th></tr></thead>
+            <tbody>${rows.map((r) => `<tr><td>${GTM.esc(r.tier)}</td><td class="num">${r.deals_per_year}</td><td class="num">${GTM.usd(r.services)}</td><td class="num">${GTM.usd(r.cost)}</td><td class="num">${GTM.usd(r.pull)}</td></tr>`).join("")}</tbody>
+            <tfoot><tr><td>Total</td><td class="num">${deals}</td><td class="num">${GTM.usd(services)}</td><td class="num">${GTM.usd(cost)}</td><td class="num">${GTM.usd(pull)}</td></tr></tfoot>
           </table>
         </div>
-        ${howto("each row is price × expected deals, plus the extra platform usage those deals pull through. Pull-through is the bigger prize; the services fee covers delivery.")}
-        <div class="card" style="margin-top:12px"><h3>Assumptions</h3>${list(o.business_case_notes)}</div>`;
+        ${howto("three parts: services revenue, the cost to deliver it, and the consumption the migrations unlock. The point isn't only services revenue; it's helping customers use the platform more.")}
+        <div class="card" style="margin-top:12px"><h3>Notes</h3>${list(o.business_case_notes)}</div>`;
 
-      // ---------- Hand off to an owner ----------
       const h = p.handoff;
       document.getElementById("handoff-body").innerHTML = `
         <div class="card">
-          <p style="margin:0 0 8px">${GTM.esc(h.owner)}</p>
-          <h3>Ready to hand off when</h3>${list(h.ready_when)}
-          <p class="small" style="margin:10px 0 0">Proof comes from the comparison group on the <a href="executive.html#measure">Executive view</a>. ${GTM.why("holdout")}</p>
+          <h3>A new program stays with the strategy team until it meets four tests</h3>${list(h.ready_when, "ol")}
+          <p style="margin:10px 0 0">${GTM.esc(h.owner)}</p>
+          <p class="small" style="margin:8px 0 0">Impact comes from the comparison group on the <a href="executive.html#measure">Executive view</a>. ${GTM.why("holdout")}</p>
         </div>`;
 
-      GTM.decorateTerms(document);
       GTM.scrollToHash();
     })();
   </script>

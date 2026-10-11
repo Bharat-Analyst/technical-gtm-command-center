@@ -10,7 +10,7 @@ const PAGES = [
   { file: "engagement.html", nav: "Engagement", role: "Engagement and onsite" },
   { file: "programs.html", nav: "Programs & PS", role: "Programs and PS offer" },
   { file: "executive.html", nav: "Executive", role: "Executive view" },
-  { file: "decisions.html", nav: "Decision Log", role: "Decision log" },
+  { file: "how-this-works.html", nav: "How this works", role: "How this works" },
 ];
 
 const GTM = {
@@ -41,21 +41,23 @@ const GTM = {
   // Numbers that text templates may use, e.g. "{capacity}". All come from the
   // pipeline's accounts.json so explanations never drift from the data.
   metaVars(accounts) {
-    const m = accounts.meta, t = m.thresholds, w = m.weights, win = m.signal_windows_days;
+    const m = accounts.meta, t = m.thresholds, w = m.weights, win = m.signal_windows, c = m.capacity;
     return {
       total_accounts: accounts.accounts.length,
-      score_high: t.score_high, pool_high: GTM.usd(t.pool_of_funds_high), capacity: t.capacity_top_n,
-      car_pace: GTM.pct(t.commit_at_risk_max_pace), renewal_days: t.renewal_window_days,
-      spike: t.usage_spike_ratio, newdev_min: t.new_developers_min,
-      ps_assess: GTM.usd(t.ps_assess_below), ps_migrate: GTM.usd(t.ps_migrate_below),
-      w_usage: GTM.pct(w.usage_growth), w_newdev: GTM.pct(w.new_developers), w_eng: GTM.pct(w.engagement), w_burn: GTM.pct(w.commit_burn),
-      win_usage: win.usage_growth, win_eng: win.engagement, win_newdev: win.new_developers,
-      holdout_share: GTM.pct(m.holdout_share),
-      car_min_elapsed: GTM.pct(t.commit_at_risk_min_elapsed),
-      spike_recent: t.usage_spike_recent_days, spike_baseline: t.usage_spike_baseline_days,
+      score_high: t.score_high, pool_high: GTM.usd(t.pool_of_funds_high),
+      car_pace: GTM.pct(t.commit_at_risk_max_pace), car_min_elapsed: GTM.pct(t.commit_at_risk_min_elapsed),
+      renewal_days: t.renewal_coming_days, surge_min: t.builder_surge_min,
+      spike_min: GTM.pct(t.usage_spike_min), drop_max: GTM.pct(-t.usage_drop_max),
       on_track_good: GTM.pct(t.on_track_good), on_track_warn: GTM.pct(t.on_track_warn),
+      sprint_min_unused: GTM.usd(t.sprint_min_unused),
+      ps_starter: GTM.usd(t.ps_starter_below), ps_standard: GTM.usd(t.ps_standard_below),
+      w_usage: GTM.pct(w.usage_growth), w_builders: GTM.pct(w.new_builders), w_eng: GTM.pct(w.engagement), w_breadth: GTM.pct(w.product_breadth),
+      win_usage: win.usage_growth_months, win_builders: win.new_builders_days, win_eng: win.engagement_days, win_newprod: win.new_product_days,
+      holdout_share: GTM.pct(m.holdout_share),
+      sas: c.sas, fdes: c.fdes, sa_load: c.sa_load, fde_load: c.fde_load, sa_slots: c.sa_slots, fde_slots: c.fde_slots,
     };
   },
+
 
   // Replace {placeholders} in a text template with values from metaVars.
   fill(text) {
@@ -152,30 +154,33 @@ const GTM = {
   // One plain-English summary built from the account's real data, worded
   // differently for each type of help.
   whyThisAccount(a) {
-    const m = GTM.data.accounts.meta, win = m.signal_windows_days.new_developers;
-    const [DEEP, SCALED, BET] = m.quadrants;
+    const m = GTM.data.accounts.meta, win = m.signal_windows.new_builders_days;
+    const [DEEP, BET, SCALED, DIGITAL] = m.quadrants;
     const usd = GTM.usd, pct = GTM.pct;
-    const used = pct(a.commit_consumed_usd / a.annual_commit_usd), passed = pct(a.contract_elapsed_share);
-    const builders = `${a.new_developers_30d} new builder${a.new_developers_30d === 1 ? "" : "s"} in ${win} days`;
-    const usage = `${used} of its ${usd(a.annual_commit_usd)} commit used with ${passed} of the year passed`;
-    const alerts = a.flags.length ? ` and alerts for ${a.flags.join(" and ")}` : "";
+    const builders = `${a.new_builders_60d} new builder${a.new_builders_60d === 1 ? "" : "s"} in ${win} days`;
+    const growth = `usage ${a.usage_growth_3m >= 0 ? "up" : "down"} ${pct(Math.abs(a.usage_growth_3m))} in 3 months`;
+    const commit = `${pct(a.commit_used_share)} of its ${usd(a.annual_commit_usd)} commit used with ${pct(a.contract_elapsed_share)} of the year gone`;
+    const alerts = a.flags.length ? `${a.flags.length} active alert${a.flags.length === 1 ? "" : "s"} (${a.flags.join(", ")})` : "no active alerts";
+    const lead = a.override_reason
+      ? `${a.account_name} was moved from ${a.model_quadrant} to ${a.quadrant} by a logged override: ${a.override_reason}. `
+      : "";
     let text;
     if (a.quadrant === DEEP) {
-      text = `${a.account_name} gets ${DEEP}: it has ${usage}, renews in ${a.days_to_renewal} days, and has ${builders}. ` +
-        `With a ${usd(a.pool_of_funds)} Pool of funds${alerts}, an SA leading the design and an FDE building alongside its developers is the fastest way to unlock it.`;
+      text = `${lead}${a.override_reason ? "It" : a.account_name} gets ${DEEP}: a propensity score of ${a.propensity_score} (${builders}; ${growth}), a ${usd(a.pool_of_funds)} pool of funds, and ${alerts}. ` +
+        `It has ${commit} and renews in ${a.days_to_renewal} days, so an SA leading the design and an FDE building with its developers is the fastest way to get a workload live.`;
     } else if (a.quadrant === SCALED) {
-      text = `${a.account_name} gets ${SCALED}: its growth signals are strong (${builders}; ${usage}), ` +
-        `but its ${usd(a.pool_of_funds)} Pool of funds is too small for dedicated SA/FDE time. Office hours, workshops and reference architectures can help it grow at low cost.`;
+      text = `${lead}${a.account_name} gets ${SCALED}: it is likely to grow (propensity score ${a.propensity_score}; ${builders}; ${growth}), ` +
+        `but its ${usd(a.pool_of_funds)} pool of funds doesn't justify dedicated engineers. Office hours, workshops and reference architectures keep the momentum going at low cost.`;
     } else if (a.quadrant === BET) {
-      text = `${a.account_name} is a ${BET}: a ${usd(a.pool_of_funds)} Pool of funds is at stake (${usd(a.unused_commit)} unused commit, renewal in ${a.days_to_renewal} days), ` +
-        `but its signals are weak (${builders}; ${usage}). SA-led discovery with the account team comes first; an FDE joins only if a real project appears.`;
+      text = `${lead}${a.account_name} is a ${BET}: a ${usd(a.pool_of_funds)} pool of funds is in play, but the propensity score is only ${a.propensity_score} (${builders}; ${a.meetings_90d} meetings and calls in 90 days). ` +
+        `Big money with little activity needs discovery first: the SA works with the account team to find the first use case; an FDE joins only if a real project appears.`;
     } else {
-      text = `${a.account_name} is best served by ${m.quadrants[3]}: a ${usd(a.pool_of_funds)} Pool of funds and modest signals (${builders}; ${usage}) ` +
-        `mean SA/FDE time would not change the outcome. Docs, templates and alerts keep it moving.`;
+      text = `${lead}${a.account_name} is ${DIGITAL}: a propensity score of ${a.propensity_score} and a ${usd(a.pool_of_funds)} pool of funds mean SA or FDE time wouldn't change the outcome. ` +
+        `Docs, templates and product emails keep it moving, and alerts watch for change (${alerts}).`;
     }
-    if (a.override_reason) text += ` The scorecard said ${a.model_quadrant}; it was overridden: ${a.override_reason}.`;
     return text;
   },
+
   whyThisAccountBox(a) {
     return `<div class="why-account"><strong>Why this account?</strong> ${GTM.esc(GTM.whyThisAccount(a))}</div>`;
   },
@@ -184,7 +189,7 @@ const GTM = {
   // Labelled with the decision's title, so two links side by side stay distinct.
   why(id) {
     const d = GTM.data.decisions.find((x) => x.id === id);
-    return `<a class="why" href="decisions.html#${id}">Why: ${GTM.esc(d ? d.title : id)}</a>`;
+    return `<a class="why" href="how-this-works.html#${d ? d.section : id}">Why: ${GTM.esc(d ? d.title : id)}</a>`;
   },
 
   // ---------- Formatting ----------
@@ -210,6 +215,26 @@ const GTM = {
   },
   onTrack(a, withWhy = true) {
     return `${GTM.pct(a.burn_pace)} ${GTM.onTrackStatus(a.burn_pace)}${withWhy ? GTM.why("on-track-bands") : ""}`;
+  },
+
+  // Team capacity: the same slot-filling rule as pipeline.assign_capacity, so the
+  // sliders can show what a bigger or smaller team would cover.
+  //   FDE slots → top Deep engagement accounts (alerts first, then opportunity value);
+  //   remaining SA slots → Deep engagement and Strategic bet queues merged by opportunity value.
+  assignCapacity(accounts, sas, fdes) {
+    const m = GTM.data.accounts.meta, c = m.capacity, [DEEP, BET] = m.quadrants;
+    const order = [...accounts].sort((a, b) =>
+      (b.flags.length > 0) - (a.flags.length > 0) || b.expected_value_usd - a.expected_value_usd || a.account_id.localeCompare(b.account_id));
+    const fdeSlots = fdes * c.fde_load, saSlots = sas * c.sa_load;
+    const deepQ = order.filter((a) => a.quadrant === DEEP), betQ = order.filter((a) => a.quadrant === BET);
+    const fde = new Set(deepQ.slice(0, fdeSlots).map((a) => a.account_id));
+    const sa = new Set(fde);
+    const deepRest = deepQ.slice(fdeSlots);
+    while (sa.size < saSlots && (deepRest.length || betQ.length)) {
+      const takeDeep = !betQ.length || (deepRest.length && deepRest[0].expected_value_usd >= betQ[0].expected_value_usd);
+      sa.add((takeDeep ? deepRest : betQ).shift().account_id);
+    }
+    return { fde, sa };
   },
 
   // Straight-line On-track % assumes even spending all year. Seasonal

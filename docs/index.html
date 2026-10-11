@@ -18,6 +18,7 @@
   <main>
     <span class="responsibility">Overview · all six responsibilities, end to end</span>
     <h1>Where should technical experts spend their time?</h1>
+    <p class="built-by">Designed and built by Bharat with AI: I defined the problem, the scoring model and every GTM decision, and reviewed every number; Claude Code wrote the code alongside me.</p>
     <p class="lede">
       Solutions Architects and Forward Deployed Engineers are scarce, and today their time often goes to whoever asks loudest rather than where it moves revenue most.
       I built a command center that scores every account on Propensity score and Pool of funds, raises alerts on risk and opportunity, decides the right type of help for each account, and packages repeatable programs and services.
@@ -57,16 +58,15 @@
         <thead><tr><th><span data-term="responsibility">Responsibility</span></th><th><span data-term="built">What we built</span></th><th><span data-term="page">Page</span></th></tr></thead>
         <tbody>
           <tr><td>Prioritization &amp; visibility</td><td>Propensity score × Pool of funds matrix, alerts, team capacity slider</td><td><a href="prioritization.html">Prioritization</a></td></tr>
-          <tr><td>Strategic customer engagement</td><td>Engagement tracker with owner, status, next step</td><td><a href="engagement.html">Engagement &amp; Onsite</a></td></tr>
-          <tr><td>Technical onsites</td><td>Northwind onsite plan: agenda, attendees, prep, follow-ups, metric</td><td><a href="engagement.html#onsite">Engagement &amp; Onsite</a></td></tr>
+          <tr><td>Strategic customer engagement</td><td>Engagement tracker: goal, owners, success criteria, risks and blockers, status, next step</td><td><a href="engagement.html">Engagement &amp; Onsite</a></td></tr>
+          <tr><td>Technical onsites</td><td>Northwind onsite plan in five stages, from intake to follow-up and measurement</td><td><a href="engagement.html#onsite">Engagement &amp; Onsite</a></td></tr>
           <tr><td>Technical programs</td><td>"Commit Burn Sprint" proactive SA playbook, triggered from data</td><td><a href="programs.html">Programs &amp; PS Offer</a></td></tr>
           <tr><td>Professional Services packaging</td><td>"Workers Migration Accelerator" tiers + business case</td><td><a href="programs.html#ps">Programs &amp; PS Offer</a></td></tr>
-          <tr><td>Leadership visibility / ROI</td><td>Money in play, coverage, engagement health, comparison-group ROI plan</td><td><a href="executive.html">Executive view</a></td></tr>
+          <tr><td>Leadership visibility / ROI</td><td>Money in play, coverage, engagement health, comparison group for impact</td><td><a href="executive.html">Executive view</a></td></tr>
         </tbody>
       </table>
     </div>
     <p class="howto"><strong>How to read this:</strong> each row is one duty from the job description and the page that shows it.</p>
-    <p class="small muted" style="margin-top:32px">Built with AI: designed and reviewed by me, coded with Claude Code.</p>
   </main>
 
 
@@ -160,7 +160,7 @@
           card(GTM.term("propensity_score"), `${a.propensity_score}<span class="muted small">/100</span>`, `${GTM.esc(a.top_reasons[0])} ${GTM.why("weights")}`),
           card(GTM.term("pool_of_funds"), GTM.usd(a.pool_of_funds), `${GTM.poolBreakdown(a)} ${GTM.why("pool-of-funds")}`),
           card(GTM.term("expected_value"), GTM.usd(a.expected_value_usd), `Rank #${a.priority_rank} of ${all.length}`),
-          card(GTM.term("quadrant"), `<span style="font-size:18px;line-height:1.3;display:block">${GTM.term(a.quadrant)}</span>`, `${a.in_capacity ? "Inside team capacity" : "Outside team capacity"} ${GTM.why("quadrants")}`),
+          card(GTM.term("quadrant"), `<span style="font-size:18px;line-height:1.3;display:block">${GTM.term(a.quadrant)}</span>`, `Coverage: ${a.coverage} ${GTM.why("quadrants")}`),
         ].join("");
 
         document.getElementById("why-account").innerHTML = GTM.whyThisAccountBox(a) + GTM.seasonalNote(a);

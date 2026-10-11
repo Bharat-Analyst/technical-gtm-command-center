@@ -1,20 +1,23 @@
 """
-pipeline.py — scores every account and decides where SA / FDE time goes.
+pipeline.py — turns raw Salesforce + product usage extracts into one decision
+per account: where SAs and FDEs spend their limited time.
 
-Flow (mirrors warehouse layers):
-    data/raw/accounts.csv                  CRM + telemetry extract (input)
-    data/processed/account_scores.csv      scored "mart" table, every column
-    data/output/salesforce_writeback.csv   only the fields we'd push to Salesforce
-    docs/data/accounts.json                what the website reads
+Steps (mirrors "How this works"):
+    1. Data comes in        read data/raw/*.csv
+    2. Clean and combine    standardize, merge duplicates, roll up child accounts,
+                            match usage and signups; one row per account (and per month)
+    3. Score propensity     4 bucketed signals × weights → 0–100, with top reasons
+    4. Size the prize       pool of funds, commit health, opportunity value
+    5. Alert and prioritize 6 alerts, type of help, logged overrides, team capacity slots
+    6–8. Engage / revenue / measure: program + PS routing, comparison group, exports
+Last: validate.py recomputes everything independently and fails loudly on any mismatch.
 
-Steps:
-    1. Propensity score (0–100) from a weighted scorecard + top 3 reasons
-    2. Pool of funds and Expected Value
-    3. Flags: Commit at Risk, Renewal Window, Usage Spike, New Developers
-    4. Quadrant (who should own the account: FDE, SA program, etc.)
-    5. Rank by Expected Value; the top N fit current SA/FDE capacity
-    6. Routing: motion, program, recommended PS tier
-    7. Export
+Outputs:
+    data/processed/account_month.csv       one row per account per month
+    data/processed/account_scores.csv      one row per account, every field
+    data/processed/unmatched_usage.csv     usage we couldn't match (logged, not dropped)
+    data/output/salesforce_writeback.csv   fields pushed back to Salesforce
+    docs/data/accounts.json                what every page reads
 """
 
 import json
@@ -24,234 +27,315 @@ import numpy as np
 import pandas as pd
 
 # =============================================================================
-# BUSINESS ASSUMPTIONS — every judgment call lives here so it can be debated.
+# ASSUMPTIONS — every judgment call lives here (documented on "How this works").
 # =============================================================================
-
-# Snapshot date. Fixed so outputs are reproducible (matches generate_data.py).
 AS_OF_DATE = pd.Timestamp("2026-10-01")
+SEED = 42
+DAYS_PER_MONTH = 365 / 12
 
-# Propensity scorecard weights (must sum to 1.0).
-# "Propensity" = how likely this account is to expand if we invest technical time.
+# Signal windows
+USAGE_GROWTH_MONTHS = 3        # change in monthly spend over the last 3 months
+NEW_BUILDERS_DAYS = 60         # people who started building recently
+ENGAGEMENT_DAYS = 90           # meetings and calls
+NEW_PRODUCT_DAYS = 60          # first use of a product
+
+# Propensity score: each signal is bucketed to 0–100, then weighted.
+# Buckets are (minimum, points), checked top-down; below the last minimum = 0.
+USAGE_GROWTH_BUCKETS = [(0.40, 100), (0.25, 85), (0.10, 60), (0.0, 30)]   # falling = 0
+NEW_BUILDERS_BUCKETS = [(15, 100), (5, 70), (1, 40)]                      # none = 0
+ENGAGEMENT_BUCKETS = [(6, 100), (3, 60), (1, 30)]                         # none = 0
+PRODUCT_BREADTH_BUCKETS = [(5, 100), (4, 80), (3, 60), (2, 40), (1, 20)]
 WEIGHTS = {
-    # Usage growth is the strongest signal: workloads already moving onto the
-    # platform are the cheapest to accelerate.
+    # Recent momentum is the strongest sign of near-term growth.
     "usage_growth": 0.35,
-    # New developers arriving = new teams/projects starting. Early technical
-    # help shapes architecture before choices get locked in.
-    "new_developers": 0.25,
-    # Existing SA engagement means a warm relationship and known champions,
-    # so our time converts faster.
-    "engagement": 0.20,
-    # Commit burn pace: customers consuming ahead of schedule tend to expand
-    # at renewal. Weighted lowest because under-burn is handled by its own flag.
-    "commit_burn": 0.20,
+    # More people building today usually means more production workloads soon.
+    "new_builders": 0.30,
+    # A warm relationship makes our time convert faster.
+    "engagement": 0.15,
+    # Customers using several products are building real systems, not trials.
+    "product_breadth": 0.20,
 }
-assert abs(sum(WEIGHTS.values()) - 1.0) < 1e-9, "Weights must sum to 1"
+assert abs(sum(WEIGHTS.values()) - 1) < 1e-9
 
-# Signal look-back windows (they match how the telemetry extract defines its columns).
-USAGE_GROWTH_WINDOW_DAYS = 90      # one quarter: smooths weekly noise but still reflects today
-ENGAGEMENT_WINDOW_DAYS = 90        # same quarter, so SA meetings line up with usage
-NEW_DEVELOPERS_WINDOW_DAYS = 30    # new teams show up fast; a month catches them early
+# Type of help cut-offs
+SCORE_HIGH = 60
+POOL_OF_FUNDS_HIGH = 250_000
 
-# Flag thresholds.
-COMMIT_AT_RISK_MIN_ELAPSED = 0.25  # too early in the contract to judge before 25% elapsed
-COMMIT_AT_RISK_MAX_PACE = 0.70     # consuming <70% of expected pace → large unused commit at renewal
-RENEWAL_WINDOW_DAYS = 120          # ~1 quarter + prep time: when renewal decisions get made
-USAGE_SPIKE_RATIO = 1.5            # last 7 days ≥ 1.5× the 4-week average = something new launched
-# On-track status bands shown next to On-track % (burn pace). The lower band
-# matches the Commit at Risk line so the label and the alert never disagree.
-ON_TRACK_GOOD = 0.90               # 90%+ = On track: small gaps close on their own
-ON_TRACK_WARN = COMMIT_AT_RISK_MAX_PACE  # 70–89% = Slightly behind; below 70% = Behind
-USAGE_SPIKE_RECENT_DAYS = 7        # (these two windows match the telemetry columns)
-USAGE_SPIKE_BASELINE_DAYS = 28
-NEW_DEVELOPERS_MIN = 10            # ≥10 new developers in 30 days = a new team, not noise
+# Alerts
+COMMIT_AT_RISK_MAX_PACE = 0.70
+COMMIT_AT_RISK_MIN_ELAPSED = 0.25   # On-track % is too noisy in the first quarter of a contract
+RENEWAL_COMING_DAYS = 180
+BUILDER_SURGE_MIN = 15
+USAGE_SPIKE_MIN = 0.50              # monthly spend up 50%+ in one month
+USAGE_DROP_MAX = -0.30              # monthly spend down 30%+ over 3 months
+ON_TRACK_GOOD = 0.90                # status bands next to On-track %
+ON_TRACK_WARN = COMMIT_AT_RISK_MAX_PACE
 
-# Quadrant cut-offs.
-SCORE_HIGH = 60                    # roughly the top third of accounts by propensity
-POOL_OF_FUNDS_HIGH = 300_000       # pool of funds big enough to justify FDE-level effort
+# Alert catalogue shown on screen (name, action, owner, time to respond).
+ALERTS = [
+    {"name": "Commit at risk", "action": "Plan to move workloads to production; consider the Commit Burn Sprint",
+     "owner": "SA", "respond_business_days": 5},
+    {"name": "Renewal coming", "action": "Review usage and value with the customer before renewal talks",
+     "owner": "Account team + SA", "respond_business_days": 10},
+    {"name": "Builder surge", "action": "Reach out to help the new builders get to production",
+     "owner": "SA", "respond_business_days": 5},
+    {"name": "Usage spike", "action": "Check the setup can scale; look for expansion",
+     "owner": "SA", "respond_business_days": 3},
+    {"name": "New product", "action": "Share best practices for that product",
+     "owner": "SA or scaled program", "respond_business_days": 10},
+    {"name": "Usage drop", "action": "Health check: find out what changed",
+     "owner": "Account team + SA", "respond_business_days": 5},
+]
+ALERT_NAMES = [a["name"] for a in ALERTS]
 
-# How many accounts current SA/FDE headcount can actively cover.
-CAPACITY_TOP_N = 30
+# Team capacity (per quarter)
+N_SAS, SA_LOAD = 10, 3              # 3 dedicated accounts per SA at a time → 30 SA slots
+N_FDES, FDE_LOAD = 4, 2             # 2 deep engagements per FDE at a time → 8 FDE slots
 
-# Professional Services tier by unconsumed commit: the bigger the stalled
-# spend, the bigger the migration it takes to recover it.
-PS_ASSESS_BELOW = 200_000          # small gap → 2-week assessment is enough
-PS_MIGRATE_BELOW = 1_000_000       # mid gap → migrate one production workload
-                                   # ≥ $1M → multi-workload "Scale" tier
+# Programs and PS
+SPRINT_MIN_UNUSED = 250_000         # Commit Burn Sprint: Commit at risk + this much unused commit
+HOLDOUT_SHARE = 0.20                # comparison group share of accounts that qualify for scaled help
+PS_STARTER_BELOW, PS_STANDARD_BELOW = 200_000, 1_000_000   # tier by unused commit
 
-# Holdout: share of Commit Burn Sprint accounts deliberately NOT enrolled, so we
-# can compare outcomes and credit only the incremental lift as ROI.
-HOLDOUT_SHARE = 0.20
-SEED = 42                          # same seed as the data, so the holdout is reproducible
+# Type of help names and what each one means (shown on screen as-is).
+DEEP, BET, SCALED, DIGITAL = "Deep engagement (SA + FDE)", "Strategic bet", "Scaled SA programs", "Digital / self-serve"
+TYPES = {
+    DEEP: {"who": "SA leads design and relationship; FDE builds with the customer's developers",
+           "what": "Architecture plan, onsite, hands-on build to production", "goal": "First workload live, fast"},
+    BET: {"who": "SA leads with the account team; FDE only if a real project appears",
+          "what": "Discovery meetings or an onsite to find the first use case", "goal": "Create momentum"},
+    SCALED: {"who": "SAs in group formats; no FDE",
+             "what": "Office hours, workshops, reference architectures", "goal": "Keep momentum going at low cost"},
+    DIGITAL: {"who": "No dedicated people",
+              "what": "Docs, templates, product emails; alerts watch for change", "goal": "Grow on their own"},
+}
+QUADRANTS = {(True, True): DEEP, (False, True): BET, (True, False): SCALED, (False, False): DIGITAL}
+FEATURED = {DEEP: "Northwind Commerce", BET: "Fabrikam Health", SCALED: "Contoso Media", DIGITAL: "Tailspin Games"}
+
+# Industry names as typed in Salesforce → one standard name.
+INDUSTRY_STANDARD = {
+    "retail & ecommerce": "Retail & eCommerce", "retail and ecommerce": "Retail & eCommerce", "retail/ecommerce": "Retail & eCommerce",
+    "healthcare": "Healthcare", "health care": "Healthcare",
+    "financial services": "Financial Services", "finserv": "Financial Services",
+    "media & gaming": "Media & Gaming", "media and gaming": "Media & Gaming",
+    "technology": "Technology", "tech": "Technology",
+}
 
 ROOT = Path(__file__).parent
-RAW = ROOT / "data" / "raw" / "accounts.csv"
-# Human overrides of the type of help. Every override must carry a reason, an
-# owner and a date, and is written back to Salesforce next to the score.
-OVERRIDES = ROOT / "data" / "raw" / "overrides.csv"
-PROCESSED = ROOT / "data" / "processed" / "account_scores.csv"
-WRITEBACK = ROOT / "data" / "output" / "salesforce_writeback.csv"
+RAW, PROCESSED, OUTPUT = ROOT / "data" / "raw", ROOT / "data" / "processed", ROOT / "data" / "output"
 SITE_JSON = ROOT / "docs" / "data" / "accounts.json"
 CONTENT_JSON = ROOT / "docs" / "data" / "content.json"
+OVERRIDES = RAW / "overrides.csv"
 
-# One showcase account per quadrant, used by the lifecycle walkthrough.
-# "Type of help" names (shown on screen as-is).
-DEEP = "Deep engagement (SA + FDE)"   # likely to grow AND lots at stake → SA designs, FDE builds
-SCALED = "Scaled SA programs"          # likely to grow, smaller $ → SA group formats, no FDE
-BET = "Strategic Bet"                  # big $ but weak signals → SA-led discovery
-DIGITAL = "Digital / self-serve"       # neither → no SA/FDE time
 
-FEATURED = {
-    DEEP: "Northwind Commerce",
-    SCALED: "Contoso Media",
-    BET: "Fabrikam Health",
-    DIGITAL: "Tailspin Games",
-}
+def half_up(x: float) -> int:
+    """Round 80.5 → 81 (Python's round() would give 80)."""
+    return int(np.floor(x + 0.5 + 1e-9))
 
-QUADRANTS = {
-    (True, True): DEEP,
-    (True, False): SCALED,
-    (False, True): BET,
-    (False, False): DIGITAL,
-}
+
+def bucket(value: float, buckets: list) -> int:
+    for minimum, points in buckets:
+        if value >= minimum:
+            return points
+    return 0
 
 
 # =============================================================================
-# 1. PROPENSITY SCORE
+# 1–2. DATA COMES IN, CLEAN AND COMBINE
 # =============================================================================
-def add_derived_fields(df: pd.DataFrame) -> pd.DataFrame:
-    """Turn raw CRM/telemetry columns into the business measures we score on."""
-    start = pd.to_datetime(df["contract_start_date"])
-    end = pd.to_datetime(df["contract_end_date"])
-    term_days = (end - start).dt.days
+def clean_and_combine() -> tuple[pd.DataFrame, pd.DataFrame, dict]:
+    accounts = pd.read_csv(RAW / "accounts.csv", dtype=str, keep_default_na=False)
+    contracts = pd.read_csv(RAW / "contracts.csv")
+    opps = pd.read_csv(RAW / "opportunities.csv")
+    activities = pd.read_csv(RAW / "activities.csv", parse_dates=["date"])
+    usage = pd.read_csv(RAW / "usage_monthly.csv", dtype={"sf_account_id": str}, keep_default_na=False)
+    signups = pd.read_csv(RAW / "signups.csv", parse_dates=["signup_date"])
 
-    df["contract_elapsed_share"] = ((AS_OF_DATE - start).dt.days / term_days).clip(0, 1)
-    df["days_to_renewal"] = (end - AS_OF_DATE).dt.days
-    df["commit_consumed_share"] = df["commit_consumed_usd"] / df["annual_commit_usd"]
-    # Burn pace: 1.0 = on schedule to use exactly the commit; 0.5 = half the expected rate.
-    df["burn_pace"] = df["commit_consumed_share"] / df["contract_elapsed_share"]
-    df["usage_spike_ratio"] = df["usage_last_7d_units"] / df["usage_4wk_avg_units"]
+    # Standardize industry names.
+    raw_spellings = accounts["industry"].nunique()
+    accounts["industry"] = accounts["industry"].str.lower().map(INDUSTRY_STANDARD)
+    assert accounts["industry"].notna().all(), "unknown industry spelling — add it to INDUSTRY_STANDARD"
+
+    # Every raw account id → the one company it belongs to:
+    #  a) duplicate top-level records (same email domain) merge into the record holding the contract;
+    #  b) child accounts roll up to their parent.
+    to_company = {}
+    children = accounts[accounts["parent_account_id"] != ""]
+    top = accounts[accounts["parent_account_id"] == ""]
+    has_contract = set(contracts["account_id"])
+    for _, group in top.groupby("email_domain"):
+        keep = sorted(group["account_id"], key=lambda i: (i not in has_contract, i))[0]
+        for i in group["account_id"]:
+            to_company[i] = keep
+    for row in children.itertuples():
+        to_company[row.account_id] = to_company[row.parent_account_id]
+
+    companies = top[top["account_id"].isin(has_contract)].copy().reset_index(drop=True)
+    kids = children.groupby("parent_account_id")["account_name"].apply(list)
+    companies["child_accounts"] = companies["account_id"].map(lambda i: kids.get(i, []))
+    dup_counts = top.groupby("email_domain").size() - 1
+    companies["duplicates_merged"] = companies["email_domain"].map(dup_counts).astype(int)
+
+    # Contract fields.
+    c = contracts.set_index("account_id")
+    for col in ["start_date", "end_date", "annual_commit_usd", "amount_used_usd"]:
+        companies[col] = companies["account_id"].map(c[col])
+
+    # Open pipeline = open (not closed) opportunities.
+    open_opps = opps[~opps["is_closed"]].copy()
+    open_opps["company"] = open_opps["account_id"].map(to_company)
+    companies["open_pipeline_usd"] = companies["account_id"].map(open_opps.groupby("company")["amount_usd"].sum()).fillna(0)
+
+    # Meetings and calls in the window, wherever they were logged (child, duplicate or parent).
+    # "Last N days" includes day N.
+    recent = activities[activities["date"] >= AS_OF_DATE - pd.Timedelta(days=ENGAGEMENT_DAYS)].copy()
+    recent["company"] = recent["account_id"].map(to_company)
+    companies["meetings_90d"] = companies["account_id"].map(recent.groupby("company").size()).fillna(0).astype(int)
+
+    # Self-serve signups matched by company email domain.
+    domain_to_company = {d: to_company[g["account_id"].iloc[0]] for d, g in top.groupby("email_domain")}
+    signups["company"] = signups["email_domain"].map(domain_to_company)
+    new = signups[(signups["signup_date"] >= AS_OF_DATE - pd.Timedelta(days=NEW_BUILDERS_DAYS)) & signups["company"].notna()]
+    companies["new_builders_60d"] = companies["account_id"].map(new.groupby("company").size()).fillna(0).astype(int)
+
+    # Usage: match billing rows to companies; log (don't drop) what can't be matched.
+    usage["company"] = usage["sf_account_id"].map(to_company)
+    unmatched = usage[usage["company"].isna()]
+    PROCESSED.mkdir(parents=True, exist_ok=True)
+    unmatched.drop(columns="company").to_csv(PROCESSED / "unmatched_usage.csv", index=False)
+    matched = usage[usage["company"].notna()]
+    bas = matched.groupby("company")["billing_account_id"].apply(lambda s: sorted(set(s)))
+    companies["billing_accounts"] = companies["account_id"].map(lambda i: bas.get(i, []))
+
+    # Ready-to-use monthly table: one row per account per month.
+    account_month = (matched.groupby(["company", "month"])
+                     .agg(spend_usd=("spend_usd", "sum"), products_used=("product", lambda s: sorted(set(s))))
+                     .reset_index().rename(columns={"company": "account_id"}))
+    account_month["spend_usd"] = account_month["spend_usd"].round(2)
+
+    stats = {
+        "raw_account_records": int(len(accounts)), "companies": int(len(companies)),
+        "child_accounts_rolled_up": int(len(children)),
+        "duplicate_records_merged": int(len(top) - len(companies)),
+        "industry_spellings_standardized": int(raw_spellings),
+        "billing_accounts_matched": int(matched["billing_account_id"].nunique()),
+        "unmatched_usage_rows": int(len(unmatched)), "unmatched_usage_usd": round(float(unmatched["spend_usd"].sum()), 2),
+        "signups_matched_60d": int(len(new)), "signups_unmatched": int(signups["company"].isna().sum()),
+    }
+    return companies, account_month, stats
+
+
+def add_usage_signals(df: pd.DataFrame, account_month: pd.DataFrame) -> pd.DataFrame:
+    months = sorted(account_month["month"].unique())
+    last, prev, three_ago = months[-1], months[-2], months[-1 - USAGE_GROWTH_MONTHS]
+    spend = account_month.pivot(index="account_id", columns="month", values="spend_usd")
+    prods = account_month.set_index(["account_id", "month"])["products_used"]
+    df["spend_last_month"] = df["account_id"].map(spend[last]).round(0)
+    df["usage_growth_3m"] = df["account_id"].map(spend[last] / spend[three_ago] - 1).round(4)
+    df["spend_mom_change"] = df["account_id"].map(spend[last] / spend[prev] - 1).round(4)
+    df["products_used"] = df["account_id"].map(lambda a: prods.get((a, last), []))
+    df["product_count"] = df["products_used"].str.len()
+    # New product = first used within the last NEW_PRODUCT_DAYS (≈ the last 2 months),
+    # and not present at the start of the usage history.
+    recent_months = set(months[-round(NEW_PRODUCT_DAYS / 30):])
+    first_month = account_month.explode("products_used").groupby(["account_id", "products_used"])["month"].min()
+    new_prod = first_month[first_month.isin(recent_months) & (first_month > months[0])].reset_index()
+    df["new_product"] = df["account_id"].map(new_prod.groupby("account_id")["products_used"].first())
     return df
 
 
-def score_accounts(df: pd.DataFrame) -> pd.DataFrame:
-    """
-    Each signal is converted to a percentile (0–1) versus all other accounts,
-    so "1.0" means "best in the book". Percentiles keep one extreme account
-    from distorting the scale and are easy to explain ("top 5%").
-    Score = weighted sum of percentiles × 100.
-    """
-    signals = {
-        "usage_growth": df["usage_growth_90d_pct"],
-        "new_developers": df["new_developers_30d"],
-        "engagement": df["sa_meetings_90d"],
-        "commit_burn": df["burn_pace"].clip(upper=1.5),  # beyond 1.5× pace adds no extra signal
-    }
-    for name, values in signals.items():
-        df[f"pctl_{name}"] = values.rank(pct=True)
-        df[f"contrib_{name}"] = WEIGHTS[name] * df[f"pctl_{name}"] * 100
-
-    df["propensity_score"] = sum(df[f"contrib_{n}"] for n in WEIGHTS).round(0).astype(int)
+# =============================================================================
+# 3. PROPENSITY SCORE
+# =============================================================================
+def score(df: pd.DataFrame) -> pd.DataFrame:
+    df["score_usage_growth"] = df["usage_growth_3m"].map(lambda g: bucket(g, USAGE_GROWTH_BUCKETS))
+    df["score_new_builders"] = df["new_builders_60d"].map(lambda n: bucket(n, NEW_BUILDERS_BUCKETS))
+    df["score_engagement"] = df["meetings_90d"].map(lambda n: bucket(n, ENGAGEMENT_BUCKETS))
+    df["score_product_breadth"] = df["product_count"].map(lambda n: bucket(n, PRODUCT_BREADTH_BUCKETS))
+    for s in WEIGHTS:
+        df[f"points_{s}"] = (WEIGHTS[s] * df[f"score_{s}"]).round(2)
+    df["propensity_score"] = sum(df[f"points_{s}"] for s in WEIGHTS).map(half_up)
     df["top_reasons"] = df.apply(top_reasons, axis=1)
     return df
 
 
-def describe_signal(name: str, row: pd.Series) -> str:
-    """Plain-English sentence for one signal, with its real value."""
-    # Above the median say "top X%"; below it say "bottom X%". ("Top 54%" for
-    # a weak signal reads as praise and would confuse a reader.)
-    pctl = row[f"pctl_{name}"]
-    if pctl >= 0.5:
-        rank_txt = f"top {max(1, round((1 - pctl) * 100))}% of accounts"
-    else:
-        rank_txt = f"bottom {max(1, round(pctl * 100))}% of accounts"
-    if name == "usage_growth":
-        return f"Usage {row['usage_growth_90d_pct']:+.0f}% over the last 90 days ({rank_txt})"
-    if name == "new_developers":
-        n = row["new_developers_30d"]
-        return f"{n} new builder{'' if n == 1 else 's'} in the last 30 days ({rank_txt})"
-    if name == "engagement":
-        n = row["sa_meetings_90d"]
-        return f"{n} SA meeting{'' if n == 1 else 's'} in the last 90 days ({rank_txt})"
-    if name == "commit_burn":
-        return f"On-track % is {row['burn_pace']:.0%} ({rank_txt})"
-    raise ValueError(name)
+def describe(signal: str, r: pd.Series) -> str:
+    if signal == "usage_growth":
+        g = r["usage_growth_3m"]
+        return f"Usage {'up' if g >= 0 else 'down'} {abs(g):.0%} in 3 months"
+    if signal == "new_builders":
+        n = r["new_builders_60d"]
+        return f"{n} new builder{'' if n == 1 else 's'} in {NEW_BUILDERS_DAYS} days" if n else f"No new builders in {NEW_BUILDERS_DAYS} days"
+    if signal == "engagement":
+        n = r["meetings_90d"]
+        return f"{n} meeting{'' if n == 1 else 's'} and calls in {ENGAGEMENT_DAYS} days" if n else f"No meetings or calls in {ENGAGEMENT_DAYS} days"
+    n = r["product_count"]
+    return f"Uses {n} developer platform product{'' if n == 1 else 's'}"
 
 
-def top_reasons(row: pd.Series) -> list[str]:
-    """The 3 signals that contributed the most points to this account's score."""
-    ranked = sorted(WEIGHTS, key=lambda n: row[f"contrib_{n}"], reverse=True)
-    return [describe_signal(n, row) for n in ranked[:3]]
+def top_reasons(r: pd.Series) -> list:
+    """The three signals that added the most points (ties: higher weight first)."""
+    ranked = sorted(WEIGHTS, key=lambda s: (r[f"points_{s}"], WEIGHTS[s]), reverse=True)
+    return [describe(s, r) for s in ranked[:3]]
 
 
 # =============================================================================
-# 2. POOL OF FUNDS & EXPECTED VALUE
+# 4. POOL OF FUNDS, COMMIT HEALTH, OPPORTUNITY VALUE
 # =============================================================================
-DAYS_PER_MONTH = 365 / 12
-
-
-def add_value(df: pd.DataFrame) -> pd.DataFrame:
-    # Unconsumed commit: money the customer already agreed to spend but hasn't.
-    # Helping them use it protects the renewal. Can't go below zero.
-    df["unused_commit"] = (df["annual_commit_usd"] - df["commit_consumed_usd"]).clip(lower=0)
-    # Pool of funds = money available to unlock: unused commit + open deals.
-    df["pool_of_funds"] = df["unused_commit"] + df["open_pipeline_usd"]
-
-    # Burn measures. Burn RATE is dollars per month; burn PACE compares usage
-    # with the calendar (1.0 = on schedule to use exactly the commit).
-    days_elapsed = df["contract_elapsed_share"] * (pd.to_datetime(df["contract_end_date"]) - pd.to_datetime(df["contract_start_date"])).dt.days
-    months_elapsed = days_elapsed / DAYS_PER_MONTH
-    months_remaining = df["days_to_renewal"].clip(lower=0) / DAYS_PER_MONTH
-    df["burn_rate_monthly"] = (df["commit_consumed_usd"] / months_elapsed).round(0)
-    # What a straight-line customer would have used by today.
-    df["expected_consumed_to_date"] = (df["annual_commit_usd"] * df["contract_elapsed_share"]).round(0)
+def size_the_prize(df: pd.DataFrame) -> pd.DataFrame:
+    start, end = pd.to_datetime(df["start_date"]), pd.to_datetime(df["end_date"])
+    term_days = (end - start).dt.days
+    days_elapsed = (AS_OF_DATE - start).dt.days.clip(lower=0)
+    elapsed = (days_elapsed / term_days).clip(0, 1)
+    df["days_to_renewal"] = (end - AS_OF_DATE).dt.days
+    df = df.rename(columns={"amount_used_usd": "commit_consumed_usd"})
+    used_share = df["commit_consumed_usd"] / df["annual_commit_usd"]
+    # Compute from unrounded shares, round once at the end.
+    df["burn_pace"] = (used_share / elapsed).round(4)                                           # On-track %
+    df["contract_elapsed_share"] = elapsed.round(4)
+    df["commit_used_share"] = used_share.round(4)
+    months_elapsed = (days_elapsed / DAYS_PER_MONTH).clip(lower=1)
+    months_left = df["days_to_renewal"].clip(lower=0) / DAYS_PER_MONTH
+    df["burn_rate_monthly"] = (df["commit_consumed_usd"] / months_elapsed).round(0)              # Monthly spend
+    df["expected_consumed_to_date"] = (df["annual_commit_usd"] * elapsed).round(0)
     df["behind_pace_amount"] = (df["expected_consumed_to_date"] - df["commit_consumed_usd"]).clip(lower=0).round(0)
-    # Monthly spend needed from today to use the full commit by renewal.
-    df["required_monthly_burn"] = np.where(months_remaining > 0, df["unused_commit"] / months_remaining, df["unused_commit"]).round(0)
-    # Expected Value = pool of funds weighted by how likely we are to realize it.
-    df["expected_value_usd"] = (df["propensity_score"] / 100 * df["pool_of_funds"]).round(0)
+    df["unused_commit"] = (df["annual_commit_usd"] - df["commit_consumed_usd"]).clip(lower=0)
+    df["required_monthly_burn"] = np.where(months_left > 0, df["unused_commit"] / months_left.where(months_left > 0, 1),
+                                           df["unused_commit"]).round(0)
+    df["projected_year_use"] = (df["burn_rate_monthly"] * 12).round(0)                            # at today's pace
+    df["pool_of_funds"] = df["unused_commit"] + df["open_pipeline_usd"]
+    df["expected_value_usd"] = (df["propensity_score"] / 100 * df["pool_of_funds"]).round(0)    # Opportunity value
     return df
 
 
-# Alert names (shown on screen as-is), in display order.
-ALERTS = ["Commit at Risk", "Days to renewal", "Usage Spike", "New builders"]
-
-
 # =============================================================================
-# 3. FLAGS
+# 5. ALERTS, TYPE OF HELP, OVERRIDES, TEAM CAPACITY
 # =============================================================================
-def add_flags(df: pd.DataFrame) -> pd.DataFrame:
+def add_alerts(df: pd.DataFrame) -> pd.DataFrame:
     rules = {
-        "Commit at Risk": (df["contract_elapsed_share"] >= COMMIT_AT_RISK_MIN_ELAPSED)
-                          & (df["burn_pace"] < COMMIT_AT_RISK_MAX_PACE),
-        "Days to renewal": df["days_to_renewal"].between(0, RENEWAL_WINDOW_DAYS),
-        "Usage Spike": df["usage_spike_ratio"] >= USAGE_SPIKE_RATIO,
-        "New builders": df["new_developers_30d"] >= NEW_DEVELOPERS_MIN,
+        "Commit at risk": (df["burn_pace"] < COMMIT_AT_RISK_MAX_PACE) & (df["contract_elapsed_share"] >= COMMIT_AT_RISK_MIN_ELAPSED),
+        "Renewal coming": df["days_to_renewal"].between(0, RENEWAL_COMING_DAYS),
+        "Builder surge": df["new_builders_60d"] >= BUILDER_SURGE_MIN,
+        "Usage spike": df["spend_mom_change"] >= USAGE_SPIKE_MIN,
+        "New product": df["new_product"].notna(),
+        "Usage drop": df["usage_growth_3m"] <= USAGE_DROP_MAX,
     }
-    assert list(rules) == ALERTS, "alert rules and ALERTS (shown on screen) must match"
-    for flag, mask in rules.items():
-        df[f"flag_{flag.lower().replace(' ', '_')}"] = mask
-    df["flags"] = [[f for f, m in rules.items() if m.iloc[i]] for i in range(len(df))]
+    assert list(rules) == ALERT_NAMES
+    df["flags"] = [[n for n, m in rules.items() if m.iloc[i]] for i in range(len(df))]
+    df["has_alert"] = df["flags"].str.len() > 0
     return df
 
 
-# =============================================================================
-# 4. QUADRANT
-# =============================================================================
-def add_quadrant(df: pd.DataFrame) -> pd.DataFrame:
-    # Value axis uses pool of funds (not Expected Value) so the two axes stay
-    # independent: EV already contains the score.
+def add_type_of_help(df: pd.DataFrame) -> pd.DataFrame:
     high_score = df["propensity_score"] >= SCORE_HIGH
-    high_value = df["pool_of_funds"] >= POOL_OF_FUNDS_HIGH
-    df["quadrant"] = [QUADRANTS[(s, v)] for s, v in zip(high_score, high_value)]
-    df["model_quadrant"] = df["quadrant"]  # what the scorecard said, kept for review
+    high_pool = df["pool_of_funds"] >= POOL_OF_FUNDS_HIGH
+    df["quadrant"] = [QUADRANTS[(s, p)] for s, p in zip(high_score, high_pool)]
+    df["model_quadrant"] = df["quadrant"]
     df["override_reason"] = None
-
-    # Apply logged human overrides. The model is a starting point, not the last
-    # word; logging the reason lets us learn where the scorecard is wrong.
+    # Logged overrides: a leader can move an account, but must record why.
     if OVERRIDES.exists():
         for o in pd.read_csv(OVERRIDES).itertuples():
-            assert o.override_type_of_help in QUADRANTS.values(), f"unknown type of help: {o.override_type_of_help}"
+            assert o.override_type_of_help in TYPES, f"unknown type of help: {o.override_type_of_help}"
             assert isinstance(o.reason, str) and o.reason.strip(), f"override for {o.account_id} has no reason"
             hit = df["account_id"] == o.account_id
             assert hit.any(), f"override for unknown account {o.account_id}"
@@ -260,199 +344,203 @@ def add_quadrant(df: pd.DataFrame) -> pd.DataFrame:
     return df
 
 
-# =============================================================================
-# 5. RANK & CAPACITY
-# =============================================================================
-def add_rank(df: pd.DataFrame) -> pd.DataFrame:
-    # Ties broken by account_id so the order is stable run to run.
-    df = df.sort_values(["expected_value_usd", "account_id"], ascending=[False, True]).reset_index(drop=True)
-    df["priority_rank"] = np.arange(1, len(df) + 1)
-    df["in_capacity"] = df["priority_rank"] <= CAPACITY_TOP_N
+def assign_capacity(df: pd.DataFrame) -> pd.DataFrame:
+    """
+    Fill slots in order (the browser repeats this when the sliders move):
+      1. Within each type, accounts with alerts first, then by opportunity value.
+      2. FDE slots go to the top Deep engagement accounts; each also uses an SA slot.
+      3. Remaining SA slots go to Deep engagement and Strategic bet accounts: each type keeps its
+         own order, and the next slot goes to whichever type's next account has more opportunity value.
+      4. Everyone else gets scaled programs or self-serve.
+    """
+    by_value = df.sort_values(["expected_value_usd", "account_id"], ascending=[False, True])["account_id"]
+    df["priority_rank"] = df["account_id"].map({a: i + 1 for i, a in enumerate(by_value)})
+    order = df.sort_values(["has_alert", "expected_value_usd", "account_id"], ascending=[False, False, True])
+    fde_slots, sa_slots = N_FDES * FDE_LOAD, N_SAS * SA_LOAD
+    deep_queue = list(order.loc[order["quadrant"] == DEEP, "account_id"])
+    bet_queue = list(order.loc[order["quadrant"] == BET, "account_id"])
+    fde_ids = deep_queue[:fde_slots]
+    # Remaining SA slots: alerts only reorder accounts *within* a type, so the two
+    # queues are merged by taking whichever next account has the higher opportunity value.
+    ev = df.set_index("account_id")["expected_value_usd"]
+    deep_rest, sa_ids = deep_queue[fde_slots:], list(fde_ids)
+    while len(sa_ids) < sa_slots and (deep_rest or bet_queue):
+        take_deep = bet_queue == [] or (deep_rest and ev[deep_rest[0]] >= ev[bet_queue[0]])
+        sa_ids.append((deep_rest if take_deep else bet_queue).pop(0))
+    df["fde_slot"] = df["account_id"].isin(fde_ids)
+    df["sa_slot"] = df["account_id"].isin(sa_ids)
+    df["in_capacity"] = df["sa_slot"]
+    df["coverage"] = np.select([df["fde_slot"], df["sa_slot"]], ["SA + FDE", "SA"], default="Outside team capacity")
     return df
 
 
 # =============================================================================
-# 6. ROUTING — which motion, program and services offer each account gets
+# 6–8. ENGAGE, REVENUE, MEASURE: help plan, program, PS tier, comparison group
 # =============================================================================
-def motion_for(quadrant: str, in_capacity: bool) -> str:
-    """Engagement motion. Capacity only matters for the two high-touch motions."""
-    if quadrant == DEEP:
-        return ("SA leads design and the relationship; FDE builds with the customer's developers until the first production workload"
-                if in_capacity else "Waitlist for deep engagement; Scaled SA programs meanwhile")
-    if quadrant == BET:
-        return ("SA-led discovery with the account team; FDE only if a real project appears"
-                if in_capacity else "Account team leads; SA discovery on request")
-    if quadrant == SCALED:
-        return "SA office hours, workshops and reference architectures (no FDE)"
-    return "Docs, templates and alerts (no SA/FDE time)"
+def help_plan(q: str, fde: bool, sa: bool) -> str:
+    if q == DEEP:
+        if fde:
+            return "SA leads design and relationship; FDE builds with the customer's developers to production"
+        return "SA leads now; FDE joins when a slot opens" if sa else "Waiting for team capacity; scaled programs meanwhile"
+    if q == BET:
+        return "SA-led discovery with the account team; FDE only if a real project appears" if sa \
+            else "Account team leads; SA discovery when capacity frees up"
+    return TYPES[q]["what"]
 
 
-def ps_tier_for(row: pd.Series) -> str | None:
-    """Target buyers: Commit at Risk accounts first, then Strategic Bets."""
-    if not (row["flag_commit_at_risk"] or row["quadrant"] == BET):
+def ps_tier(r: pd.Series):
+    if not (("Commit at risk" in r["flags"]) or r["quadrant"] == BET):
         return None
-    gap = row["unused_commit"]
-    if gap < PS_ASSESS_BELOW:
-        return "Assess"
-    return "Migrate" if gap < PS_MIGRATE_BELOW else "Scale"
+    u = r["unused_commit"]
+    return "Starter" if u < PS_STARTER_BELOW else "Standard" if u < PS_STANDARD_BELOW else "Advanced"
 
 
-def add_routing(df: pd.DataFrame) -> pd.DataFrame:
-    df["motion"] = [motion_for(q, c) for q, c in zip(df["quadrant"], df["in_capacity"])]
-    # Commit Burn Sprint covers every Commit at Risk account. Ones inside
-    # capacity get the same recovery work led directly by their FDE/SA.
-    df["program"] = np.select(
-        [df["flag_commit_at_risk"] & df["in_capacity"], df["flag_commit_at_risk"]],
-        ["FDE-led catch-up plan", "Commit Burn Sprint"], default=None)
-    df["ps_recommended_tier"] = df.apply(ps_tier_for, axis=1)
-
-    # Randomly hold out a share of Sprint accounts. Random (not hand-picked) so
-    # the two groups are alike, and the difference in outcomes is the program's effect.
-    # FDE-covered accounts are never held out: we don't withhold dedicated help.
-    sprint_ids = sorted(df.loc[df["program"] == "Commit Burn Sprint", "account_id"])
-    n_holdout = round(len(sprint_ids) * HOLDOUT_SHARE)
-    holdout_ids = set(np.random.default_rng(SEED).choice(sprint_ids, size=n_holdout, replace=False))
-    df["holdout"] = df["account_id"].isin(holdout_ids)
-    df.loc[df["holdout"], "program"] = "Comparison group (measured, not enrolled)"
-    # URL-friendly id for links between pages, e.g. ?account=northwind-commerce
+def route(df: pd.DataFrame) -> pd.DataFrame:
+    df["motion"] = [help_plan(q, f, s) for q, f, s in zip(df["quadrant"], df["fde_slot"], df["sa_slot"])]
+    eligible = df["flags"].map(lambda f: "Commit at risk" in f) & (df["unused_commit"] >= SPRINT_MIN_UNUSED)
+    df["sprint_eligible"] = eligible
+    df["program"] = np.where(eligible, np.where(df["fde_slot"], "Commit Burn Sprint (SA + FDE)", "Commit Burn Sprint (SA-led)"), None)
+    # Comparison group: from accounts that qualify for scaled help (Scaled SA programs,
+    # or the sprint without a dedicated slot), a random share gets normal service only.
+    # Accounts holding a dedicated SA or FDE slot are never held back.
+    qualifies = (df["quadrant"] == SCALED) | (eligible & ~df["sa_slot"])
+    df["qualifies_for_scaled_help"] = qualifies
+    candidates = sorted(df.loc[qualifies, "account_id"])
+    n_hold = round(len(candidates) * HOLDOUT_SHARE)
+    held = set(np.random.default_rng(SEED).choice(candidates, size=n_hold, replace=False)) if n_hold else set()
+    df["holdout"] = df["account_id"].isin(held)
+    df.loc[df["holdout"], "program"] = "Comparison group (normal service only)"
+    df["ps_recommended_tier"] = df.apply(ps_tier, axis=1)
     df["slug"] = df["account_name"].str.lower().str.replace(r"[^a-z0-9]+", "-", regex=True).str.strip("-")
-    assert df["slug"].is_unique, "Account slugs must be unique"
+    assert df["slug"].is_unique
     return df
 
 
 # =============================================================================
-# 7. EXPORT
+# EXPORT
 # =============================================================================
-def export(df: pd.DataFrame) -> None:
-    for p in (PROCESSED, WRITEBACK, SITE_JSON):
-        p.parent.mkdir(parents=True, exist_ok=True)
+SITE_COLS = [
+    "account_id", "slug", "account_name", "segment", "industry", "region", "owner",
+    "annual_commit_usd", "commit_consumed_usd", "commit_used_share", "contract_elapsed_share", "days_to_renewal",
+    "open_pipeline_usd", "unused_commit", "pool_of_funds", "burn_pace", "burn_rate_monthly",
+    "expected_consumed_to_date", "behind_pace_amount", "required_monthly_burn", "projected_year_use",
+    "spend_last_month", "usage_growth_3m", "spend_mom_change", "products_used", "product_count", "new_product",
+    "new_builders_60d", "meetings_90d", "child_accounts", "billing_accounts", "duplicates_merged",
+    "score_usage_growth", "score_new_builders", "score_engagement", "score_product_breadth",
+    "points_usage_growth", "points_new_builders", "points_engagement", "points_product_breadth",
+    "propensity_score", "top_reasons", "expected_value_usd", "flags", "quadrant", "model_quadrant", "override_reason",
+    "priority_rank", "fde_slot", "sa_slot", "in_capacity", "coverage", "motion", "sprint_eligible", "program",
+    "qualifies_for_scaled_help", "holdout", "ps_recommended_tier",
+]
 
-    # Full mart table (lists joined so it stays a flat CSV).
-    mart = df.copy()
-    mart["flags"] = mart["flags"].str.join("; ")
-    mart["top_reasons"] = mart["top_reasons"].str.join(" | ")
-    mart.to_csv(PROCESSED, index=False)
 
-    # Salesforce write-back: Account Id + custom fields (the __c suffix is
-    # Salesforce's convention for custom fields). Multi-select picklists use ";".
-    writeback = pd.DataFrame({
+def export(df: pd.DataFrame, account_month: pd.DataFrame, stats: dict) -> None:
+    for p in (PROCESSED, OUTPUT, SITE_JSON.parent):
+        p.mkdir(parents=True, exist_ok=True)
+    df = df.sort_values("priority_rank").reset_index(drop=True)
+
+    am = account_month.copy()
+    am["products_used"] = am["products_used"].str.join("; ")
+    am.to_csv(PROCESSED / "account_month.csv", index=False)
+    flat = df.copy()
+    for col in ["top_reasons", "flags", "products_used", "child_accounts", "billing_accounts"]:
+        flat[col] = flat[col].str.join("; ")
+    flat.to_csv(PROCESSED / "account_scores.csv", index=False)
+
+    pd.DataFrame({
         "Id": df["account_id"],
         "GTM_Propensity_Score__c": df["propensity_score"],
         "GTM_Top_Reasons__c": df["top_reasons"].str.join(" | "),
         "GTM_Pool_Of_Funds__c": df["pool_of_funds"].round(0),
-        "GTM_Expected_Value__c": df["expected_value_usd"],
+        "GTM_Opportunity_Value__c": df["expected_value_usd"],
         "GTM_Priority_Rank__c": df["priority_rank"],
-        "GTM_Quadrant__c": df["quadrant"],
-        "GTM_Flags__c": df["flags"].str.join(";"),
-        "GTM_In_Capacity__c": df["in_capacity"],
-        "GTM_Motion__c": df["motion"],
+        "GTM_Type_Of_Help__c": df["quadrant"],
+        "GTM_Alerts__c": df["flags"].str.join(";"),
+        "GTM_Coverage__c": df["coverage"],
+        "GTM_Help_Plan__c": df["motion"],
         "GTM_Program__c": df["program"],
         "GTM_PS_Recommendation__c": df["ps_recommended_tier"],
-        "GTM_Holdout__c": df["holdout"],
+        "GTM_Comparison_Group__c": df["holdout"],
         "GTM_Override_Reason__c": df["override_reason"],
         "GTM_Scored_Date__c": AS_OF_DATE.date().isoformat(),
-    })
-    writeback.to_csv(WRITEBACK, index=False)
+    }).to_csv(OUTPUT / "salesforce_writeback.csv", index=False)
 
-    # Website JSON: compact, rounded, only what the pages display.
-    site_cols = [
-        "account_id", "slug", "account_name", "industry", "region", "segment",
-        "propensity_score", "top_reasons", "pool_of_funds", "unused_commit",
-        "burn_rate_monthly", "expected_consumed_to_date", "behind_pace_amount", "required_monthly_burn",
-        "open_pipeline_usd", "expected_value_usd", "flags", "quadrant",
-        "priority_rank", "in_capacity", "annual_commit_usd", "commit_consumed_usd",
-        "burn_pace", "contract_elapsed_share", "days_to_renewal",
-        "usage_growth_90d_pct", "usage_spike_ratio", "active_developers",
-        "new_developers_30d", "sa_meetings_90d", "contract_end_date",
-        "motion", "program", "ps_recommended_tier", "holdout", "model_quadrant", "override_reason",
-    ]
-    records = df[site_cols].round({"burn_pace": 2, "contract_elapsed_share": 2, "usage_spike_ratio": 2,
-                                   "pool_of_funds": 0, "unused_commit": 0})
-    payload = {
-        "meta": {
-            "as_of_date": AS_OF_DATE.date().isoformat(),
-            "weights": WEIGHTS,
-            "thresholds": {
-                "score_high": SCORE_HIGH, "pool_of_funds_high": POOL_OF_FUNDS_HIGH,
-                "capacity_top_n": CAPACITY_TOP_N,
-                "commit_at_risk_max_pace": COMMIT_AT_RISK_MAX_PACE,
-                "commit_at_risk_min_elapsed": COMMIT_AT_RISK_MIN_ELAPSED,
-                "on_track_good": ON_TRACK_GOOD, "on_track_warn": ON_TRACK_WARN,
-                "usage_spike_recent_days": USAGE_SPIKE_RECENT_DAYS,
-                "usage_spike_baseline_days": USAGE_SPIKE_BASELINE_DAYS,
-                "renewal_window_days": RENEWAL_WINDOW_DAYS,
-                "usage_spike_ratio": USAGE_SPIKE_RATIO,
-                "new_developers_min": NEW_DEVELOPERS_MIN,
-                "ps_assess_below": PS_ASSESS_BELOW, "ps_migrate_below": PS_MIGRATE_BELOW,
-            },
-            "featured": [FEATURED[q] for q in QUADRANTS.values()],
-            # Type-of-help names in fixed order: high/high, high/low, low/high, low/low.
-            "quadrants": list(QUADRANTS.values()),
-            "alerts": ALERTS,
-            "signal_windows_days": {
-                "usage_growth": USAGE_GROWTH_WINDOW_DAYS,
-                "engagement": ENGAGEMENT_WINDOW_DAYS,
-                "new_developers": NEW_DEVELOPERS_WINDOW_DAYS,
-            },
-            "holdout_share": HOLDOUT_SHARE,
+    meta = {
+        "as_of_date": AS_OF_DATE.date().isoformat(),
+        "weights": WEIGHTS,
+        "buckets": {"usage_growth": USAGE_GROWTH_BUCKETS, "new_builders": NEW_BUILDERS_BUCKETS,
+                    "engagement": ENGAGEMENT_BUCKETS, "product_breadth": PRODUCT_BREADTH_BUCKETS},
+        "signal_windows": {"usage_growth_months": USAGE_GROWTH_MONTHS, "new_builders_days": NEW_BUILDERS_DAYS,
+                           "engagement_days": ENGAGEMENT_DAYS, "new_product_days": NEW_PRODUCT_DAYS},
+        "thresholds": {
+            "score_high": SCORE_HIGH, "pool_of_funds_high": POOL_OF_FUNDS_HIGH,
+            "commit_at_risk_max_pace": COMMIT_AT_RISK_MAX_PACE, "commit_at_risk_min_elapsed": COMMIT_AT_RISK_MIN_ELAPSED,
+            "renewal_coming_days": RENEWAL_COMING_DAYS, "builder_surge_min": BUILDER_SURGE_MIN,
+            "usage_spike_min": USAGE_SPIKE_MIN, "usage_drop_max": USAGE_DROP_MAX,
+            "on_track_good": ON_TRACK_GOOD, "on_track_warn": ON_TRACK_WARN,
+            "sprint_min_unused": SPRINT_MIN_UNUSED,
+            "ps_starter_below": PS_STARTER_BELOW, "ps_standard_below": PS_STANDARD_BELOW,
         },
-        "accounts": json.loads(records.to_json(orient="records")),
+        "capacity": {"sas": N_SAS, "sa_load": SA_LOAD, "fdes": N_FDES, "fde_load": FDE_LOAD,
+                     "sa_slots": N_SAS * SA_LOAD, "fde_slots": N_FDES * FDE_LOAD},
+        "alerts": ALERTS,
+        "types": [{"name": n, **TYPES[n]} for n in [DEEP, BET, SCALED, DIGITAL]],
+        "quadrants": [DEEP, BET, SCALED, DIGITAL],
+        "featured": [FEATURED[q] for q in [DEEP, SCALED, BET, DIGITAL]],
+        "holdout_share": HOLDOUT_SHARE,
+        "cleaning": stats,
     }
-    SITE_JSON.write_text(json.dumps(payload, indent=1))
+    records = json.loads(df[SITE_COLS].to_json(orient="records"))
+    SITE_JSON.write_text(json.dumps({"meta": meta, "accounts": records}, indent=1))
 
-    update_content_counts(df)
-
-
-def update_content_counts(df: pd.DataFrame) -> None:
-    """
-    content.json is hand-edited copy. Only touch the data-driven numbers in it
-    so manual edits to the wording are never overwritten.
-    """
-    if not CONTENT_JSON.exists():
-        return
-    content = json.loads(CONTENT_JSON.read_text())
-    at_risk = df["flag_commit_at_risk"]
-    program = content.setdefault("program", {})
-    program["eligible_accounts"] = int(at_risk.sum())
-    # Accounts flagged but outside top-N capacity: the ones only a scaled program reaches.
-    program["eligible_outside_capacity"] = int((at_risk & ~df["in_capacity"]).sum())
-    program["eligible_unused_commit"] = int(df.loc[at_risk, "unused_commit"].sum())
-    program.pop("eligible_unconsumed_commit_usd", None)  # old name, replaced by the line above
-    CONTENT_JSON.write_text(json.dumps(content, indent=2) + "\n")
+    # content.json is hand-edited; only its data-driven counts are updated here.
+    if CONTENT_JSON.exists():
+        content = json.loads(CONTENT_JSON.read_text())
+        prog = content.setdefault("program", {})
+        el = df[df["sprint_eligible"]]
+        prog.update({"eligible_accounts": int(len(el)), "eligible_outside_capacity": int((~el["sa_slot"]).sum()),
+                     "eligible_unused_commit": int(el["unused_commit"].sum())})
+        CONTENT_JSON.write_text(json.dumps(content, indent=2, ensure_ascii=False) + "\n")
 
 
 def main() -> None:
-    df = pd.read_csv(RAW)
-    df = add_derived_fields(df)
-    df = score_accounts(df)
-    df = add_value(df)
-    df = add_flags(df)
-    df = add_quadrant(df)
-    df = add_rank(df)
-    df = add_routing(df)
-    export(df)
+    df, account_month, stats = clean_and_combine()
+    df = add_usage_signals(df, account_month)
+    df = score(df)
+    df = size_the_prize(df)
+    df = add_alerts(df)
+    df = add_type_of_help(df)
+    df = assign_capacity(df)
+    df = route(df)
+    export(df, account_month, stats)
 
-    # --- Console summary ----------------------------------------------------
     print(f"Scored {len(df)} accounts as of {AS_OF_DATE.date()}")
-    print("\nQuadrants:\n" + df["quadrant"].value_counts().to_string())
-    print(f"\nProgram: {df['program'].value_counts().to_dict()}")
-    print("\nFlag counts:")
-    for f in ALERTS:
-        print(f"  {f:16s} {df['flags'].apply(lambda x: f in x).sum()}")
+    print("Clean and combine:", stats)
+    print("\nType of help:\n" + df["quadrant"].value_counts().to_string())
+    print("\nCoverage:\n" + df["coverage"].value_counts().to_string())
+    print("\nAlerts:", {a: int(df["flags"].map(lambda f: a in f).sum()) for a in ALERT_NAMES})
+    print("Programs:", df["program"].value_counts().to_dict())
 
-    # Story checks: each featured account must land in its intended quadrant.
+    # Story checks: the four featured accounts must match the methodology page.
+    expect = {
+        "Northwind Commerce": (81, DEEP, 1_310_000, ["Commit at risk", "Renewal coming", "Builder surge"]),
+        "Contoso Media": (77, SCALED, 70_000, None),
+        "Fabrikam Health": (32, BET, 1_100_000, None),
+        "Tailspin Games": (28, DIGITAL, 15_000, None),
+    }
     print("\nFeatured accounts:")
-    for quadrant, name in FEATURED.items():
+    for name, (s, q, pool, alerts) in expect.items():
         a = df[df["account_name"] == name].iloc[0]
-        print(f"  {name:20s} score {a.propensity_score:3d} | pool ${a.pool_of_funds:>10,.0f} | "
-              f"EV ${a.expected_value_usd:>10,.0f} | rank #{a.priority_rank:<3d} | {a.quadrant} | "
-              f"flags: {', '.join(a['flags']) or '-'}")
-        assert a.quadrant == quadrant, f"{name} should be {quadrant}, got {a.quadrant}"
-    nw = df[df["account_name"] == "Northwind Commerce"].iloc[0]
-    assert "Commit at Risk" in nw["flags"], "Northwind should be flagged Commit at Risk"
+        print(f"  {name:20s} score {a.propensity_score:3d} | pool ${a.pool_of_funds:>10,.0f} | OV ${a.expected_value_usd:>10,.0f} "
+              f"| rank #{a.priority_rank:<3d} | {a.quadrant} | {a.coverage} | alerts: {', '.join(a['flags']) or '-'}")
+        assert a.propensity_score == s, f"{name}: score {a.propensity_score}, expected {s}"
+        assert a.quadrant == q, f"{name}: {a.quadrant}, expected {q}"
+        assert a.pool_of_funds == pool, f"{name}: pool {a.pool_of_funds}, expected {pool}"
+        if alerts is not None:
+            assert a["flags"] == alerts, f"{name}: alerts {a['flags']}, expected {alerts}"
+    assert df.loc[df.account_name == "Northwind Commerce", "fde_slot"].item(), "Northwind should hold an FDE slot"
     print("  ✓ Story check passed")
 
-    # Last step: re-derive every number from the raw file and fail loudly on any mismatch.
     import validate
     validate.run()
 

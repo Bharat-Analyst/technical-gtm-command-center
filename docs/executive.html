@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Executive View</title>
-  <meta name="description" content="Leadership view: money in play, coverage, engagement health, account propensity and the comparison-group plan for proving ROI.">
+  <meta name="description" content="Leadership view: money in play, coverage, engagement health, account propensity and the comparison group for proving ROI.">
   <link rel="stylesheet" href="assets/style.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/plotly.js/2.35.3/plotly.min.js"></script>
 </head>
@@ -77,7 +77,7 @@
         card(GTM.term("money_in_play"), GTM.usd(sum(all, "pool_of_funds")),
           `${GTM.usd(sum(all, "unused_commit"))} unused commit + ${GTM.usd(sum(all, "open_pipeline_usd"))} open pipeline`),
         card(GTM.term("ev_covered", "Coverage"), GTM.pct(evCovered / evTotal),
-          `of Opportunity value (${GTM.usd(evCovered)}) reached by covering the top ${t.capacity_top_n} of ${all.length} accounts`),
+          `of opportunity value (${GTM.usd(evCovered)}) sits in the ${covered.length} accounts that hold an SA or FDE slot (${accounts.meta.capacity.sas} SAs, ${accounts.meta.capacity.fdes} FDEs)`),
         card(GTM.term("engagement_health"), `${health("green")} of ${eng.length}`,
           `on track · ${health("yellow")} at risk · ${health("red")} blocked`),
         card(GTM.term("propensity_score", "High-propensity accounts"), highProp.length,
@@ -85,9 +85,8 @@
       ].join("");
 
       // ---------- Pool of funds by quadrant ----------
-      // Order bars by dedicated help first: deep, bet, scaled, digital.
-      const [qDeep, qScaled, qBet, qDigital] = accounts.meta.quadrants;
-      const quadrants = [qDeep, qBet, qScaled, qDigital];
+      // Types of help in pipeline order: deep, bet, scaled, digital (dedicated help first).
+      const quadrants = accounts.meta.quadrants;
       const byQ = quadrants.map((q) => {
         const rows = all.filter((a) => a.quadrant === q);
         return {
@@ -132,35 +131,35 @@
           <td class="small">${r.motions.map(GTM.esc).join("<br>")}</td>
         </tr>`).join("");
 
-      // ---------- Measure and learn: holdout ----------
-      // Baseline check: enrolled and holdout groups should look alike *before*
-      // the program starts; that's what makes the later comparison fair.
-      const enrolled = all.filter((a) => a.program === content.program.name);
+      // ---------- Measure and learn: comparison group ----------
+      // Baseline check: helped and comparison accounts should look alike *before*
+      // the help starts; that's what makes the later comparison fair.
+      const enrolled = all.filter((a) => a.qualifies_for_scaled_help && !a.holdout);
       const holdout = all.filter((a) => a.holdout);
       const avg = (rows, k) => rows.length ? sum(rows, k) / rows.length : 0;
       // Small random groups can differ by chance; say so rather than hide it.
-      const paceGap = Math.abs(avg(enrolled, "burn_pace") - avg(holdout, "burn_pace"));
-      const gapNote = paceGap >= 0.05
-        ? ` Today their average On-track % differs by ${GTM.pct(paceGap)}, which is normal with only ${holdout.length} accounts in the comparison group; possibly we can match the groups on On-track % before splitting them.`
+      const growthGap = Math.abs(avg(enrolled, "usage_growth_3m") - avg(holdout, "usage_growth_3m"));
+      const gapNote = growthGap >= 0.05
+        ? ` Today their average usage growth differs by ${GTM.pct(growthGap)} points, which is normal with only ${holdout.length} accounts in the comparison group; possibly we can match the groups on usage growth before splitting them.`
         : "";
       const row = (label, rows) => `<tr>
         <td>${label}</td><td class="num">${rows.length}</td>
+        <td class="num">${GTM.pct(avg(rows, "usage_growth_3m"))}</td>
         <td class="num">${GTM.pct(avg(rows, "burn_pace"))}</td>
-        <td class="num">${GTM.usd(avg(rows, "unused_commit"))}</td>
-        <td class="num">${GTM.usd(sum(rows, "unused_commit"))}</td></tr>`;
+        <td class="num">${GTM.usd(avg(rows, "burn_rate_monthly"))}</td></tr>`;
       document.getElementById("measure-body").innerHTML = `
-        <p style="margin:0 0 10px">${GTM.fill("{holdout_share}")} of ${content.program.name} accounts are picked at random and measured, but not enrolled. ${GTM.why("holdout")}</p>
+        <p style="margin:0 0 10px">From the ${enrolled.length + holdout.length} accounts that qualify for scaled help, ${GTM.fill("{holdout_share}")} are chosen at random as a comparison group that gets normal service only. ${GTM.why("holdout")}</p>
         <div class="table-wrap">
           <table>
-            <thead><tr><th>${GTM.term("group")}</th><th class="num">${GTM.term("accounts_count")}</th><th class="num">${GTM.term("burn_pace", "Avg On-track % today")}</th>
-              <th class="num">${GTM.term("unused_commit", "Avg unused commit")}</th><th class="num">${GTM.term("unused_commit", "Total unused commit")}</th></tr></thead>
+            <thead><tr><th>${GTM.term("group")}</th><th class="num">${GTM.term("accounts_count")}</th><th class="num">${GTM.term("usage_growth", "Avg usage growth")}</th>
+              <th class="num">${GTM.term("burn_pace", "Avg On-track %")}</th><th class="num">${GTM.term("burn_rate_monthly", "Avg monthly spend")}</th></tr></thead>
             <tbody>${row(GTM.term("treated"), enrolled)}${row(GTM.term("holdout"), holdout)}</tbody>
           </table>
         </div>
         <p class="howto"><strong>How to read this:</strong> the two groups should look alike today, so any gap that opens up later is the program's effect, not luck.${gapNote}</p>
         <dl class="facts" style="grid-template-columns:1fr">
-          <div><dt>How ROI gets calculated</dt><dd style="font-weight:400">Impact = how much enrolled accounts' On-track % improves minus how much the comparison group's improves, after one sprint cycle. ROI = impact × enrolled unused commit ÷ SA time spent.</dd></div>
-          <div><dt>Status</dt><dd style="font-weight:400">Waiting on outcomes. This snapshot has no after-period data yet, so no ROI is reported.</dd></div>
+          <div><dt>How impact gets calculated</dt><dd style="font-weight:400">Track both groups for one to two quarters: monthly spend growth, On-track %, renewals and time to first production workload. Impact = the extra growth in the helped group. ROI = impact in dollars ÷ SA and FDE hours spent.</dd></div>
+          <div><dt>Status</dt><dd style="font-weight:400">Waiting on outcomes. This snapshot has no after-period data yet, so no impact is reported.</dd></div>
         </dl>
         <p class="small" style="margin:12px 0 0">Once impact is proven, the program moves to a long-term owner: see <a href="programs.html#handoff">Hand off to an owner</a>.</p>`;
 

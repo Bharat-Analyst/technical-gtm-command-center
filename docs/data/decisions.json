@@ -1,58 +1,66 @@
 [
   {
     "id": "weights",
+    "section": "propensity-score",
     "title": "Scorecard weights",
-    "decision": "Propensity score = usage growth {w_usage} + new builders {w_newdev} + SA engagement {w_eng} + On-track % {w_burn}, each measured as a percentile against all accounts.",
-    "why": "Usage growth is the clearest sign a customer is already moving work onto the platform, so it counts most.",
-    "possibly": "Possibly we can replace hand-set weights with a model trained on which accounts actually grew."
+    "decision": "Propensity score = {w_usage} usage growth + {w_builders} new builders + {w_eng} engagement + {w_breadth} product breadth, each bucketed to 0–100.",
+    "why": "Recent momentum is the strongest sign of near-term growth; more people building today usually means more workloads in production soon. Commit pressure is a risk, not growth, so it's an alert instead.",
+    "possibly": "Possibly we can test the weights against real history, then move to a machine learning model that keeps top reasons."
   },
   {
     "id": "windows",
-    "title": "90-day window",
-    "decision": "Usage growth and SA meetings look back {win_usage} days; new builders look back {win_newdev} days.",
-    "why": "A quarter smooths out weekly noise but still reflects today. New teams show up fast, so a month catches them early.",
-    "possibly": "Possibly we can test 30, 60 and 90-day windows and keep the one that best predicts growth."
+    "section": "propensity-score",
+    "title": "Signal windows",
+    "decision": "Usage growth over {win_usage} months; new builders over {win_builders} days; meetings and calls over {win_eng} days.",
+    "why": "Long enough to smooth out noise, short enough to reflect what the customer is doing now.",
+    "possibly": "Possibly we can count new builders only if they deployed something, and exclude automated accounts."
   },
   {
     "id": "pool-of-funds",
+    "section": "pool-of-funds",
     "title": "Pool of funds formula",
-    "decision": "Pool of funds = unused commit + open pipeline. Opportunity value = Propensity score ÷ 100 × Pool of funds.",
-    "why": "Unused commit protects the renewal and open deals are new revenue; together they are the money our help could unlock. The Propensity score is used as a rough likelihood, not a calibrated probability.",
-    "possibly": "Possibly we can calibrate the score against past win rates so Opportunity value reads as real expected dollars."
-  },
-  {
-    "id": "capacity",
-    "title": "Team capacity",
-    "decision": "The team can actively cover the top {capacity} accounts by Opportunity value.",
-    "why": "The team is a fixed size, so dedicated help goes where Opportunity value is highest; everyone else gets a scaled type of help.",
-    "possibly": "Possibly we can set team capacity from real SA/FDE hours per engagement instead of a flat count."
+    "decision": "Pool of funds = unused commit + open pipeline; opportunity value = propensity score ÷ 100 × pool of funds.",
+    "why": "Unused commit is the most urgent money; pipeline is included because SA and FDE help often decides whether those deals close. Opportunity value is for ranking, not a forecast.",
+    "possibly": "Possibly we can weight pipeline by deal stage and divide opportunity value by the SA/FDE hours an account needs."
   },
   {
     "id": "flags",
+    "section": "alerts",
     "title": "Alert thresholds",
-    "decision": "Commit at Risk: On-track % below {car_pace} after {car_min_elapsed} of the contract. Days to renewal: within {renewal_days} days. Usage Spike: {spike}× normal. New builders: {newdev_min}+ in {win_newdev} days.",
-    "why": "Each alert is a \"why now\" signal tied to an action: catch up on commit, prepare the renewal, support a launch, or onboard a new team.",
-    "possibly": "Possibly we can tune each threshold so it fires only as often as the team can act on it each week."
+    "decision": "Commit at risk below {car_pace} On-track %; Renewal coming within {renewal_days} days; Builder surge {surge_min}+ in {win_builders} days; Usage spike +{spike_min} in a month; Usage drop −{drop_max} over 3 months; New product in {win_newprod} days.",
+    "why": "Scores say who; alerts say when. Six alerts is enough, and each one has an owner and an action.",
+    "possibly": "Possibly we can tune thresholds by checking which alerts led to real growth."
   },
   {
     "id": "on-track-bands",
+    "section": "pool-of-funds",
     "title": "On-track bands",
-    "decision": "On track at {on_track_good}+; Slightly behind from {on_track_warn} to just under {on_track_good}; Behind below {on_track_warn}.",
-    "why": "Small gaps tend to close on their own; below {on_track_warn} the customer usually needs help to use the commit, so the Behind band matches the Commit at Risk alert.",
-    "possibly": "Possibly we can adjust On-track % for seasonal industries like retail (Q4 peaks) using spending curves from similar customers."
+    "decision": "On track at {on_track_good}+, Slightly behind at {on_track_warn}–89%, Behind below {on_track_warn}.",
+    "why": "Simple bands for readability; the Behind line matches the Commit at risk alert. On-track % assumes even spending, which overstates risk for seasonal businesses like retail.",
+    "possibly": "Possibly we can adjust On-track % for seasonality using spending curves from similar accounts."
   },
   {
     "id": "quadrants",
+    "section": "type-of-help",
     "title": "Type-of-help cut-offs",
-    "decision": "High Propensity score = {score_high}+; big Pool of funds = {pool_high}+. Together they pick one of four types of help.",
-    "why": "Splitting likelihood from size stops big-but-unlikely and small-but-likely accounts from getting the same help.",
-    "possibly": "Possibly we can revisit the cut-offs each quarter as team capacity and the customer base change."
+    "decision": "Propensity score {score_high}+ and pool of funds {pool_high}+.",
+    "why": "Two simple questions are easy to explain and easy to challenge; the cut-offs put roughly the right number of accounts in each type for the team's size.",
+    "possibly": "Possibly we can set cut-offs from data and use different cut-offs by segment."
+  },
+  {
+    "id": "capacity",
+    "section": "team-capacity",
+    "title": "Team capacity",
+    "decision": "{sas} SAs × {sa_load} accounts = {sa_slots} SA slots; {fdes} FDEs × {fde_load} deep engagements = {fde_slots} FDE slots.",
+    "why": "Without a capacity limit, a priority list is a wish list. A visible cut-off line makes the trade-off clear.",
+    "possibly": "Possibly we can use real SA and FDE hours from the engagement tracker and plan capacity by region."
   },
   {
     "id": "holdout",
+    "section": "measuring-impact",
     "title": "Comparison group",
-    "decision": "{holdout_share} of Commit Burn Sprint accounts are picked at random, measured, but not enrolled.",
-    "why": "Comparing helped vs. similar unhelped customers shows the program's real impact, not growth that would have happened anyway.",
-    "possibly": "Possibly we can rotate the comparison group each cycle so no customer goes without help for long."
+    "decision": "{holdout_share} of accounts that qualify for scaled help are chosen at random for the comparison group.",
+    "why": "Accounts with high scores often grow anyway; random selection makes the two groups alike, so the difference is fair.",
+    "possibly": "Possibly we can rotate the comparison group each quarter so no customer is left out for long."
   }
 ]

@@ -18,32 +18,33 @@
   <main>
     <span class="responsibility">Strategic customer engagement · Technical onsites</span>
     <h1>Engagement &amp; onsite</h1>
-    <p class="lede">This page shows how we could run strategic customer engagements: each top account has one goal, one owner, a visible status, its blockers and a next step, and onsites are planned to a measurable outcome.</p>
+    <p class="lede">This page shows how we could run strategic engagements the same way every time: a clear goal, named owners, success criteria and follow-up, all tracked in one place.</p>
 
     <section class="card callout" id="selected" style="margin-bottom:12px"></section>
 
     <div class="grid grid-3" id="summary"></div>
-    <p class="howto"><strong>How to read this:</strong> engagement health at a glance. Each card counts active engagements by the owner's weekly status.</p>
+    <p class="howto"><strong>How to read this:</strong> engagement health at a glance: active engagements by the owners' weekly status.</p>
 
     <h2>Engagement tracker</h2>
     <div class="table-wrap">
       <table>
         <thead><tr>
-          <th><span data-term="account">Account</span></th><th><span data-term="goal">Goal</span></th><th><span data-term="owner">Owner</span></th>
-          <th><span data-term="status">Status</span></th><th><span data-term="blocker">Blocker</span></th><th><span data-term="next_step">Next step</span></th>
-          <th class="num"><span data-term="rank">Rank</span></th><th><span data-term="quadrant">Type of help</span></th><th class="num"><span data-term="expected_value">Opportunity value</span></th>
+          <th><span data-term="account">Account</span></th><th><span data-term="goal">Goal</span></th>
+          <th><span data-term="quadrant">Type of help</span></th><th><span data-term="owner">Owners</span></th>
+          <th><span data-term="stakeholders">Customer stakeholders</span></th><th><span data-term="success_criteria">Success criteria</span></th>
+          <th><span data-term="blocker">Risks and blockers</span></th><th><span data-term="status">Status</span></th>
+          <th><span data-term="next_step">Next step</span></th>
         </tr></thead>
         <tbody id="tracker"></tbody>
       </table>
     </div>
-    <p class="howto"><strong>How to read this:</strong> one row per active engagement. Read across: what we're trying to achieve, who owns it, what's in the way, and what happens next. Rank, type of help and Opportunity value come straight from the scoring pipeline. Eight engagements are shown as examples; every account inside team capacity would have one.</p>
+    <p class="howto"><strong>How to read this:</strong> one row per active engagement. Read across: the goal, who owns it on both sides, how success is judged, what's in the way, and what happens next. Type of help comes straight from the scoring pipeline.</p>
     <div data-faq="why-send-sa,sa-vs-fde"></div>
 
     <h2 id="onsite">Northwind Commerce onsite plan</h2>
-    <p class="howto" style="margin:-4px 0 12px"><strong>How to read this:</strong> the plan follows one visit from intake to measurement, in the order the work happens.</p>
+    <p class="howto" style="margin:-4px 0 12px"><strong>How to read this:</strong> five stages, in the order the work happens, from intake to follow-up and measurement.</p>
     <div id="onsite-plan"></div>
   </main>
-
 
   <script src="assets/common.js"></script>
   <script src="assets/lifecycle.js"></script>
@@ -55,62 +56,57 @@
 
       const byName = Object.fromEntries(accounts.accounts.map((a) => [a.account_name, a]));
       const eng = content.engagements;
-
-      // Selected account from ?account=… (defaults to Northwind).
       const selected = GTM.selectedAccount(accounts.accounts);
       GTM.carryAccountInNav(selected.slug);
       GTM.backToLifecycle(selected);
-      const engageStep = LIFECYCLE.steps({ accounts, content })[5]; // "Engage & Onsite"
+      const engageStep = LIFECYCLE.steps({ accounts, content })[5]; // "Engage the customer"
       const inTracker = eng.some((e) => e.account === selected.account_name);
       document.getElementById("selected").innerHTML = `
         <span class="responsibility" style="margin:0">Selected account</span>
-        <h3 style="font-size:18px">${GTM.esc(selected.account_name)} <span class="muted small" style="font-weight:400">${GTM.term(selected.quadrant)} · rank #${selected.priority_rank}</span></h3>
+        <h3 style="font-size:18px">${GTM.esc(selected.account_name)} <span class="muted small" style="font-weight:400">${GTM.term(selected.quadrant)} · ${GTM.esc(selected.coverage)}</span></h3>
         <p style="margin:0">${GTM.esc(engageStep.sentence(selected))}</p>
-        ${inTracker ? '<p class="small muted" style="margin:6px 0 0">Highlighted in the tracker below.</p>' : ""}
-        ${selected.account_name !== content.onsite.account ? `<p class="small muted" style="margin:6px 0 0">The onsite plan below is for ${GTM.esc(content.onsite.account)}; onsites are reserved for ${GTM.esc(accounts.meta.quadrants[0])} accounts.</p>` : ""}`;
+        ${inTracker ? '<p class="small muted" style="margin:6px 0 0">Highlighted in the tracker below.</p>' : ""}`;
 
-      // Status summary: shape + label, never color alone.
       const count = (s) => eng.filter((e) => e.status === s).length;
       document.getElementById("summary").innerHTML = [["green", "On track"], ["yellow", "At risk"], ["red", "Blocked"]]
-        .map(([s, label]) => `<div class="card kpi"><div class="label">${GTM.status(s)}</div><div class="value">${count(s)}</div><div class="sub">of ${eng.length} active engagements</div></div>`)
-        .join("");
+        .map(([s]) => `<div class="card kpi"><div class="label">${GTM.status(s)}</div><div class="value">${count(s)}</div><div class="sub">of ${eng.length} active engagements</div></div>`).join("");
 
       document.getElementById("tracker").innerHTML = eng.map((e) => {
         const a = byName[e.account];
+        const owners = [`SA: ${e.sa}`, e.fde ? `FDE: ${e.fde}` : null, a ? `AE: ${a.owner}` : null].filter(Boolean);
         return `<tr class="${e.account === selected.account_name ? "is-selected" : ""}">
           <td><strong>${GTM.esc(e.account)}</strong></td>
           <td>${GTM.esc(e.goal)}</td>
-          <td>${GTM.esc(e.owner)}</td>
-          <td>${GTM.status(e.status)}</td>
-          <td>${e.blocker && e.blocker !== "None" ? GTM.esc(e.blocker) : '<span class="muted">None</span>'}</td>
-          <td>${GTM.esc(e.next_step)}</td>
-          <td class="num">${a ? a.priority_rank : "—"}</td>
           <td>${a ? GTM.term(a.quadrant) : "—"}</td>
-          <td class="num">${a ? GTM.usd(a.expected_value_usd) : "—"}</td>
+          <td class="small">${owners.map(GTM.esc).join("<br>")}</td>
+          <td class="small">${GTM.esc(e.stakeholders)}</td>
+          <td class="small">${GTM.esc(GTM.fill(e.success_criteria))}</td>
+          <td class="small">${e.blocker && e.blocker !== "None" ? GTM.esc(e.blocker) : '<span class="muted">None</span>'}</td>
+          <td>${GTM.status(e.status)}</td>
+          <td>${GTM.esc(e.next_step)}</td>
         </tr>`;
       }).join("");
 
       const o = content.onsite;
       const list = (items, tag = "ul") => `<${tag} class="tight">${items.map((i) => `<li>${GTM.esc(i)}</li>`).join("")}</${tag}>`;
-      // Phases follow the onsite from intake to measurement.
-      const phase = (n, title, body) => `<div class="card"><h3><span class="muted">${n}.</span> ${title}</h3>${body}</div>`;
+      const stage = (n, title, body) => `<div class="card"><h3><span class="muted">${n}.</span> ${title}</h3>${body}</div>`;
       document.getElementById("onsite-plan").innerHTML = `
         <div class="card" style="margin-bottom:12px">
           <h3>${GTM.term("goal")}</h3>
-          <p style="margin:0">${GTM.esc(o.goal)}</p>
+          <p style="margin:0">${GTM.esc(o.goal)} <span class="muted small">· ${GTM.esc(o.date)}</span></p>
         </div>
         <div class="grid grid-2">
-          ${phase(1, "Intake", `<p style="margin:0">${GTM.esc(o.intake)}</p>`)}
-          ${phase(2, "Agenda design", list(o.agenda, "ol"))}
-          ${phase(3, "Staffing", `<p class="small muted" style="margin:0 0 4px">Customer</p>${list(o.attendees.customer)}
-            <p class="small muted" style="margin:10px 0 4px">Our team</p>${list(o.attendees.our_team)}`)}
-          ${phase(4, "Prep", list(o.prep_checklist))}
-          ${phase(5, "Execution", `<p style="margin:0 0 4px"><strong>${GTM.esc(o.date)}</strong></p><p style="margin:0">${GTM.esc(o.execution)}</p>`)}
-          ${phase(6, "Follow-up", list(o.follow_ups))}
+          ${stage(1, "Intake", `<p style="margin:0">${GTM.esc(o.intake)}</p>`)}
+          ${stage(2, "Agenda design", `<p class="small muted" style="margin:0 0 6px">Built around the customer's decision, not a product tour.</p>${list(o.agenda, "ol")}`)}
+          ${stage(3, "Staffing and prep", `<p class="small muted" style="margin:0 0 4px">Customer</p>${list(o.attendees.customer)}
+            <p class="small muted" style="margin:10px 0 4px">Our team</p>${list(o.attendees.our_team)}
+            <p class="small muted" style="margin:10px 0 4px">Prep</p>${list(o.prep_checklist)}`)}
+          ${stage(4, "Execution", `<p style="margin:0">${GTM.esc(o.execution)}</p>`)}
         </div>
         <div class="card metric" style="margin-top:12px">
-          <h3><span class="muted">7.</span> Measurement: success metric</h3>
-          <p style="margin:0">${GTM.esc(GTM.fill(o.success_metric))}</p>
+          <h3><span class="muted">5.</span> Follow-up and measurement</h3>
+          ${list(o.follow_ups)}
+          <p style="margin:8px 0 0"><strong>Success metric:</strong> ${GTM.esc(GTM.fill(o.success_metric))}</p>
         </div>`;
       GTM.scrollToHash();
     })();

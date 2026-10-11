@@ -2,169 +2,195 @@
   "engagements": [
     {
       "account": "Northwind Commerce",
-      "goal": "Move checkout personalization to Workers; get back on track with commit",
-      "owner": "FDE: Priya Raman / SA: Marcus Lee",
+      "goal": "Move checkout personalization to Workers before renewal",
+      "sa": "Marcus Lee",
+      "fde": "Priya Raman",
+      "stakeholders": "Head of platform engineering, checkout team lead",
+      "success_criteria": "First workload in production; On-track % back above {on_track_warn}",
+      "blocker": "Security review timing; competing holiday code freeze",
       "status": "yellow",
-      "blocker": "Migration stalled on legacy checkout dependencies",
-      "next_step": "Onsite architecture workshop, Oct 21"
+      "next_step": "Run the architecture onsite, Oct 21"
     },
     {
-      "account": "Driftwood Logistics",
-      "goal": "Edge routing for real-time shipment tracking API",
-      "owner": "FDE: Tomas Okafor",
-      "status": "green",
+      "account": "Granite Mobility",
+      "goal": "Put the new Workers AI pilot into production for route planning",
+      "sa": "Daniel Brooks",
+      "fde": "Tomas Okafor",
+      "stakeholders": "VP engineering, data platform lead",
+      "success_criteria": "Pilot serving live traffic in 6 weeks",
       "blocker": "None",
-      "next_step": "Production cutover review, Oct 14"
+      "status": "green",
+      "next_step": "Load test results review, Oct 14"
     },
     {
-      "account": "Driftwood Retail",
-      "goal": "Unblock stalled image pipeline migration",
-      "owner": "SA: Hannah Cho",
+      "account": "Yellowstone Labs",
+      "goal": "Move the event pipeline onto Queues and Workers",
+      "sa": "Hannah Cho",
+      "fde": "Tomas Okafor",
+      "stakeholders": "CTO, platform team lead",
+      "success_criteria": "Pipeline in production; old queue retired",
+      "blocker": "None",
+      "status": "green",
+      "next_step": "Production cutover plan sign-off"
+    },
+    {
+      "account": "Acme Studios",
+      "goal": "Launch the funded game-asset delivery project on R2 and Workers",
+      "sa": "Hannah Cho",
+      "fde": "Priya Raman",
+      "stakeholders": "Head of live ops, build engineering lead",
+      "success_criteria": "First title shipping assets from R2 before renewal",
+      "blocker": "Contract amendment for the new project still in legal",
       "status": "red",
+      "next_step": "Exec sponsor call to unblock legal review"
+    },
+    {
+      "account": "Duneview Software",
+      "goal": "Agree a reference architecture for the multi-region API",
+      "sa": "Daniel Brooks",
+      "fde": "",
+      "stakeholders": "Principal engineer, SRE lead",
+      "success_criteria": "Architecture approved; FDE scoped if a build follows",
+      "blocker": "None",
+      "status": "green",
+      "next_step": "Architecture review workshop"
+    },
+    {
+      "account": "Ember Markets",
+      "goal": "Find the first use case behind the new builder surge",
+      "sa": "Marcus Lee",
+      "fde": "",
+      "stakeholders": "Director of engineering, ecommerce product lead",
+      "success_criteria": "One use case agreed with an owner and a date",
+      "blocker": "No executive sponsor yet",
+      "status": "yellow",
+      "next_step": "Discovery meeting with the new builders"
+    },
+    {
+      "account": "Quarry Logistics",
+      "goal": "Move shipment tracking APIs to the edge before renewal",
+      "sa": "Daniel Brooks",
+      "fde": "Tomas Okafor",
+      "stakeholders": "VP platform, tracking team lead",
+      "success_criteria": "Tracking API live on Workers; renewal at current commit or higher",
+      "blocker": "None",
+      "status": "green",
+      "next_step": "Production readiness review"
+    },
+    {
+      "account": "Duneview Markets",
+      "goal": "Unblock the stalled image pipeline migration",
+      "sa": "Hannah Cho",
+      "fde": "Priya Raman",
+      "stakeholders": "Head of web platform, media team lead",
+      "success_criteria": "Image pipeline on R2 and Workers; On-track % back above {on_track_warn}",
       "blocker": "Scope disagreement between platform and app teams",
-      "next_step": "Exec sponsor call to reset scope"
-    },
-    {
-      "account": "Juniper Finance",
-      "goal": "Validate compliance pattern for edge data processing",
-      "owner": "SA: Daniel Brooks",
       "status": "yellow",
-      "blocker": "Waiting on data residency sign-off",
-      "next_step": "Security review with CISO team"
-    },
-    {
-      "account": "Driftwood Networks",
-      "goal": "Scale API gateway to 3 new regions",
-      "owner": "FDE: Priya Raman",
-      "status": "green",
-      "blocker": "None",
-      "next_step": "Load test results readout"
-    },
-    {
-      "account": "Lumen Mobility",
-      "goal": "Onboard 2 new dev teams to serverless platform",
-      "owner": "SA: Marcus Lee",
-      "status": "green",
-      "blocker": "None",
-      "next_step": "Developer enablement session"
-    },
-    {
-      "account": "Willow Markets",
-      "goal": "Prove ROI of edge caching for market data feeds",
-      "owner": "SA: Hannah Cho",
-      "status": "yellow",
-      "blocker": "Benchmark environment not ready",
-      "next_step": "Share benchmark results"
-    },
-    {
-      "account": "Fernhill Energy",
-      "goal": "Reference architecture for IoT telemetry ingestion",
-      "owner": "FDE: Tomas Okafor",
-      "status": "green",
-      "blocker": "None",
-      "next_step": "Architecture sign-off"
+      "next_step": "Joint scoping session to reset the plan"
     }
   ],
   "onsite": {
     "account": "Northwind Commerce",
-    "intake": "VP Engineering asked for help after the checkout migration stalled; qualified because it is Deep engagement (SA + FDE) and Commit at Risk.",
-    "goal": "Agree a plan to move checkout personalization to Workers within 60 days",
+    "goal": "Agree a build plan to move checkout personalization to Workers",
     "date": "Oct 21, 2026 (full day, customer HQ)",
-    "execution": "Full day at customer HQ: morning design, afternoon hands-on build, exec readout at 16:00.",
+    "intake": "Submitted by the account executive: goal, stakeholders (head of platform engineering, checkout team lead), the decision Northwind needs to make (build checkout personalization on Workers or keep the legacy service), and timing (before the holiday code freeze).",
     "agenda": [
-      "09:00  Business context: checkout conversion goals and commit status",
-      "09:45  Current architecture walkthrough (customer-led)",
-      "11:00  Target design: personalization logic at the edge on Workers",
-      "13:00  Hands-on build: prototype one personalization rule",
-      "15:00  Migration plan, risks, and owners",
-      "16:00  Exec readout and agreed next steps"
+      "09:00  The decision for today and what success looks like",
+      "09:30  Current checkout architecture (customer-led)",
+      "10:45  Target design: personalization logic on Workers",
+      "13:00  Working session: build one personalization rule together",
+      "15:00  Build plan, risks, and owners on both sides",
+      "16:00  Readout with the head of platform engineering"
     ],
     "attendees": {
       "customer": [
-        "VP Engineering (sponsor)",
-        "Checkout tech lead",
+        "Head of platform engineering",
+        "Checkout team lead",
         "2 senior developers",
         "Platform/SRE lead"
       ],
       "our_team": [
-        "FDE (lead)",
-        "Solutions Architect",
-        "Account Executive",
-        "Product specialist (remote)"
+        "SA (lead)",
+        "FDE",
+        "Account executive",
+        "Product specialist (remote, if needed)"
       ]
     },
     "prep_checklist": [
-      "Review product usage and On-track % trend",
-      "Get current checkout architecture diagram from customer",
-      "Build a working demo of edge personalization",
-      "Confirm decision makers attend the exec readout",
-      "Draft success metric and 60-day plan for review"
+      "Review usage data and On-track % trend",
+      "Get the current checkout architecture diagram",
+      "Build a working demo of one personalization rule",
+      "Confirm the decision makers attend the readout",
+      "Check last year's holiday usage before setting targets"
     ],
+    "execution": "Working sessions, not a product tour: agree on a build plan and name owners on both sides before the day ends.",
     "follow_ups": [
-      "Send written migration plan within 48 hours",
-      "Weekly FDE build session for 6 weeks",
-      "Propose Workers Migration Accelerator (Migrate tier)",
-      "30-day checkpoint on On-track %"
+      "Send a written summary within 2 business days",
+      "Track actions in the engagement tracker",
+      "FDE builds with Northwind's developers in the Commit Burn Sprint",
+      "Check results at 30 and 90 days"
     ],
-    "success_metric": "Personalization live on Workers for 25% of checkout traffic in 60 days; On-track % back to {on_track_good}+"
+    "success_metric": "First workload in production within 6 weeks; On-track % back above {on_track_warn} within the quarter"
   },
   "program": {
     "name": "Commit Burn Sprint",
-    "trigger": "Commit at Risk alert: {car_min_elapsed}+ into the contract and On-track % below {car_pace}",
-    "owner": "Scaled SA team (pooled), with FDE escalation for accounts inside team capacity",
-    "cadence": "6-week sprint: kickoff, weekly 30-min office hours, week-6 review",
+    "trigger": "Commit at risk alert and unused commit of {sprint_min_unused} or more",
+    "owner": "SA leads; FDE joins for Deep engagement accounts",
+    "length": "6 weeks",
     "steps": [
-      "Auto-enroll flagged accounts weekly from Salesforce",
-      "Diagnose: find the stalled workload from usage data",
-      "Kickoff call: agree one workload to move in 6 weeks",
-      "Weekly office hours + reusable migration templates",
-      "Week 6: review On-track %; exit or escalate to FDE/PS offer"
+      "Week 1: review usage, pick 1–2 workloads to move, agree success criteria",
+      "Weeks 2–5: build and test with the customer's developers; weekly check-ins",
+      "Week 6: first workload in production; review results with the customer"
     ],
-    "success_metric": "60% of enrolled accounts back to On track ({on_track_good}+ On-track %) within 90 days",
-    "eligible_accounts": 45,
-    "eligible_outside_capacity": 40,
+    "success_metric": "On-track % back above {on_track_warn} within one quarter",
     "handoff": {
-      "owner": "Scaled SA team lead owns the program; GTM Strategy keeps the measurement.",
+      "owner": "When all four tests pass, the program moves to the team that agreed to own it, and strategy moves on to the next new idea.",
       "ready_when": [
-        "The comparison group shows impact for two cycles in a row",
-        "Playbook, templates and enrollment are documented and automated",
-        "The owner has the people and a quarterly review on the calendar"
+        "It has a clear trigger and steps that others can follow",
+        "It has run with enough accounts to show a result",
+        "Its impact is measured against the comparison group",
+        "A team has agreed to own it, with time to run it"
       ]
     },
-    "eligible_unused_commit": 8677300
+    "eligible_accounts": 8,
+    "eligible_outside_capacity": 1,
+    "eligible_unused_commit": 4323400
   },
   "ps_offer": {
     "name": "Workers Migration Accelerator",
-    "summary": "Fixed-scope services package that moves a stalled workload to Workers quickly.",
+    "summary": "A packaged Professional Services offer for customers who repeatedly need deep hands-on migration work.",
     "tiers": [
       {
-        "tier": "Assess",
-        "scope": "Architecture review + migration plan for one workload",
+        "tier": "Starter",
+        "scope": "One workload, architecture review and build plan",
         "duration": "2 weeks",
         "price_usd": 25000,
+        "delivery_cost_usd": 15000,
         "deals_per_year": 12,
         "consumption_pull_through_usd": 40000
       },
       {
-        "tier": "Migrate",
-        "scope": "Hands-on migration of one production workload",
+        "tier": "Standard",
+        "scope": "One workload taken to production with the customer's team",
         "duration": "6 weeks",
-        "price_usd": 90000,
+        "price_usd": 60000,
+        "delivery_cost_usd": 40000,
         "deals_per_year": 8,
         "consumption_pull_through_usd": 150000
       },
       {
-        "tier": "Scale",
-        "scope": "Multi-workload migration + team enablement",
+        "tier": "Advanced",
+        "scope": "Several workloads, plus team enablement and handover",
         "duration": "12 weeks",
-        "price_usd": 180000,
+        "price_usd": 120000,
+        "delivery_cost_usd": 85000,
         "deals_per_year": 3,
         "consumption_pull_through_usd": 400000
       }
     ],
     "business_case_notes": [
       "Usage pull-through = extra yearly platform usage after the migration.",
-      "Target buyers: Commit at Risk accounts first, then Strategic Bets."
+      "Target buyers: Commit at risk accounts first, then Strategic bets."
     ]
   }
 }

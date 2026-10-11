@@ -1,0 +1,689 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>How This Works</title>
+  <meta name="description" content="The full method behind the Technical GTM Command Center: data, scoring, alerts, type of help, team capacity, programs, measurement, and a Northwind Commerce case study.">
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+  <header class="site-header" id="top">
+    <div class="inner">
+      <a class="brand" href="index.html">Technical GTM Command Center</a>
+      <nav aria-label="Main" id="nav"></nav>
+    </div>
+  </header>
+
+  <main class="doc-layout">
+    <aside class="toc" aria-label="Contents">
+      <details id="toc-details" open>
+        <summary>Contents</summary>
+        <ol>
+          <li><a href="#summary">Summary</a></li>
+          <li><a href="#the-problem">The problem</a></li>
+          <li><a href="#lifecycle">The lifecycle at a glance</a></li>
+          <li><a href="#data">Data</a></li>
+          <li><a href="#propensity-score">Propensity score</a></li>
+          <li><a href="#pool-of-funds">Pool of funds</a></li>
+          <li><a href="#opportunity-value">Opportunity value</a></li>
+          <li><a href="#alerts">Alerts</a></li>
+          <li><a href="#type-of-help">Type of help</a></li>
+          <li><a href="#team-capacity">Team capacity</a></li>
+          <li><a href="#engagement-and-onsites">Engagement and onsites</a></li>
+          <li><a href="#programs">Programs and the PS offer</a></li>
+          <li><a href="#measuring-impact">Measuring impact</a></li>
+          <li><a href="#operating-rhythm">Operating rhythm and ownership</a></li>
+          <li><a href="#case-study">Case study: Northwind Commerce</a></li>
+          <li><a href="#assumptions">Assumptions and limitations</a></li>
+          <li><a href="#opportunities">Opportunities to explore</a></li>
+          <li><a href="#glossary">Glossary and role mapping</a></li>
+          <li><a href="#decision-log">Decision log</a></li>
+        </ol>
+      </details>
+    </aside>
+
+    <article class="doc" id="doc">
+      <h1>How this works</h1>
+      <p class="muted small" style="margin:0 0 24px">Oct 10, 2026 · @Bharat · <span id="reading-time"></span></p>
+
+      <section id="summary">
+        <h2>Summary</h2>
+        <p>The command center turns customer data into one decision: where Solutions Architects (SAs) and Forward Deployed Engineers (FDEs) spend their limited time, and what kind of help each account gets.</p>
+        <p>It works in eight steps. Data comes in from Salesforce and product usage. Each account gets a propensity score (how likely it is to grow) and a pool of funds (money available to unlock). Together they give an opportunity value. Alerts add a "why now". Each account then gets a type of help, limited by team capacity. The team engages, revenue follows, and a comparison group shows whether the help made a difference.</p>
+        <p>The worked example is Northwind Commerce: a {nw_commit} commit with only {nw_used_pct} used, {nw_elapsed} of the year gone, and {nw_dtr} days to renewal. The system places it in {nw_type} because it has a {nw_pool} pool of funds, a propensity score of {nw_score}, and {nw_alert_count} active alerts.</p>
+        <a class="back-top" href="#top">Back to top</a>
+      </section>
+
+      <section id="the-problem">
+        <h2>The problem</h2>
+        <p>SAs and FDEs are the scarcest technical resource in go-to-market, and without a system their time goes to whoever asks loudest, not where it matters most.</p>
+        <p><strong>How this works today, in many teams:</strong></p>
+        <ul>
+          <li>Account teams request help by message or meeting, one at a time.</li>
+          <li>Requests are judged on relationships and urgency, not on data.</li>
+          <li>Nobody sees the full list of active work, blockers, or results in one place.</li>
+          <li>Good work with one customer stays with that customer. It rarely becomes a repeatable program.</li>
+          <li>Leaders can't easily answer: "Is SA and FDE time growing consumption?"</li>
+        </ul>
+        <p><strong>What this costs:</strong></p>
+        <ul>
+          <li>Big opportunities go unnoticed until renewal, when it's too late to help.</li>
+          <li>Small accounts that would grow on their own get expensive one-on-one help.</li>
+          <li>Teams can't prove the return on SA and FDE investment, so it's hard to justify more headcount.</li>
+        </ul>
+        <p>The goal: a clear, repeatable way to decide where technical time goes, run the work, and measure whether it drove the right business outcomes.</p>
+        <a class="back-top" href="#top">Back to top</a>
+      </section>
+
+      <section id="lifecycle">
+        <h2>The lifecycle at a glance</h2>
+        <p>The system runs in eight steps, and the last step feeds back into the first so it improves every quarter.</p>
+        <ol class="flowsteps">
+          <li class="type-data"><a href="#data"><strong>Data comes in.</strong></a> Salesforce and product usage data arrive on a schedule.</li>
+          <li class="type-data"><a href="#data"><strong>Clean and combine.</strong></a> Messy records are fixed and each company becomes one row.</li>
+          <li class="type-decision"><a href="#propensity-score"><strong>Score propensity.</strong></a> Each account gets a 0–100 score for how likely it is to grow. <em>Decision: who is likely to grow?</em></li>
+          <li class="type-decision"><a href="#pool-of-funds"><strong>Size the prize.</strong></a> Pool of funds and opportunity value are calculated. <em>Decision: is it worth our time?</em></li>
+          <li class="type-decision"><a href="#alerts"><strong>Alert and prioritize.</strong></a> Alerts add urgency, each account gets a type of help, and team capacity sets the cutoff. <em>Decision: where do SAs and FDEs go?</em></li>
+          <li class="type-action"><a href="#engagement-and-onsites"><strong>Engage the customer.</strong></a> The team runs the right play: deep engagement, a scaled program, discovery, or self-serve. <em>Decision: what kind of help?</em></li>
+          <li class="type-action"><a href="#programs"><strong>Revenue.</strong></a> Workloads reach production and consumption grows.</li>
+          <li class="type-action"><a href="#measuring-impact"><strong>Measure and learn.</strong></a> Helped accounts are compared with a similar group that wasn't helped, and the scoring is updated. <em>Decision: did it work, and what do we change?</em></li>
+        </ol>
+        <p>Steps 1–2 are data, steps 3–5 are decisions, and steps 6–8 are action and revenue. Each step has its own section below.</p>
+        <a class="back-top" href="#top">Back to top</a>
+      </section>
+
+      <section id="data">
+        <h2>Data</h2>
+        <p>Everything starts with two sources joined into one row per account: what customers bought (Salesforce) and what they actually use (product usage).</p>
+        <h3>How this works</h3>
+        <div class="table-wrap"><table>
+          <thead><tr><th>Source</th><th>What it tells us</th><th>Example fields</th></tr></thead>
+          <tbody>
+            <tr><td>Salesforce: Account</td><td>Who the customer is</td><td>Name, segment, industry, region, owner</td></tr>
+            <tr><td>Salesforce: Contract</td><td>What they committed to spend</td><td>Annual commit, start and end dates, amount used</td></tr>
+            <tr><td>Salesforce: Opportunity</td><td>Deals in progress</td><td>Stage, amount, product, close date</td></tr>
+            <tr><td>Salesforce: Activity</td><td>How engaged they are</td><td>Meetings and calls in the last {win_eng} days</td></tr>
+            <tr><td>Salesforce: SA engagement (custom)</td><td>Past and current technical help</td><td>Type, SA or FDE, hours, outcome</td></tr>
+            <tr><td>Product usage</td><td>What they actually use</td><td>Monthly spend by product, products used</td></tr>
+            <tr><td>Self-serve signups</td><td>Who is building on their own</td><td>New builders by company email domain</td></tr>
+          </tbody>
+        </table></div>
+        <p>The data goes through three layers, the same pattern a data warehouse uses:</p>
+        <ol>
+          <li><strong>Raw.</strong> Data lands exactly as it arrived. Nothing is changed, so we can always trace a number back.</li>
+          <li><strong>Cleaned.</strong> Duplicate accounts are merged, names and industries are standardized, child accounts are rolled up to their parent company, and usage is matched to the right account. Usage that can't be matched is logged, not dropped.</li>
+          <li><strong>Ready to use.</strong> One row per account per month, with every number needed for scoring.</li>
+        </ol>
+        <p>In this run: {raw_records} account records became {companies} companies after {dupes} duplicate records were merged and {children} child accounts were rolled up; {industry_spellings} different industry spellings were standardized; {unmatched_rows} usage rows ({unmatched_usd}) couldn't be matched and were logged; {signups_unmatched} signups from personal email domains couldn't be tied to a company.</p>
+        <p>After scoring, results are written back as Salesforce fields (propensity score, pool of funds, alerts, type of help, top reasons) so account teams see them where they already work.</p>
+        <h3>Why we did it this way</h3>
+        <ul>
+          <li>One row per account makes every account comparable and every score explainable.</li>
+          <li>Keeping raw data untouched means any number can be checked against its source.</li>
+          <li>Writing results back to Salesforce matters more than any dashboard: teams act on what they see in their daily tools.</li>
+          <li>Monthly snapshots let us look back and ask, "What did we know on that date?" This prevents using future information by mistake.</li>
+        </ul>
+        <h3>Possibly we can</h3>
+        <ul>
+          <li>Connect to the real Salesforce and data warehouse instead of sample files.</li>
+          <li>Add data quality alerts, such as a spike in usage that can't be matched to an account.</li>
+          <li>Add outside signals like company size and which cloud providers a company uses.</li>
+        </ul>
+        <a class="back-top" href="#top">Back to top</a>
+      </section>
+
+      <section id="propensity-score">
+        <h2>Propensity score</h2>
+        <p>The propensity score is a number from 0 to 100 that says how likely an account is to grow its usage in the next 90 days.</p>
+        <h3>How this works</h3>
+        <p>Four signals are each turned into a 0–100 score, then combined with weights:</p>
+        <div data-table="signals"></div>
+        <p class="formula">Propensity score = {w_usage} × Usage growth + {w_builders} × New builders + {w_eng} × Engagement + {w_breadth} × Product breadth</p>
+        <p>Each account also gets its top reasons: the three signals that added the most points, written in plain English, such as "{nw_reason_1}."</p>
+        <h3>Why we did it this way</h3>
+        <ul>
+          <li>A simple scorecard first. SAs and leaders can see exactly why an account scored high, which builds trust from day one.</li>
+          <li>Usage growth carries the most weight because recent momentum is the strongest sign of near-term growth.</li>
+          <li>New builders come second because more people building today usually means more workloads in production in a few months.</li>
+          <li>Commit pressure is not in the score. Being behind on commit is a risk, not a sign of growth, so it's handled as an alert instead (see <a href="#alerts">Alerts</a>).</li>
+          <li>Weights are assumptions. They're set by judgment and kept in one config file so anyone can change them.</li>
+        </ul>
+        <h3>Possibly we can</h3>
+        <ul>
+          <li>Test the weights against real history: did high-scoring accounts actually grow more?</li>
+          <li>Move to a machine learning model once enough outcomes are tracked, keeping top reasons so it stays explainable.</li>
+          <li>Count new builders only if they deployed something, and exclude automated accounts.</li>
+        </ul>
+        <a class="back-top" href="#top">Back to top</a>
+      </section>
+
+      <section id="pool-of-funds">
+        <h2>Pool of funds</h2>
+        <p>The pool of funds is the money available to unlock in an account: commit the customer has already promised but not yet used, plus deals in progress.</p>
+        <h3>How this works</h3>
+        <p class="formula">Pool of funds = Unused commit + Open pipeline</p>
+        <ul>
+          <li><strong>Unused commit</strong> = annual commit − amount used so far. This money is already promised. Helping the customer use it protects the renewal.</li>
+          <li><strong>Open pipeline</strong> = the value of deals being worked on but not signed. This is possible new money.</li>
+        </ul>
+        <p>The pool of funds is always shown with its two parts, never as a single total, so readers can see where the money comes from. Across all {total_accounts} accounts: {all_pool} = {all_unused} unused commit + {all_pipe} open pipeline.</p>
+        <p>Alongside it, four simple numbers show how the commit is going:</p>
+        <div class="table-wrap"><table>
+          <thead><tr><th>Number</th><th>How it's calculated</th><th>What it tells us</th></tr></thead>
+          <tbody>
+            <tr><td>Monthly spend</td><td>Amount used ÷ months passed</td><td>How fast they use the platform today</td></tr>
+            <tr><td>On-track %</td><td>% of commit used ÷ % of contract time passed</td><td>100% = on track. Below 100% = behind</td></tr>
+            <tr><td>Behind by</td><td>(Commit × % of time passed) − amount used</td><td>How far behind an even pace they are</td></tr>
+            <tr><td>Needed monthly spend</td><td>Unused commit ÷ months left</td><td>What they'd need to spend to use the full commit</td></tr>
+          </tbody>
+        </table></div>
+        <p>On-track % status: On track at {on_track_good} or more, Slightly behind at {on_track_warn}–89%, Behind below {on_track_warn}. These cutoffs are assumptions.</p>
+        <h3>Why we did it this way</h3>
+        <ul>
+          <li>Unused commit is the most urgent money. If a customer doesn't use what they bought, they're likely to commit less at renewal.</li>
+          <li>Pipeline is included because SA and FDE help often decides whether those deals close.</li>
+          <li>Showing both parts keeps the number honest. Some teams leave pipeline out because it may overlap with the renewal.</li>
+          <li>On-track % assumes even spending, which is a simplification. Retail and eCommerce customers usually spend more in Q4, so a retailer can look behind in summer and catch up in the holidays.</li>
+        </ul>
+        <h3>Possibly we can</h3>
+        <ul>
+          <li>Show two versions side by side: unused commit only, and with pipeline.</li>
+          <li>Weight pipeline by deal stage, so an early-stage deal counts less than one about to close.</li>
+          <li>Adjust on-track % for seasonality using spending curves from similar accounts.</li>
+          <li>Add a third part: the gap between this account's spend and similar companies' spend.</li>
+        </ul>
+        <a class="back-top" href="#top">Back to top</a>
+      </section>
+
+      <section id="opportunity-value">
+        <h2>Opportunity value</h2>
+        <p>Opportunity value combines how likely an account is to grow with how much money is at stake, giving one number to rank accounts by.</p>
+        <h3>How this works</h3>
+        <p class="formula">Opportunity value = (Propensity score ÷ 100) × Pool of funds</p>
+        <div data-table="featured-ov"></div>
+        <h3>Why we did it this way</h3>
+        <ul>
+          <li>Propensity alone isn't enough. Contoso scores {co_score} but has only {co_pool} in play. A high score on a small account doesn't justify dedicated engineers.</li>
+          <li>Pool of funds alone isn't enough. Fabrikam has {fa_pool} in play but a score of {fa_score}. Big money with no activity needs discovery first, not a builder.</li>
+          <li>Multiplying the two rewards accounts that are both likely to grow and worth a lot, like Northwind.</li>
+          <li>It's an estimate, not a forecast. It's for ranking accounts against each other, not for predicting revenue.</li>
+        </ul>
+        <h3>Possibly we can</h3>
+        <ul>
+          <li>Divide by the estimated SA or FDE hours an account needs, to rank by value per hour of team time.</li>
+          <li>Check whether opportunity value actually predicts growth once real outcomes are tracked.</li>
+        </ul>
+        <a class="back-top" href="#top">Back to top</a>
+      </section>
+
+      <section id="alerts">
+        <h2>Alerts</h2>
+        <p>Alerts are simple rules that say why an account needs attention now, and an account with an alert moves up within its type of help.</p>
+        <h3>How this works</h3>
+        <div data-table="alerts"></div>
+        <p>Each alert has a time to respond, for example within {car_respond} business days for Commit at risk.</p>
+        <h3>Why we did it this way</h3>
+        <ul>
+          <li>Scores say who; alerts say when. A high score shows potential. An alert shows a reason to act this week.</li>
+          <li>Few alerts on purpose. Six alerts is enough. Too many and people stop reading them.</li>
+          <li>Every alert has an owner and an action, so it leads to work, not just a warning.</li>
+          <li>All thresholds are assumptions chosen by judgment, and easy to change in one config file.</li>
+          <li>On-track % has a known weakness: it assumes even spending, so Commit at risk can fire early for seasonal businesses like retail. Treat it as a prompt to check, not a verdict.</li>
+        </ul>
+        <h3>Possibly we can</h3>
+        <ul>
+          <li>Tune thresholds by checking which alerts led to real growth.</li>
+          <li>Adjust Commit at risk for seasonal spending patterns.</li>
+          <li>Send alerts straight to the account team's Slack channel or Salesforce.</li>
+        </ul>
+        <a class="back-top" href="#top">Back to top</a>
+      </section>
+
+      <section id="type-of-help">
+        <h2>Type of help</h2>
+        <p>Every account gets one of four types of help, decided by two questions: is it likely to grow (propensity score of {score_high} or more), and is there a lot at stake (pool of funds of {pool_high} or more)?</p>
+        <p>Only Northwind sits in the top-right zone, so it is the only one of the four featured accounts that gets an FDE.</p>
+        <h3>How this works</h3>
+        <div data-table="types"></div>
+        <p>SAs are in three of the four types. The SA is the architect and relationship owner. The FDE is the hands-on builder, added only when there's a big, urgent project worth building together.</p>
+        <p>Accounts move between types every quarter as their data changes:</p>
+        <ul>
+          <li>Deep engagement → Scaled programs, once the first workload is live.</li>
+          <li>Strategic bet → Deep engagement, once a real project appears.</li>
+          <li>Scaled programs → Deep engagement, if the pool of funds grows.</li>
+          <li>Digital → Scaled programs, if an alert fires.</li>
+        </ul>
+        <h3>Why we did it this way</h3>
+        <ul>
+          <li>Two simple questions are easy to explain and easy to challenge.</li>
+          <li>FDEs are the scarcest resource, so they go only where high propensity and a big pool of funds meet.</li>
+          <li>Strategic bets get SA time, not FDE time. The money is there but the activity isn't yet; the first job is discovery.</li>
+          <li>Cutoffs are assumptions. A score of {score_high} and {pool_high} were chosen by judgment so that roughly the right number of accounts land in each type for the team's size.</li>
+        </ul>
+        <h3>Possibly we can</h3>
+        <ul>
+          <li>Set cutoffs from data, for example the score above which accounts grew most often.</li>
+          <li>Use different cutoffs by segment, since {pool_high} means more for a mid-market account than an enterprise one.</li>
+        </ul>
+        <a class="back-top" href="#top">Back to top</a>
+      </section>
+
+      <section id="team-capacity">
+        <h2>Team capacity</h2>
+        <p>Team capacity is how many accounts the SAs and FDEs can actively support in a quarter, and it decides where the cutoff line falls.</p>
+        <h3>How this works</h3>
+        <p>The prototype assumes a team of {sas} SAs and {fdes} FDEs:</p>
+        <div class="table-wrap"><table>
+          <thead><tr><th>Role</th><th>Assumed load</th><th class="num">Slots per quarter</th><th>Used for</th></tr></thead>
+          <tbody>
+            <tr><td>FDE</td><td>{fde_load} deep engagements at a time</td><td class="num">{fde_slots}</td><td>Deep engagement only</td></tr>
+            <tr><td>SA</td><td>{sa_load} dedicated accounts at a time, plus scaled programs</td><td class="num">{sa_slots}</td><td>Deep engagement and strategic bets</td></tr>
+          </tbody>
+        </table></div>
+        <p>Accounts are filled into slots in order:</p>
+        <ol>
+          <li>Rank accounts within each type of help by opportunity value.</li>
+          <li>Within the same type, accounts with alerts move up.</li>
+          <li>Fill FDE slots with the top Deep engagement accounts until all {fde_slots} are used. Each of these also uses an SA slot, because the SA leads the design.</li>
+          <li>Fill the remaining SA slots with Deep engagement and Strategic bet accounts, taking whichever type's next account has the higher opportunity value.</li>
+          <li>Everything below the cutoff line goes to scaled programs or self-serve, and is watched by alerts.</li>
+        </ol>
+        <p>Today: {cov_fde} accounts hold an FDE slot, {cov_sa} more hold an SA slot, and together they hold {cov_ev_pct} of all opportunity value.</p>
+        <p>Manual overrides are allowed. A leader can move an account up or down, but must log a reason. Overrides are reviewed each quarter to see whether they beat the system. Example: {ov_name} was scored as a {ov_from} and moved to {ov_to}: "{ov_reason}".</p>
+        <h3>Why we did it this way</h3>
+        <ul>
+          <li>Without a capacity limit, a priority list is a wish list. "Top 200 accounts" means nothing with {sas} SAs.</li>
+          <li>A visible cutoff line makes the trade-off clear: adding one account means removing another.</li>
+          <li>Overrides with reasons respect local knowledge while keeping the system honest.</li>
+          <li>Team size and load are assumptions. The <a href="prioritization.html">Prioritization</a> page lets you change them with a slider.</li>
+        </ul>
+        <h3>Possibly we can</h3>
+        <ul>
+          <li>Use real SA and FDE hours from the engagement tracker instead of assumed loads.</li>
+          <li>Plan capacity by region, so AMER accounts are matched to AMER teams.</li>
+        </ul>
+        <a class="back-top" href="#top">Back to top</a>
+      </section>
+
+      <section id="engagement-and-onsites">
+        <h2>Engagement and onsites</h2>
+        <p>Once an account is chosen, the work is run the same way every time: clear goal, named owners, success criteria, and follow-up, all tracked in one place.</p>
+        <h3>How this works</h3>
+        <p>The <a href="engagement.html">engagement tracker</a> keeps one row per active engagement:</p>
+        <div data-table="tracker-example"></div>
+        <p>The onsite model has five stages:</p>
+        <ol>
+          <li><strong>Intake.</strong> The account team submits a short form: goal, stakeholders, the decision the customer needs to make, and timing.</li>
+          <li><strong>Agenda design.</strong> The SA shapes the day around the customer's decision, not a product tour.</li>
+          <li><strong>Staffing and prep.</strong> Pick who attends (SA, FDE, product specialist if needed). Review usage data and the architecture in advance.</li>
+          <li><strong>Execution.</strong> Run working sessions, agree on a build plan, and name owners on both sides.</li>
+          <li><strong>Follow-up and measurement.</strong> Send a written summary within 2 business days, track actions in the tracker, and check results at 30 and 90 days.</li>
+        </ol>
+        <h3>Why we did it this way</h3>
+        <ul>
+          <li>One tracker gives leaders a single view of engagement health, blockers, and outcomes.</li>
+          <li>Success criteria set up front stop engagements from drifting.</li>
+          <li>Onsites built around a decision lead to action. A product overview rarely does.</li>
+          <li>Follow-up is a stage, not an afterthought, because most of the value is lost without it.</li>
+        </ul>
+        <h3>Possibly we can</h3>
+        <ul>
+          <li>Build the tracker as a custom object in Salesforce so it lives with the account.</li>
+          <li>Add a simple intake form that feeds the tracker automatically.</li>
+          <li>Review onsite outcomes quarterly to improve the agenda templates.</li>
+        </ul>
+        <a class="back-top" href="#top">Back to top</a>
+      </section>
+
+      <section id="programs">
+        <h2>Programs and the PS offer</h2>
+        <p>When the same kind of help works for many customers, it becomes a repeatable program; when customers repeatedly need deep hands-on work, it becomes a packaged Professional Services (PS) offer.</p>
+        <h3>How this works</h3>
+        <p><strong>Program playbook: Commit Burn Sprint</strong></p>
+        <div data-table="sprint"></div>
+        <p><strong>PS offer: Workers Migration Accelerator</strong></p>
+        <div data-table="tiers"></div>
+        <p>The business case has three parts: services revenue, the consumption the migration unlocks, and the cost to deliver it. The <a href="programs.html#ps">Programs page</a> shows each part.</p>
+        <h3>Why we did it this way</h3>
+        <ul>
+          <li>Programs scale what works. One SA running a proven sprint can help more accounts than one-off engagements.</li>
+          <li>Clear trigger, steps, and success measure make a program easy to repeat and easy to measure.</li>
+          <li>Packaging services in tiers makes them easier to understand, price, and sell.</li>
+          <li>Services are tied to consumption. The point isn't only services revenue; it's helping customers use the platform more.</li>
+          <li>Real pricing would come from Finance and Professional Services.</li>
+        </ul>
+        <h3>Possibly we can</h3>
+        <ul>
+          <li>Run the Commit Burn Sprint as a pilot with a few accounts and compare against the comparison group.</li>
+          <li>Build the PS business case with real delivery costs and consumption data.</li>
+          <li>Add more programs as patterns appear, such as a Workers AI onboarding program.</li>
+        </ul>
+        <a class="back-top" href="#top">Back to top</a>
+      </section>
+
+      <section id="measuring-impact">
+        <h2>Measuring impact</h2>
+        <p>To prove SA and FDE help drives revenue, we compare accounts we helped with a similar group we deliberately didn't help; the difference in growth is the impact.</p>
+        <h3>How this works</h3>
+        <ol>
+          <li><strong>Pick similar accounts.</strong> From accounts that qualify for help, set aside a small group, chosen at random, that gets the normal service only. This is the comparison group. Today: {cg_size} of {cg_pool} qualifying accounts ({holdout_share}).</li>
+          <li><strong>Help the rest as planned.</strong></li>
+          <li><strong>Track both groups for one to two quarters:</strong> monthly spend growth, on-track %, renewals, time to first production workload.</li>
+          <li><strong>Compare.</strong> The extra growth in the helped group is the impact of the SA and FDE work.</li>
+          <li><strong>Feed it back.</strong> Use what worked to adjust scoring weights, alert thresholds, and programs.</li>
+        </ol>
+        <p>For example, if helped accounts grew monthly spend by 34% over two quarters and the comparison group by 19%, the impact would be 15 percentage points.</p>
+        <h3>Why we did it this way</h3>
+        <ul>
+          <li>Accounts with high scores often grow anyway. Without a comparison group, the team would take credit for growth that would have happened regardless.</li>
+          <li>Random selection makes the two groups alike, so the difference is fair.</li>
+          <li>A small comparison group limits the cost of not helping some accounts. Accounts holding a dedicated SA or FDE slot are never held back.</li>
+        </ul>
+        <h3>Possibly we can</h3>
+        <ul>
+          <li>Keep the comparison group small and rotate it each quarter so no customer is left out for long.</li>
+          <li>Where a comparison group isn't acceptable, compare against similar accounts from an earlier period instead.</li>
+          <li>Report impact in dollars and as return on SA and FDE hours.</li>
+        </ul>
+        <a class="back-top" href="#top">Back to top</a>
+      </section>
+
+      <section id="operating-rhythm">
+        <h2>Operating rhythm and ownership</h2>
+        <p>The system only works if it runs on a regular schedule and every program eventually has a long-term owner.</p>
+        <h3>How this works</h3>
+        <div class="table-wrap"><table>
+          <thead><tr><th>How often</th><th>What happens</th><th>Who</th></tr></thead>
+          <tbody>
+            <tr><td>Weekly</td><td>Review the priority list, new alerts, and blocked engagements; agree on changes</td><td>SA and FDE leads, strategy</td></tr>
+            <tr><td>Monthly</td><td>Refresh data and scores; update the engagement tracker</td><td>Strategy, data partner</td></tr>
+            <tr><td>Quarterly</td><td>Review impact against the comparison group; adjust weights, thresholds, and capacity; review overrides</td><td>Developer GTM leadership</td></tr>
+          </tbody>
+        </table></div>
+        <p><strong>Handing a program to a durable owner.</strong> A new program stays with the strategy team until it meets four tests:</p>
+        <div data-table="handoff"></div>
+        <p>Then it moves to that team, and strategy moves on to the next new idea.</p>
+        <h3>Why we did it this way</h3>
+        <ul>
+          <li>A weekly rhythm turns the scores into action.</li>
+          <li>Quarterly reviews keep the system honest and let it improve.</li>
+          <li>Clear handoff tests stop strategy teams from running programs forever, and stop half-proven programs from being handed off too soon.</li>
+        </ul>
+        <h3>Possibly we can</h3>
+        <ul>
+          <li>Add a one-page quarterly report for leadership: coverage, pipeline, engagement health, and impact.</li>
+          <li>Track how long programs take to go from idea to durable owner.</li>
+        </ul>
+        <a class="back-top" href="#top">Back to top</a>
+      </section>
+
+      <section id="case-study">
+        <h2>Case study: Northwind Commerce, end to end</h2>
+        <p>Northwind has used only {nw_used_pct} of a {nw_commit} commit with {nw_elapsed} of the year gone, so the system places it in {nw_type} to protect the renewal and grow usage.</p>
+
+        <h3>Step 1: Data comes in</h3>
+        <div data-table="nw-data"></div>
+
+        <h3>Step 2: Clean and combine</h3>
+        <p>Self-serve signups using Northwind's company email domain were matched to the Northwind account ({nw_builders} in the last {win_builders} days), and usage from its {nw_billing_count} billing accounts, including child account {nw_children}, was rolled up into one row.</p>
+
+        <h3>Step 3: Propensity score</h3>
+        <div data-table="nw-score"></div>
+        <p>Top reasons: {nw_reasons}.</p>
+
+        <h3>Step 4: Pool of funds and commit health</h3>
+        <div data-table="nw-commit"></div>
+
+        <h3>Step 5: Opportunity value, alerts, and type of help</h3>
+        <ul>
+          <li><strong>Opportunity value:</strong> {nw_score_frac} × {nw_pool} = about {nw_ov}, rank #{nw_rank} of {total_accounts}.</li>
+          <li><strong>Alerts:</strong> {nw_alert_detail}.</li>
+          <li><strong>Type of help:</strong> propensity score {nw_score} ({score_high} or more) and pool of funds {nw_pool} ({pool_high} or more) → {nw_type}.</li>
+          <li><strong>Team capacity:</strong> high opportunity value plus {nw_alert_count} alerts put Northwind in one of the {fde_slots} FDE slots (coverage: {nw_coverage}).</li>
+        </ul>
+        <div class="note">A note on seasonality: Northwind's remaining months include the holiday shopping season, when retail usage usually peaks. Part of the gap may close on its own, so the team checks last year's holiday usage before setting targets.</div>
+
+        <h3>Step 6: Engage the customer</h3>
+        <ol>
+          <li><strong>Architecture onsite.</strong> The SA runs a working session on moving checkout personalization to Workers, with the head of platform engineering and the checkout team.</li>
+          <li><strong>Commit Burn Sprint.</strong> Over 6 weeks, the FDE builds with Northwind's developers to put the first workload into production.</li>
+          <li><strong>PS offer.</strong> If more workloads follow, the Workers Migration Accelerator ({nw_tier} tier, {nw_tier_price}) gives them a packaged path.</li>
+        </ol>
+
+        <h3>Step 7: Expected outcome</h3>
+        <p>Targets, not forecasts: first workload in production within 6 weeks, On-track % back above {on_track_warn} within the quarter, and renewal at the current commit or higher. To use the full commit, monthly spend has to rise from {nw_monthly} to about {nw_needed}. The pipeline deals become more likely to close once a workload is live.</p>
+
+        <h3>Step 8: Measure and learn</h3>
+        <p>Northwind is in the helped group. After two quarters, its growth is compared with similar accounts in the comparison group, and the results feed back into the scoring weights and the Commit Burn Sprint playbook.</p>
+        <p class="small"><a href="index.html?account=northwind-commerce&amp;step=1">Walk through Northwind step by step on the Lifecycle page →</a></p>
+        <a class="back-top" href="#top">Back to top</a>
+      </section>
+
+      <section id="assumptions">
+        <h2>Assumptions and limitations</h2>
+        <p>The prototype shows a method; every item below is an assumption or simplification to calibrate with real data.</p>
+        <div class="table-wrap"><table>
+          <thead><tr><th>Item</th><th>Status</th><th>Why it matters</th></tr></thead>
+          <tbody>
+            <tr><td>Propensity score weights</td><td>Assumption</td><td>Set by judgment; should be tested against real outcomes</td></tr>
+            <tr><td>Type of help cutoffs (score {score_high}, {pool_high})</td><td>Assumption</td><td>Chosen to fit the assumed team size</td></tr>
+            <tr><td>Alert thresholds</td><td>Assumption</td><td>Chosen by judgment; easy to change</td></tr>
+            <tr><td>On-track % status cutoffs ({on_track_good}, {on_track_warn})</td><td>Assumption</td><td>Simple bands for readability</td></tr>
+            <tr><td>Team size ({sas} SAs, {fdes} FDEs) and loads</td><td>Assumption</td><td>Set to fit the prototype; change it with the slider</td></tr>
+            <tr><td>PS tiers and prices</td><td>Proposed</td><td>Real pricing would come from Finance and Professional Services</td></tr>
+            <tr><td>Impact example</td><td>Example</td><td>Shows how measurement would work, not a result</td></tr>
+            <tr><td>Even spending through the year</td><td>Simplification</td><td>Overstates risk for seasonal businesses like retail</td></tr>
+            <tr><td>Contract terms</td><td>Generic</td><td>Whether unused commit expires or rolls over varies by contract</td></tr>
+            <tr><td>Data freshness</td><td>Simplification</td><td>Real usage and billing data can lag by weeks</td></tr>
+          </tbody>
+        </table></div>
+        <p>The structure is designed to be calibrated with real Salesforce and usage data, real contract terms, and the team's actual capacity.</p>
+        <a class="back-top" href="#top">Back to top</a>
+      </section>
+
+      <section id="opportunities">
+        <h2>Opportunities to explore</h2>
+        <p>With real data and a team to run it, possibly we can take the prototype further in these directions:</p>
+        <div class="table-wrap"><table>
+          <thead><tr><th>Opportunity</th><th>What it adds</th></tr></thead>
+          <tbody>
+            <tr><td>Connect real Salesforce and warehouse data</td><td>Live scores instead of sample files</td></tr>
+            <tr><td>Test weights and cutoffs against history</td><td>Scores that are proven, not just reasonable</td></tr>
+            <tr><td>Machine learning propensity model</td><td>Better ranking once outcomes are tracked, with top reasons kept</td></tr>
+            <tr><td>Seasonality-adjusted on-track %</td><td>Fewer false alarms for retail and other seasonal accounts</td></tr>
+            <tr><td>Stage-weighted pipeline in the pool of funds</td><td>A more realistic pool of funds</td></tr>
+            <tr><td>Value per hour of SA and FDE time</td><td>Ranking by the best use of scarce people</td></tr>
+            <tr><td>Alerts sent to Slack and Salesforce</td><td>Faster action where teams already work</td></tr>
+            <tr><td>Engagement tracker as a Salesforce object</td><td>One place for engagement health and outcomes</td></tr>
+            <tr><td>Rotating comparison group</td><td>Ongoing, fair proof of impact</td></tr>
+            <tr><td>AI assistant that answers questions about any account</td><td>Faster answers for account teams, using a secure backend</td></tr>
+          </tbody>
+        </table></div>
+        <a class="back-top" href="#top">Back to top</a>
+      </section>
+
+      <section id="glossary">
+        <h2>Glossary and role mapping</h2>
+        <h3>Glossary</h3>
+        <div data-table="glossary"></div>
+        <h3>How this maps to the role</h3>
+        <div class="table-wrap"><table>
+          <thead><tr><th>Section</th><th>Role responsibility it shows</th></tr></thead>
+          <tbody>
+            <tr><td><a href="#data">Data</a></td><td>Salesforce CRM, BigQuery, CRM data; partner with Revenue Engineering and Data</td></tr>
+            <tr><td><a href="#propensity-score">Propensity score</a></td><td>Account propensity; identify the right customer opportunities</td></tr>
+            <tr><td><a href="#pool-of-funds">Pool of funds</a> and <a href="#opportunity-value">opportunity value</a></td><td>Technical revenue pipeline; investment ROI; accelerate consumption</td></tr>
+            <tr><td><a href="#alerts">Alerts</a></td><td>Upcoming opportunities and blockers</td></tr>
+            <tr><td><a href="#type-of-help">Type of help</a> and <a href="#team-capacity">team capacity</a></td><td>SA/FDE prioritization, resourcing, and account coverage</td></tr>
+            <tr><td><a href="#engagement-and-onsites">Engagement and onsites</a></td><td>Coordinate strategic customer engagement; plan and scale technical onsite visits</td></tr>
+            <tr><td><a href="#programs">Programs and the PS offer</a></td><td>Repeatable playbooks and operating rhythms; pricing, packaging, business cases, rollout plans</td></tr>
+            <tr><td><a href="#measuring-impact">Measuring impact</a></td><td>Investment ROI; feedback loops; measurable programs</td></tr>
+            <tr><td><a href="#operating-rhythm">Operating rhythm and ownership</a></td><td>Incubate new motions until they are measurable and ready for durable ownership</td></tr>
+          </tbody>
+        </table></div>
+        <a class="back-top" href="#top">Back to top</a>
+      </section>
+
+      <section id="decision-log">
+        <h2>Decision log</h2>
+        <p>Each key judgment call in one place: what we decided, why, and what we could try next. Every number is read from the pipeline output.</p>
+        <div id="decision-entries" class="grid" style="gap:12px"></div>
+        <a class="back-top" href="#top">Back to top</a>
+      </section>
+    </article>
+  </main>
+
+  <script src="assets/common.js"></script>
+  <script>
+    (async function () {
+      let accounts, content, decisions, glossary;
+      try { ({ accounts, content, decisions, glossary } = await GTM.init("how-this-works.html")); }
+      catch (err) { GTM.showError(document.querySelector("main"), err); return; }
+
+      const all = accounts.accounts, meta = accounts.meta, t = meta.thresholds, cap = meta.capacity, w = meta.weights;
+      const usd = GTM.usd, pct = GTM.pct, esc = GTM.esc;
+      const by = (n) => all.find((a) => a.account_name === n);
+      const nw = by("Northwind Commerce"), co = by("Contoso Media"), fa = by("Fabrikam Health"), ta = by("Tailspin Games");
+      const sum = (rows, k) => rows.reduce((s, a) => s + a[k], 0);
+      const table = (head, rows, numCols = []) => `<div class="table-wrap"><table><thead><tr>${head.map((h, i) => `<th${numCols.includes(i) ? ' class="num"' : ""}>${h}</th>`).join("")}</tr></thead>
+        <tbody>${rows.map((r) => `<tr>${r.map((c, i) => `<td${numCols.includes(i) ? ' class="num"' : ""}>${c}</td>`).join("")}</tr>`).join("")}</tbody></table></div>`;
+      const alertRule = {
+        "Commit at risk": `On-track % below ${pct(t.commit_at_risk_max_pace)}`,
+        "Renewal coming": `${t.renewal_coming_days} days or less to renewal`,
+        "Builder surge": `${t.builder_surge_min} or more new builders in ${meta.signal_windows.new_builders_days} days`,
+        "Usage spike": `Monthly spend up ${pct(t.usage_spike_min)} or more in one month`,
+        "New product": `First use of a new product in the last ${meta.signal_windows.new_product_days} days`,
+        "Usage drop": `Monthly spend down ${pct(-t.usage_drop_max)} or more over 3 months`,
+      };
+      const ov = all.find((a) => a.override_reason);
+      const covered = all.filter((a) => a.sa_slot);
+      const cgPool = all.filter((a) => a.qualifies_for_scaled_help);
+      const elapsedMonths = nw.contract_elapsed_share * 12, monthsLeft = nw.days_to_renewal / (365 / 12);
+      const tier = content.ps_offer.tiers.find((x) => x.tier === nw.ps_recommended_tier);
+
+      // ---------- Page-specific values, merged into the shared placeholders ----------
+      Object.assign(GTM.data.vars, {
+        nw_commit: usd(nw.annual_commit_usd), nw_used: usd(nw.commit_consumed_usd), nw_used_pct: pct(nw.commit_used_share),
+        nw_elapsed: pct(nw.contract_elapsed_share), nw_dtr: nw.days_to_renewal, nw_pool: usd(nw.pool_of_funds),
+        nw_score: nw.propensity_score, nw_score_frac: (nw.propensity_score / 100).toFixed(2), nw_type: nw.quadrant,
+        nw_alert_count: nw.flags.length, nw_ov: usd(nw.expected_value_usd), nw_rank: nw.priority_rank, nw_coverage: nw.coverage,
+        nw_builders: nw.new_builders_60d, nw_billing_count: nw.billing_accounts.length, nw_children: nw.child_accounts.join(", ") || "none",
+        nw_reason_1: nw.top_reasons[0], nw_reasons: nw.top_reasons.join("; "),
+        nw_alert_detail: nw.flags.map((f) => `${f} (${{
+          "Commit at risk": `On-track % of ${pct(nw.burn_pace)} is below ${pct(t.commit_at_risk_max_pace)}`,
+          "Renewal coming": `${nw.days_to_renewal} days is within ${t.renewal_coming_days}`,
+          "Builder surge": `${nw.new_builders_60d} new builders is ${t.builder_surge_min} or more`,
+        }[f] || alertRule[f]})`).join(", "),
+        nw_monthly: usd(nw.burn_rate_monthly), nw_needed: usd(nw.required_monthly_burn),
+        nw_tier: tier ? tier.tier : "—", nw_tier_price: tier ? usd(tier.price_usd) : "—",
+        co_score: co.propensity_score, co_pool: usd(co.pool_of_funds), fa_score: fa.propensity_score, fa_pool: usd(fa.pool_of_funds),
+        all_pool: usd(sum(all, "pool_of_funds")), all_unused: usd(sum(all, "unused_commit")), all_pipe: usd(sum(all, "open_pipeline_usd")),
+        car_respond: meta.alerts.find((a) => a.name === "Commit at risk").respond_business_days,
+        cov_fde: all.filter((a) => a.fde_slot).length, cov_sa: all.filter((a) => a.sa_slot && !a.fde_slot).length,
+        cov_ev_pct: pct(sum(covered, "expected_value_usd") / sum(all, "expected_value_usd")),
+        ov_name: ov ? ov.account_name : "—", ov_from: ov ? ov.model_quadrant : "—", ov_to: ov ? ov.quadrant : "—",
+        ov_reason: ov ? ov.override_reason : "—",
+        cg_size: all.filter((a) => a.holdout).length, cg_pool: cgPool.length,
+        raw_records: meta.cleaning.raw_account_records, companies: meta.cleaning.companies, dupes: meta.cleaning.duplicate_records_merged,
+        children: meta.cleaning.child_accounts_rolled_up, industry_spellings: meta.cleaning.industry_spellings_standardized,
+        unmatched_rows: meta.cleaning.unmatched_usage_rows, unmatched_usd: usd(meta.cleaning.unmatched_usage_usd),
+        signups_unmatched: meta.cleaning.signups_unmatched,
+      });
+      const doc = document.getElementById("doc");
+      doc.innerHTML = GTM.fill(doc.innerHTML);
+
+      // ---------- Tables built from the data ----------
+      const bucketText = (key, fmt) => meta.buckets[key].map(([min, pts]) => `${fmt(min)} = ${pts}`).join(" · ");
+      const tables = {
+        signals: table(["Signal", "What it measures", "Weight", "How it's scored"], [
+          ["Usage growth", `Change in monthly spend over the last ${meta.signal_windows.usage_growth_months} months`, pct(w.usage_growth), `${bucketText("usage_growth", (m) => `${pct(m)}+`)} · falling = 0`],
+          ["New builders", `People who started building in the last ${meta.signal_windows.new_builders_days} days`, pct(w.new_builders), `${bucketText("new_builders", (m) => `${m}+`)} · none = 0`],
+          ["Engagement", `Meetings and calls in the last ${meta.signal_windows.engagement_days} days`, pct(w.engagement), `${bucketText("engagement", (m) => `${m}+`)} · none = 0`],
+          ["Product breadth", "Number of developer platform products used", pct(w.product_breadth), bucketText("product_breadth", (m) => `${m}${m === 5 ? "+" : ""}`)],
+        ]),
+        "featured-ov": table(["Account", "Propensity score", "Pool of funds", "Opportunity value"],
+          [nw, fa, co, ta].map((a) => [`<a href="index.html?account=${a.slug}">${esc(a.account_name)}</a>`, a.propensity_score, usd(a.pool_of_funds), usd(a.expected_value_usd)]), [1, 2, 3]),
+        alerts: table(["Alert", "Fires when", "Suggested action", "Owner", "Respond within", "Accounts today"],
+          meta.alerts.map((a) => [esc(a.name), alertRule[a.name], esc(a.action), esc(a.owner), `${a.respond_business_days} business days`,
+            all.filter((x) => x.flags.includes(a.name)).length]), [5]),
+        types: table(["Type of help", "Propensity score", "Pool of funds", "Who", "What happens", "Goal", "Accounts"],
+          meta.types.map((ty, i) => [esc(ty.name), i < 1 || i === 2 ? `${t.score_high}+` : `Under ${t.score_high}`,
+            i < 2 ? `${usd(t.pool_of_funds_high)}+` : `Under ${usd(t.pool_of_funds_high)}`, esc(ty.who), esc(ty.what), esc(ty.goal),
+            all.filter((a) => a.quadrant === ty.name).length]), [6]),
+        "tracker-example": (() => {
+          const e = content.engagements.find((x) => x.account === "Northwind Commerce");
+          return table(["Field", "Example (Northwind)"], [
+            ["Goal", esc(e.goal)], ["Type of help", esc(nw.quadrant)],
+            ["Owners", `SA ${esc(e.sa)} (design and relationship), FDE ${esc(e.fde)} (build), account executive ${esc(nw.owner)} (commercial)`],
+            ["Customer stakeholders", esc(e.stakeholders)], ["Success criteria", esc(GTM.fill(e.success_criteria))],
+            ["Risks and blockers", esc(e.blocker)], ["Status", GTM.status(e.status)], ["Next step", esc(e.next_step)],
+          ]);
+        })(),
+        sprint: (() => {
+          const p = content.program;
+          return table(["Part", "Detail"], [
+            ["Trigger", esc(GTM.fill(p.trigger))], ["Who", esc(p.owner)], ["Length", esc(p.length)],
+            ...p.steps.map((s) => { const [k, ...r] = s.split(": "); return [esc(k), esc(r.join(": "))]; }),
+            ["Success measure", esc(GTM.fill(p.success_metric))],
+            ["Eligible accounts", `${p.eligible_accounts} today (<a href="programs.html">Programs page</a>)`],
+          ]);
+        })(),
+        tiers: table(["Tier", "Scope", "Length", "Price"],
+          content.ps_offer.tiers.map((x) => [esc(x.tier), esc(x.scope), esc(x.duration), usd(x.price_usd)]), [3]),
+        handoff: `<ul>${content.program.handoff.ready_when.map((r) => `<li>${esc(r)}.</li>`).join("")}</ul>`,
+        "nw-data": table(["Field", "Value"], [
+          ["Segment, industry, region", `${nw.segment}, ${esc(nw.industry)}, ${nw.region}`],
+          ["Annual commit", `$${nw.annual_commit_usd.toLocaleString("en-US")}`],
+          ["Amount used so far", `$${nw.commit_consumed_usd.toLocaleString("en-US")}`],
+          ["Contract time passed", `${pct(nw.contract_elapsed_share)} (about ${elapsedMonths.toFixed(1)} of 12 months)`],
+          ["Days to renewal", nw.days_to_renewal], ["Open pipeline", `$${nw.open_pipeline_usd.toLocaleString("en-US")}`],
+          [`New builders, last ${meta.signal_windows.new_builders_days} days`, nw.new_builders_60d],
+          [`Usage growth, last ${meta.signal_windows.usage_growth_months} months`, `${nw.usage_growth_3m >= 0 ? "+" : ""}${pct(nw.usage_growth_3m)}`],
+          [`Meetings and calls, last ${meta.signal_windows.engagement_days} days`, nw.meetings_90d],
+          ["Products used", `${nw.product_count} (${nw.products_used.join(", ")})`],
+        ]),
+        "nw-score": table(["Signal", "Northwind", "Signal score", "Weight", "Points"], [
+          ["Usage growth", `${nw.usage_growth_3m >= 0 ? "+" : ""}${pct(nw.usage_growth_3m)}`, nw.score_usage_growth, pct(w.usage_growth), nw.points_usage_growth.toFixed(2)],
+          ["New builders", nw.new_builders_60d, nw.score_new_builders, pct(w.new_builders), nw.points_new_builders.toFixed(2)],
+          ["Engagement", `${nw.meetings_90d} meetings and calls`, nw.score_engagement, pct(w.engagement), nw.points_engagement.toFixed(2)],
+          ["Product breadth", `${nw.product_count} products`, nw.score_product_breadth, pct(w.product_breadth), nw.points_product_breadth.toFixed(2)],
+          ["<strong>Total</strong>", "", "", "", `<strong>${(nw.points_usage_growth + nw.points_new_builders + nw.points_engagement + nw.points_product_breadth).toFixed(2)} → ${nw.propensity_score}</strong>`],
+        ], [2, 3, 4]),
+        "nw-commit": table(["Number", "Math", "Result"], [
+          ["% of commit used", `${usd(nw.commit_consumed_usd)} ÷ ${usd(nw.annual_commit_usd)}`, pct(nw.commit_used_share)],
+          ["On-track %", `${pct(nw.commit_used_share)} ÷ ${pct(nw.contract_elapsed_share)}`, `${pct(nw.burn_pace)} ${GTM.onTrackStatus(nw.burn_pace)}`],
+          ["Expected by now", `${usd(nw.annual_commit_usd)} × ${pct(nw.contract_elapsed_share)}`, usd(nw.expected_consumed_to_date)],
+          ["Behind by", `${usd(nw.expected_consumed_to_date)} − ${usd(nw.commit_consumed_usd)}`, usd(nw.behind_pace_amount)],
+          ["Unused commit", `${usd(nw.annual_commit_usd)} − ${usd(nw.commit_consumed_usd)}`, usd(nw.unused_commit)],
+          ["Pool of funds", `${usd(nw.unused_commit)} + ${usd(nw.open_pipeline_usd)}`, usd(nw.pool_of_funds)],
+          ["Monthly spend", `${usd(nw.commit_consumed_usd)} ÷ ${elapsedMonths.toFixed(1)} months`, `about ${usd(nw.burn_rate_monthly)}`],
+          ["Needed monthly spend", `${usd(nw.unused_commit)} ÷ ${monthsLeft.toFixed(1)} months`, `about ${usd(nw.required_monthly_burn)}`],
+          ["Year-end use at today's pace", `${usd(nw.burn_rate_monthly)} × 12`, `about ${usd(nw.projected_year_use)} (${pct(nw.projected_year_use / nw.annual_commit_usd)} of commit)`],
+        ]),
+        glossary: table(["Term", "Meaning"], ["propensity_score", "pool_of_funds", "expected_value", "annual_commit", "unused_commit", "open_pipeline",
+          "burn_rate_monthly", "burn_pace", "behind_pace_amount", "required_monthly_burn", "days_to_renewal", "new_developers", "flags", "top_reasons",
+          "quadrant", "capacity", "holdout", "impact", "sa", "fde"].map((k) => [esc(glossary[k].label), esc(GTM.fill(glossary[k].text))])),
+      };
+      doc.querySelectorAll("[data-table]").forEach((el) => { el.outerHTML = tables[el.dataset.table]; });
+
+      // ---------- Decision log (bottom of the page) ----------
+      document.getElementById("decision-entries").innerHTML = decisions.map((d) => `
+        <article class="card" id="${d.id}">
+          <h3 style="margin:0 0 8px">${esc(d.title)} <a class="small" href="#${d.section}" style="font-weight:400">See section →</a></h3>
+          <dl class="step-panel" style="margin:0">
+            <div><dt>Decision</dt><dd style="margin:2px 0 10px">${esc(GTM.fill(d.decision))}</dd></div>
+            <div><dt>Why</dt><dd style="margin:2px 0 10px">${esc(GTM.fill(d.why))}</dd></div>
+            <div><dt>Possibly we can</dt><dd style="margin:2px 0 0">${esc(GTM.fill(d.possibly))}</dd></div>
+          </dl>
+        </article>`).join("");
+
+      // ---------- Reading time, mobile contents ----------
+      const words = doc.innerText.split(/\s+/).length;
+      document.getElementById("reading-time").textContent = `${Math.max(1, Math.round(words / 220))} min read`;
+      if (window.matchMedia("(max-width: 900px)").matches) document.getElementById("toc-details").open = false;
+      GTM.scrollToHash();
+    })();
+  </script>
+</body>
+</html>

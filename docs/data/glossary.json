@@ -1,176 +1,200 @@
 {
-  "_note": "One shared definition per term, used by every ⓘ tooltip. Keys are code names and never shown; 'label' is the on-screen name. {placeholders} are filled from accounts.json so numbers always match the pipeline.",
+  "_note": "One shared definition per term, used by every ⓘ tooltip. Keys are code names and never shown; 'label' is the on-screen name. {placeholders} are filled from accounts.json.",
   "account": {
     "label": "Account",
-    "text": "A customer company, as it appears in Salesforce."
+    "text": "A customer company: one row after duplicates are merged and child accounts are rolled up."
   },
   "segment": {
     "label": "Segment",
     "text": "Customer size band: Enterprise, Mid-Market or Commercial."
   },
-  "segment_region": {
-    "label": "Region",
-    "text": "Sales region: AMER, EMEA, APAC or LATAM."
-  },
   "rank": {
     "label": "Rank",
-    "text": "Position among all {total_accounts} accounts, sorted by opportunity value. #1 is worth the most time."
+    "text": "Position among all {total_accounts} accounts by opportunity value. #1 is worth the most."
   },
   "propensity_score": {
     "label": "Propensity score",
-    "text": "0–100 score for how likely a customer is to grow soon if we invest technical time."
+    "text": "How likely an account is to grow in the next 90 days, from 0 to 100."
   },
   "top_reasons": {
     "label": "Top reasons",
-    "text": "The three signals that added the most points to the Propensity score, in plain English."
+    "text": "The three signals that added most to the score."
   },
   "pool_of_funds": {
     "label": "Pool of funds",
-    "text": "Money available to unlock: unused commit plus open pipeline."
-  },
-  "unused_commit": {
-    "label": "Unused commit",
-    "text": "Spend the customer already committed to but hasn't used yet. Helping them use it protects the renewal."
-  },
-  "open_pipeline": {
-    "label": "Open pipeline",
-    "text": "Expansion deals currently open in Salesforce for this customer."
+    "text": "Unused commit plus open pipeline."
   },
   "expected_value": {
     "label": "Opportunity value",
-    "text": "Propensity score ÷ 100 × Pool of funds: the money we can realistically help unlock."
+    "text": "Propensity score × pool of funds; used to rank accounts."
   },
   "ev_covered": {
     "label": "Opportunity value covered",
-    "text": "Opportunity value of the accounts that fit within current team capacity."
+    "text": "Opportunity value of the accounts that hold an SA or FDE slot."
   },
   "annual_commit": {
     "label": "Annual commit",
-    "text": "What the customer contracted to spend this year."
+    "text": "What the customer promised to spend this contract year."
   },
   "consumed": {
     "label": "Used so far",
-    "text": "Commit used to date, in dollars."
+    "text": "Commit used to date, from the Salesforce contract."
+  },
+  "unused_commit": {
+    "label": "Unused commit",
+    "text": "Commit promised but not yet used."
+  },
+  "open_pipeline": {
+    "label": "Open pipeline",
+    "text": "Deals in progress, not yet signed."
   },
   "burn_rate_monthly": {
     "label": "Monthly spend",
-    "text": "Dollars used per month so far (used so far ÷ months elapsed). It says how fast, not whether that's fast enough."
+    "text": "How much the customer uses per month: amount used ÷ months passed."
   },
   "burn_pace": {
     "label": "On-track %",
-    "text": "Share of commit used ÷ share of the contract year passed. 100% = exactly on schedule; 90% = slightly behind; below 50% = using it at under half the needed rate."
+    "text": "Share of commit used compared to share of time passed; 100% = on track. 90% = slightly behind; below 50% = using it at under half the needed rate."
   },
   "on_track_status": {
     "label": "On-track status",
-    "text": "On track at {on_track_good}+, Slightly behind from {on_track_warn} to just under {on_track_good}, Behind below {on_track_warn}. These bands are assumptions."
+    "text": "On track at {on_track_good}+, Slightly behind at {on_track_warn} to just under {on_track_good}, Behind below {on_track_warn}. These cut-offs are assumptions."
   },
   "expected_consumed_to_date": {
     "label": "Expected by now",
-    "text": "What a customer spending evenly through the year would have used by today (commit × share of year passed)."
+    "text": "Commit × % of time passed: what an even pace would have used by today."
   },
   "behind_pace_amount": {
     "label": "Behind by",
-    "text": "Expected by now minus used so far: the dollar gap to being on schedule."
+    "text": "How much less they've used than an even pace expects."
   },
   "required_monthly_burn": {
     "label": "Needed monthly spend",
-    "text": "Monthly spend needed from today to use the full commit by renewal (unused commit ÷ months left)."
-  },
-  "usage_growth": {
-    "label": "Usage growth",
-    "text": "Change in product usage over the last {win_usage} days vs. the {win_usage} days before."
-  },
-  "new_developers": {
-    "label": "New builders",
-    "text": "Developers who started building on the platform at this customer in the last {win_newdev} days. As an alert: {newdev_min}+ new builders, likely a new team or project."
-  },
-  "sa_meetings": {
-    "label": "SA meetings",
-    "text": "Meetings with a Solutions Architect in the last {win_eng} days."
+    "text": "Monthly spend needed to use the full commit by renewal."
   },
   "days_to_renewal": {
     "label": "Days to renewal",
-    "text": "Days until the current contract ends. As an alert: renewal is within {renewal_days} days, time to prepare it."
+    "text": "Days until the contract is up."
+  },
+  "usage_growth": {
+    "label": "Usage growth",
+    "text": "Change in monthly spend over the last {win_usage} months."
+  },
+  "new_developers": {
+    "label": "New builders",
+    "text": "People at the customer who started building in the last {win_builders} days, matched by company email domain."
+  },
+  "sa_meetings": {
+    "label": "Meetings and calls",
+    "text": "Meetings and calls logged in Salesforce in the last {win_eng} days."
+  },
+  "product_breadth": {
+    "label": "Products used",
+    "text": "Number of developer platform products with spend last month."
   },
   "flags": {
     "label": "Alerts",
-    "text": "\"Why now\" signals that call for action this week. Thresholds are assumptions in the decision log."
+    "text": "\"Why now\" rules that move an account up within its type of help."
   },
   "commit_at_risk": {
-    "label": "Commit at Risk",
-    "text": "At least {car_min_elapsed} into the contract and On-track % below {car_pace}."
+    "label": "Commit at risk",
+    "text": "On-track % below {car_pace} (after the first {car_min_elapsed} of the contract)."
+  },
+  "renewal_coming": {
+    "label": "Renewal coming",
+    "text": "{renewal_days} days or less to renewal."
+  },
+  "builder_surge": {
+    "label": "Builder surge",
+    "text": "{surge_min} or more new builders in {win_builders} days."
   },
   "usage_spike": {
-    "label": "Usage Spike",
-    "text": "Last {spike_recent} days ran at {spike}× or more of the {spike_baseline}-day average. Something new probably launched."
+    "label": "Usage spike",
+    "text": "Monthly spend up {spike_min} or more in one month."
+  },
+  "new_product": {
+    "label": "New product",
+    "text": "First use of a new product in the last {win_newprod} days."
+  },
+  "usage_drop": {
+    "label": "Usage drop",
+    "text": "Monthly spend down {drop_max} or more over 3 months."
   },
   "quadrant": {
     "label": "Type of help",
-    "text": "One of four kinds of help, set by Propensity score and Pool of funds: Deep engagement (SA + FDE), Scaled SA programs, Strategic Bet, or Digital / self-serve."
+    "text": "Deep engagement (SA + FDE), Strategic bet, Scaled SA programs, or Digital / self-serve."
   },
   "fde_deep_engagement": {
     "label": "Deep engagement (SA + FDE)",
-    "text": "SA leads design and the relationship; FDE builds with the customer's developers until the first production workload."
+    "text": "Score {score_high}+ and pool of funds {pool_high}+. SA leads design and relationship; FDE builds with the customer's developers. Goal: first workload live, fast."
+  },
+  "strategic_bet": {
+    "label": "Strategic bet",
+    "text": "Score under {score_high}, pool of funds {pool_high}+. SA leads discovery with the account team; FDE only if a real project appears. Goal: create momentum."
   },
   "scaled_sa_program": {
     "label": "Scaled SA programs",
-    "text": "SAs only, in group formats: office hours, workshops, reference architectures. No FDE."
-  },
-  "strategic_bet": {
-    "label": "Strategic Bet",
-    "text": "SA-led discovery with the account team; FDE only if a real project appears."
+    "text": "Score {score_high}+, pool of funds under {pool_high}. SAs in group formats (office hours, workshops, reference architectures); no FDE."
   },
   "digital": {
     "label": "Digital / self-serve",
-    "text": "No SA/FDE time: docs, templates and alerts."
+    "text": "Score under {score_high}, pool of funds under {pool_high}. No dedicated people: docs, templates, product emails; alerts watch for change."
   },
   "capacity": {
     "label": "Team capacity",
-    "text": "How many accounts the SA/FDE team can actively cover. Assumed: the top {capacity} by opportunity value."
+    "text": "How many accounts SAs and FDEs can support in a quarter: {sas} SAs × {sa_load} = {sa_slots} SA slots, {fdes} FDEs × {fde_load} = {fde_slots} FDE slots (assumptions)."
   },
   "coverage": {
     "label": "Coverage",
-    "text": "Whether the account is inside the top {capacity} that get dedicated help."
+    "text": "SA + FDE, SA, or outside team capacity (scaled programs or self-serve, watched by alerts)."
   },
   "motion": {
     "label": "Help plan",
-    "text": "The specific help the account gets, from its type of help and team capacity."
+    "text": "What the account gets, from its type of help and whether it holds a slot."
   },
   "program": {
     "label": "Program",
-    "text": "Which catch-up program applies: the Commit Burn Sprint, an FDE-led catch-up plan, or the comparison group."
+    "text": "Commit Burn Sprint (SA-led, or SA + FDE for Deep engagement accounts), or the comparison group."
   },
   "holdout": {
     "label": "Comparison group",
-    "text": "{holdout_share} of Sprint accounts, picked at random and measured but not enrolled, so we can see the program's real impact."
+    "text": "Similar accounts not helped, used to measure impact. {holdout_share} of qualifying accounts, chosen at random."
   },
   "treated": {
-    "label": "Enrolled",
-    "text": "Sprint accounts that get the program, compared against the comparison group."
+    "label": "Helped",
+    "text": "Qualifying accounts that get the help, compared against the comparison group."
   },
   "impact": {
     "label": "Impact",
-    "text": "How much more the enrolled accounts improve than the comparison group."
+    "text": "Extra growth in helped accounts compared with the comparison group."
   },
   "group": {
     "label": "Group",
-    "text": "Enrolled accounts get the program; the comparison group is measured only."
+    "text": "Helped accounts get the program; the comparison group gets normal service only."
   },
   "goal": {
     "label": "Goal",
     "text": "The one outcome this engagement is working toward."
   },
   "owner": {
-    "label": "Owner",
-    "text": "The person accountable for the engagement's next step."
+    "label": "Owners",
+    "text": "SA (design and relationship), FDE (build), account executive (commercial)."
+  },
+  "stakeholders": {
+    "label": "Customer stakeholders",
+    "text": "Who on the customer side decides and builds."
+  },
+  "success_criteria": {
+    "label": "Success criteria",
+    "text": "Agreed up front, so the engagement doesn't drift."
   },
   "status": {
     "label": "Status",
-    "text": "On track, At risk or Blocked, judged by the owner each week."
+    "text": "On track, At risk or Blocked, judged by the owners each week."
   },
   "blocker": {
-    "label": "Blocker",
-    "text": "What is stopping progress right now, if anything."
+    "label": "Risks and blockers",
+    "text": "What could stop progress, or is stopping it now."
   },
   "next_step": {
     "label": "Next step",
@@ -182,7 +206,7 @@
   },
   "money_in_play": {
     "label": "Money in play",
-    "text": "Total Pool of funds across all accounts: unused commit plus open pipeline."
+    "text": "Total pool of funds across all accounts: unused commit plus open pipeline."
   },
   "accounts_count": {
     "label": "Accounts",
@@ -197,32 +221,36 @@
     "text": "What the services team delivers in this tier."
   },
   "duration": {
-    "label": "Duration",
+    "label": "Length",
     "text": "How long delivery takes."
   },
   "indicative_price": {
     "label": "Price",
     "text": "Price per engagement for this tier."
   },
+  "delivery_cost": {
+    "label": "Cost to deliver",
+    "text": "What one engagement of this tier costs to deliver."
+  },
   "deals_per_year": {
     "label": "Deals / yr",
-    "text": "How many of this tier we assume we'd sell in a year."
+    "text": "How many of this tier we expect to sell in a year."
   },
   "services_revenue": {
     "label": "Services revenue",
-    "text": "Price × deals per year: revenue from the services themselves."
+    "text": "Price × deals per year."
   },
   "pull_through": {
-    "label": "Usage pull-through",
-    "text": "Assumed extra yearly platform usage after the migration, often the bigger prize than the services fee."
+    "label": "Consumption unlocked",
+    "text": "Extra yearly platform usage after the migration."
   },
   "total": {
     "label": "Total",
-    "text": "Services revenue plus usage pull-through."
+    "text": "Services margin plus consumption unlocked."
   },
   "jd_keyword": {
     "label": "Role keywords",
-    "text": "Phrases from the job description that this part of the prototype demonstrates."
+    "text": "Phrases from the job description that this part demonstrates."
   },
   "responsibility": {
     "label": "Responsibility",
@@ -236,24 +264,12 @@
     "label": "Page",
     "text": "Where to see it on this site."
   },
-  "step": {
-    "label": "Step",
-    "text": "One stage of the lifecycle, from raw data to measured impact."
+  "sa": {
+    "label": "SA",
+    "text": "Solutions Architect: designs the approach and owns the technical relationship."
   },
-  "explanation": {
-    "label": "Simple explanation",
-    "text": "What happens at this step, in one plain sentence."
-  },
-  "layer": {
-    "label": "Layer",
-    "text": "Stage of the data, like a warehouse: raw, processed, output, site."
-  },
-  "file": {
-    "label": "File",
-    "text": "Where that layer lives in the project folder."
-  },
-  "holds": {
-    "label": "What it holds",
-    "text": "What one row or record in that file contains."
+  "fde": {
+    "label": "FDE",
+    "text": "Forward Deployed Engineer: builds hands-on with the customer's developers."
   }
 }

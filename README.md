@@ -8,7 +8,7 @@ It shows how technical GTM team capacity can be run as a ranked, measurable inve
 
 **Live demo:** _coming soon_ — `https://<github-username>.github.io/technical-gtm-command-center/`
 
-![Lifecycle walkthrough: account picker, color-coded lifecycle steps, metric cards and the step detail for Northwind Commerce](docs/assets/screenshot.png)
+![Lifecycle walkthrough for Northwind Commerce: propensity score 81, $1.31M pool of funds, $1.06M opportunity value, Deep engagement (SA + FDE)](docs/assets/screenshot.png)
 
 ## Job responsibility → page
 
@@ -47,6 +47,7 @@ pipeline.py           → data/processed/account_month.csv       clean and combi
                       → data/output/salesforce_writeback.csv   fields pushed back to Salesforce (GTM_*__c)
                       → docs/data/accounts.json               read by every page
 validate.py           (last pipeline step) recomputes every number from raw data and fails loudly on any mismatch
+content/how_this_works.md   the written method (source of truth for the How this works page)
 docs/data/*.json      content, glossary (ⓘ tooltips), decisions (decision log), faq (inline "?" answers), jd_mapping
 docs/                 static site (HTML/CSS/JS + Plotly.js), hosted on GitHub Pages
 ```

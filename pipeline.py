@@ -349,6 +349,7 @@ def assign_capacity(df: pd.DataFrame) -> pd.DataFrame:
     Fill slots in order (the browser repeats this when the sliders move):
       1. Within each type, accounts with alerts first, then by opportunity value.
       2. FDE slots go to the top Deep engagement accounts; each also uses an SA slot.
+         The #1 account by opportunity value always gets an SA slot.
       3. Remaining SA slots go to Deep engagement and Strategic bet accounts: each type keeps its
          own order, and the next slot goes to whichever type's next account has more opportunity value.
       4. Everyone else gets scaled programs or self-serve.
@@ -364,6 +365,14 @@ def assign_capacity(df: pd.DataFrame) -> pd.DataFrame:
     # queues are merged by taking whichever next account has the higher opportunity value.
     ev = df.set_index("account_id")["expected_value_usd"]
     deep_rest, sa_ids = deep_queue[fde_slots:], list(fde_ids)
+    # The #1 account by opportunity value always gets an SA slot, alerts or not:
+    # leaving the biggest opportunity uncovered is a trade-off no leader would accept.
+    ranked = df[df["quadrant"].isin([DEEP, BET])].sort_values(["expected_value_usd", "account_id"], ascending=[False, True])
+    top = ranked["account_id"].iloc[0] if len(ranked) else None
+    if top is not None and top not in sa_ids and len(sa_ids) < sa_slots:
+        sa_ids.append(top)
+        deep_rest = [a for a in deep_rest if a != top]
+        bet_queue = [a for a in bet_queue if a != top]
     while len(sa_ids) < sa_slots and (deep_rest or bet_queue):
         take_deep = bet_queue == [] or (deep_rest and ev[deep_rest[0]] >= ev[bet_queue[0]])
         sa_ids.append((deep_rest if take_deep else bet_queue).pop(0))

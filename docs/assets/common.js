@@ -242,6 +242,7 @@ const GTM = {
   // Team capacity: the same slot-filling rule as pipeline.assign_capacity, so the
   // sliders can show what a bigger or smaller team would cover.
   //   FDE slots → top Deep engagement accounts (alerts first, then opportunity value);
+  //   the #1 account by opportunity value always gets an SA slot;
   //   remaining SA slots → Deep engagement and Strategic bet queues merged by opportunity value.
   assignCapacity(accounts, sas, fdes) {
     const m = GTM.data.accounts.meta, c = m.capacity, [DEEP, BET] = m.quadrants;
@@ -251,10 +252,17 @@ const GTM = {
     const deepQ = order.filter((a) => a.quadrant === DEEP), betQ = order.filter((a) => a.quadrant === BET);
     const fde = new Set(deepQ.slice(0, fdeSlots).map((a) => a.account_id));
     const sa = new Set(fde);
-    const deepRest = deepQ.slice(fdeSlots);
-    while (sa.size < saSlots && (deepRest.length || betQ.length)) {
-      const takeDeep = !betQ.length || (deepRest.length && deepRest[0].expected_value_usd >= betQ[0].expected_value_usd);
-      sa.add((takeDeep ? deepRest : betQ).shift().account_id);
+    let deepRest = deepQ.slice(fdeSlots), betRest = betQ;
+    // The #1 account by opportunity value always gets an SA slot.
+    const top = accounts.filter((a) => a.quadrant === DEEP || a.quadrant === BET)
+      .sort((a, b) => b.expected_value_usd - a.expected_value_usd || a.account_id.localeCompare(b.account_id))[0];
+    if (top && !sa.has(top.account_id) && sa.size < saSlots) {
+      sa.add(top.account_id);
+      deepRest = deepRest.filter((a) => a !== top); betRest = betRest.filter((a) => a !== top);
+    }
+    while (sa.size < saSlots && (deepRest.length || betRest.length)) {
+      const takeDeep = !betRest.length || (deepRest.length && deepRest[0].expected_value_usd >= betRest[0].expected_value_usd);
+      sa.add((takeDeep ? deepRest : betRest).shift().account_id);
     }
     return { fde, sa };
   },

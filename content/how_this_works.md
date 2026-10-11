@@ -271,10 +271,11 @@ Accounts are filled into slots in order:
 1. Rank accounts within each type of help by opportunity value.
 2. Within the same type, accounts with alerts move up.
 3. Fill FDE slots with the top Deep engagement accounts until all 8 are used. Each of these also uses an SA slot, because the SA leads the design.
-4. Fill the remaining SA slots with Deep engagement and Strategic bet accounts, taking whichever type's next account has the higher opportunity value.
-5. Everything below the cutoff line goes to scaled programs or self-serve, and is watched by alerts.
+4. The #1 account by opportunity value always gets an SA slot, even without an alert.
+5. Fill the remaining SA slots with Deep engagement and Strategic bet accounts, taking whichever type's next account has the higher opportunity value.
+6. Everything below the cutoff line goes to scaled programs or self-serve, and is watched by alerts.
 
-Today: 8 accounts hold an FDE slot, 22 more hold an SA slot, and together they hold 34% of all opportunity value.
+Today: 8 accounts hold an FDE slot, 22 more hold an SA slot, and together they hold 37% of all opportunity value.
 
 Manual overrides are allowed. A leader can move an account up or down, but must log a reason. Overrides are reviewed each quarter to see whether they beat the system. Example: Acme Studios was scored as a Strategic bet and moved to Deep engagement (SA + FDE): "Account team confirmed a funded migration project; Strategic bet rule says add an FDE once a real project appears (SA lead: Hannah Cho, 2026-09-28)".
 

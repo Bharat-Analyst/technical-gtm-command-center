@@ -181,6 +181,11 @@ def run() -> None:
     bet_q = [a for a in order if a["quadrant"] == bet]
     fde_ids = [a["account_id"] for a in deep_q[: cap["fde_slots"]]]
     deep_q, sa_ids = deep_q[cap["fde_slots"]:], set(fde_ids)
+    top = sorted([a for a in accounts if a["quadrant"] in (deep, bet)], key=lambda a: (-a["expected_value_usd"], a["account_id"]))
+    if top and top[0]["account_id"] not in sa_ids and len(sa_ids) < cap["sa_slots"]:
+        sa_ids.add(top[0]["account_id"])
+        deep_q = [a for a in deep_q if a["account_id"] != top[0]["account_id"]]
+        bet_q = [a for a in bet_q if a["account_id"] != top[0]["account_id"]]
     while len(sa_ids) < cap["sa_slots"] and (deep_q or bet_q):
         nxt = deep_q if (not bet_q or (deep_q and deep_q[0]["expected_value_usd"] >= bet_q[0]["expected_value_usd"])) else bet_q
         sa_ids.add(nxt.pop(0)["account_id"])

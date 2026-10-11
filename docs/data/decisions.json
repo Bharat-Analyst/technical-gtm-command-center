@@ -51,8 +51,8 @@
     "id": "capacity",
     "section": "team-capacity",
     "title": "Team capacity",
-    "decision": "{sas} SAs × {sa_load} accounts = {sa_slots} SA slots; {fdes} FDEs × {fde_load} deep engagements = {fde_slots} FDE slots.",
-    "why": "Without a capacity limit, a priority list is a wish list. A visible cut-off line makes the trade-off clear.",
+    "decision": "{sas} SAs × {sa_load} accounts = {sa_slots} SA slots; {fdes} FDEs × {fde_load} deep engagements = {fde_slots} FDE slots. The #1 account by opportunity value always gets an SA slot.",
+    "why": "Without a capacity limit, a priority list is a wish list. A visible cut-off line makes the trade-off clear, and the biggest opportunity is never left uncovered.",
     "possibly": "Possibly we can use real SA and FDE hours from the engagement tracker and plan capacity by region."
   },
   {

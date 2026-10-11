@@ -6,7 +6,7 @@ Solutions Architects and Forward Deployed Engineers are scarce, and their time o
 This project is a working command center that scores every account on Propensity score and Pool of funds, raises alerts on risk and opportunity, decides the right type of help for each account, and packages repeatable programs and services.
 It shows how technical GTM team capacity can be run as a ranked, measurable investment that leadership can see and defend, with an interactive lifecycle walkthrough that takes any account from CRM data to measured impact.
 
-**Live demo:** _coming soon_ — `https://<github-username>.github.io/technical-gtm-command-center/`
+**Live demo:** https://bharat-analyst.github.io/technical-gtm-command-center/
 
 ![Lifecycle walkthrough for Northwind Commerce: propensity score 81, $1.31M pool of funds, $1.06M opportunity value, Deep engagement (SA + FDE)](docs/assets/screenshot.png)
 

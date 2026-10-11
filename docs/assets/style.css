@@ -330,7 +330,9 @@ article:target { outline: 2px solid var(--accent); outline-offset: 2px; }
 .faq-full details > div { padding: 0 14px 12px; color: var(--text-2); }
 .faq-full details:target { outline: 2px solid var(--accent); }
 
-.built-by { font-size: 13px; color: var(--text-2); margin: 0 0 10px; padding-left: 10px; border-left: 3px solid var(--accent); }
+.credit-bar { background: var(--surface-2); border-bottom: 1px solid var(--border); font-size: 12.5px; color: var(--text-2); }
+.credit-bar .inner { max-width: 1120px; margin: 0 auto; padding: 6px 16px; }
+.credit-bar strong { color: var(--text); }
 
 /* "How this works" long-form page */
 .doc-layout { display: grid; grid-template-columns: 230px minmax(0, 1fr); gap: 32px; align-items: start; }

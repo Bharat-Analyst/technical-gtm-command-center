@@ -27,6 +27,7 @@ const GTM = {
   // static ⓘ terms. Returns the loaded data.
   async init(pageFile) {
     GTM.renderNav(pageFile);
+    GTM.renderCredit();
     const [accounts, content, glossary, jd, decisions, faq] = await Promise.all(
       ["accounts", "content", "glossary", "jd_mapping", "decisions", "faq"].map(GTM.load));
     const vars = GTM.metaVars(accounts);
@@ -70,6 +71,16 @@ const GTM = {
     if (!nav) return;
     nav.innerHTML = `<ul>${PAGES.map((p) =>
       `<li><a href="${p.file}"${p.file === current ? ' aria-current="page"' : ""}>${p.nav}</a></li>`).join("")}</ul>`;
+  },
+
+  // Ownership credit, shown at the top of every page right under the header.
+  renderCredit() {
+    const header = document.querySelector(".site-header");
+    if (!header || document.querySelector(".credit-bar")) return;
+    const bar = document.createElement("div");
+    bar.className = "credit-bar";
+    bar.innerHTML = `<div class="inner"><strong>Built with AI</strong> · Owned and reviewed by Bharat · Coded using AI (Claude Code)</div>`;
+    header.after(bar);
   },
 
   pageFileFor(roleName) {

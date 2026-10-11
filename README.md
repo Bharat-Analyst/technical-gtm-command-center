@@ -23,28 +23,31 @@ It shows how technical GTM team capacity can be run as a ranked, measurable inve
 
 ## How the score works
 
-- **Propensity score (0–100):** how likely a customer is to grow soon if we invest technical time. Usage growth, new builders, SA meetings and On-track % are each turned into a percentile against all accounts, then weighted. The three biggest contributors become **top reasons** in plain English.
-- **Pool of funds** = unused commit + open pipeline: money available to unlock.
-- **Opportunity value** = Propensity score ÷ 100 × Pool of funds: which customers are worth the most time.
-- **On-track %** = share of commit used ÷ share of the contract year passed, shown with a status (On track / Slightly behind / Behind). **Monthly spend**, **Needed monthly spend** and **Behind by** show the gap in dollars.
-- **Alerts:** Commit at Risk, Days to renewal, Usage Spike, New builders.
-- **Type of help:** Deep engagement (SA + FDE), Scaled SA programs, Strategic Bet, Digital / self-serve, set by Propensity score and Pool of funds. People can override it, but only with a logged reason (`data/raw/overrides.csv`).
-- **Team capacity:** the top accounts by Opportunity value get dedicated help.
+- **Propensity score (0–100):** how likely an account is to grow in the next 90 days. Four signals are bucketed to 0–100 and weighted: usage growth over 3 months (35%), new builders in 60 days (30%), meetings and calls in 90 days (15%), product breadth (20%). The three signals that add the most points become **top reasons**.
+- **Pool of funds** = unused commit + open pipeline, always shown with both parts.
+- **Opportunity value** = propensity score ÷ 100 × pool of funds; used to rank accounts.
+- **Commit health:** Monthly spend, On-track % (On track 90%+ / Slightly behind 70–89% / Behind), Behind by, Needed monthly spend.
+- **Six alerts:** Commit at risk, Renewal coming, Builder surge, Usage spike, New product, Usage drop, each with an owner, an action and a time to respond.
+- **Type of help:** Deep engagement (SA + FDE), Strategic bet, Scaled SA programs, Digital / self-serve, from propensity score 60+ and pool of funds $250K+. Overrides need a logged reason (`data/raw/overrides.csv`).
+- **Team capacity:** 10 SAs × 3 accounts = 30 SA slots; 4 FDEs × 2 = 8 FDE slots, filled in a published order.
+- **Comparison group:** a random share of qualifying accounts gets normal service only, so impact is measured fairly.
 
-Every weight, threshold and cut-off is an assumption recorded in the site's **Decision Log** (decision / why / possibly we can), with the values defined once at the top of [`pipeline.py`](pipeline.py).
+Every weight, threshold and cut-off is an assumption, defined once at the top of [`pipeline.py`](pipeline.py) and explained on the site's **How this works** page (with a decision log at the bottom).
 
-**Featured accounts**, one per type of help: Northwind Commerce (Deep engagement), Contoso Media (Scaled SA programs), Fabrikam Health (Strategic Bet), Tailspin Games (Digital / self-serve). `pipeline.py` fails if any of them lands elsewhere.
+**Featured accounts**, one per type of help: Northwind Commerce (Deep engagement), Contoso Media (Scaled SA programs), Fabrikam Health (Strategic bet), Tailspin Games (Digital / self-serve). `pipeline.py` fails if any of them lands elsewhere.
 
 ## How it's built
 
 ```
-generate_data.py      → data/raw/accounts.csv                 sample Salesforce + usage extract (seed 42)
+generate_data.py      → data/raw/*.csv                        Salesforce-style extracts (accounts, contracts, opportunities,
+                                                               activities), monthly usage and signups (seed 42), messy on purpose
 data/raw/overrides.csv                                         human overrides of type of help, each with a reason
-pipeline.py           → data/processed/account_scores.csv      scored table
+pipeline.py           → data/processed/account_month.csv       clean and combine: one row per account per month
+                      → data/processed/account_scores.csv      scored table
                       → data/output/salesforce_writeback.csv   fields pushed back to Salesforce (GTM_*__c)
                       → docs/data/accounts.json               read by every page
 validate.py           (last pipeline step) recomputes every number from raw data and fails loudly on any mismatch
-docs/data/*.json      content, glossary (ⓘ tooltips), decisions (Decision Log), faq (inline "?" items), jd_mapping
+docs/data/*.json      content, glossary (ⓘ tooltips), decisions (decision log), faq (inline "?" answers), jd_mapping
 docs/                 static site (HTML/CSS/JS + Plotly.js), hosted on GitHub Pages
 ```
 
@@ -52,8 +55,8 @@ Python 3.11 + pandas. No database, no build tools.
 
 ### Pages
 
-Lifecycle · Prioritization · Engagement · Programs & PS · Executive · Decision Log.
-Every metric, column and term has an ⓘ from one shared glossary; every chart, slider and table has a "How to read this" caption; "Why:" links point to the Decision Log; and 2–3 common questions sit next to the chart or table they explain.
+Lifecycle · Prioritization · Engagement · Programs & PS · Executive · How this works.
+Every metric, column and term has an ⓘ from one shared glossary; every chart, slider and table has a "How to read this" caption; "Why:" links point to the matching section of How this works; and 2–3 common questions sit next to the chart or table they explain.
 
 ### How pages share state
 

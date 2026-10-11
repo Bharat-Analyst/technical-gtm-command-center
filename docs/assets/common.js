@@ -158,6 +158,7 @@ const GTM = {
     const [DEEP, BET, SCALED, DIGITAL] = m.quadrants;
     const usd = GTM.usd, pct = GTM.pct;
     const builders = `${a.new_builders_60d} new builder${a.new_builders_60d === 1 ? "" : "s"} in ${win} days`;
+    const pool = `${usd(a.pool_of_funds)} pool of funds (${GTM.poolBreakdown(a)})`;
     const growth = `usage ${a.usage_growth_3m >= 0 ? "up" : "down"} ${pct(Math.abs(a.usage_growth_3m))} in 3 months`;
     const commit = `${pct(a.commit_used_share)} of its ${usd(a.annual_commit_usd)} commit used with ${pct(a.contract_elapsed_share)} of the year gone`;
     const alerts = a.flags.length ? `${a.flags.length} active alert${a.flags.length === 1 ? "" : "s"} (${a.flags.join(", ")})` : "no active alerts";
@@ -166,17 +167,17 @@ const GTM = {
       : "";
     let text;
     if (a.quadrant === DEEP) {
-      text = `${lead}${a.override_reason ? "It" : a.account_name} gets ${DEEP}: a propensity score of ${a.propensity_score} (${builders}; ${growth}), a ${usd(a.pool_of_funds)} pool of funds, and ${alerts}. ` +
+      text = `${lead}${a.override_reason ? "It" : a.account_name} gets ${DEEP}: a propensity score of ${a.propensity_score} (${builders}; ${growth}), a ${pool}, and ${alerts}. ` +
         `It has ${commit} and renews in ${a.days_to_renewal} days, so an SA leading the design and an FDE building with its developers is the fastest way to get a workload live.`;
     } else if (a.quadrant === SCALED) {
       text = `${lead}${a.account_name} gets ${SCALED}: it is likely to grow (propensity score ${a.propensity_score}; ${builders}; ${growth}), ` +
-        `but its ${usd(a.pool_of_funds)} pool of funds doesn't justify dedicated engineers. Office hours, workshops and reference architectures keep the momentum going at low cost.`;
+        `but its ${pool} doesn't justify dedicated engineers. Office hours, workshops and reference architectures keep the momentum going at low cost.`;
     } else if (a.quadrant === BET) {
-      text = `${lead}${a.account_name} is a ${BET}: a ${usd(a.pool_of_funds)} pool of funds is in play, but the propensity score is only ${a.propensity_score} (${builders}; ${a.meetings_90d} meetings and calls in 90 days). ` +
+      text = `${lead}${a.account_name} is a ${BET}: a ${pool} is in play, but the propensity score is only ${a.propensity_score} (${builders}; ${a.meetings_90d ? `${a.meetings_90d} meetings and calls` : "no meetings or calls"} in 90 days). ` +
         `Big money with little activity needs discovery first: the SA works with the account team to find the first use case; an FDE joins only if a real project appears.`;
     } else {
-      text = `${lead}${a.account_name} is ${DIGITAL}: a propensity score of ${a.propensity_score} and a ${usd(a.pool_of_funds)} pool of funds mean SA or FDE time wouldn't change the outcome. ` +
-        `Docs, templates and product emails keep it moving, and alerts watch for change (${alerts}).`;
+      text = `${lead}${a.account_name} is ${DIGITAL}: a propensity score of ${a.propensity_score} and a ${pool} mean SA or FDE time wouldn't change the outcome. ` +
+        `Docs, templates and product emails keep it moving, and alerts watch for change; today it has ${a.flags.length ? `${a.flags.length === 1 ? "one alert" : `${a.flags.length} alerts`}: ${a.flags.join(", ")}` : "no alerts"}.`;
     }
     return text;
   },
@@ -193,12 +194,22 @@ const GTM = {
   },
 
   // ---------- Formatting ----------
-  // $1.3M / $860K / $25K — compact money for cards and tables.
+  // The one money formatter for the whole site:
+  //   millions → up to two decimals, trailing zeros dropped ($1.31M, $1.06M, $1.2M)
+  //   thousands → whole thousands ($860K, $47K); smaller → whole dollars ($950)
   usd(n) {
-    const abs = Math.abs(n);
-    if (abs >= 1e6) return `$${(n / 1e6).toFixed(abs >= 1e7 ? 0 : 1)}M`;
-    if (abs >= 1e3) return `$${Math.round(n / 1e3)}K`;
-    return `$${Math.round(n)}`;
+    const sign = n < 0 ? "-" : "", abs = Math.abs(n);
+    const millions = (v) => `${sign}$${parseFloat((v / 1e6).toFixed(2))}M`;
+    if (abs >= 1e6) return millions(abs);
+    if (abs >= 1e3) {
+      const k = Math.round(abs / 1e3);
+      return k >= 1000 ? millions(k * 1e3) : `${sign}$${k}K`;   // $999.6K rounds up to $1M, not "$1000K"
+    }
+    return `${sign}$${Math.round(abs)}`;
+  },
+  // Exact dollars, for raw-data tables ($1,200,000).
+  usdFull(n) {
+    return `${n < 0 ? "-" : ""}$${Math.round(Math.abs(n)).toLocaleString("en-US")}`;
   },
 
   pct(x, digits = 0) {

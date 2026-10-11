@@ -54,22 +54,23 @@ Each page should show where Northwind sits at that stage.
 - Ask before adding dependencies or changing the constraints above.
 
 ## Current files
-- `generate_data.py` → `data/raw/accounts.csv` (synthetic, seed 42, 499 random + 4 planted featured accounts)
-- `pipeline.py` → scorecard, pool of funds/EV, holdout, flags, quadrants, capacity; writes
-  `data/processed/account_scores.csv`, `data/output/salesforce_writeback.csv`,
-  `docs/data/accounts.json`, and updates only the count fields in `docs/data/content.json`
-- `docs/data/content.json` — hand-edited copy (owner edits it; never overwrite wording)
-- `docs/*.html` + `docs/assets/` — static site; preview with `python3 -m http.server 8000 -d docs`
-- `docs/assets/lifecycle.js` — the 8 lifecycle steps + per-account sentences, shared by all pages
-- Cross-page state is URL-only: `?account=<slug>&step=<1-8>` (helpers in `docs/assets/common.js`)
-- `docs/data/jd_mapping.json` (JD keywords — keep the keywords exact), `glossary.json` (ⓘ tooltips), `decisions.json` (Decision Log), `faq.json` (Questions page + "?" items); `{placeholders}` in these files and content.json are filled from accounts.json meta, so no number is typed twice
-- Wording: collaborative ("we could", "possibly we can"), never "I'd"
-- On-screen labels are plain language (owner decision 2026-10-10). Never show the technical term:
-  Opportunity value (not expected value), On-track % (burn pace) with status On track 90%+ / Slightly behind 70–89% / Behind <70%,
-  Monthly spend (burn rate), Needed monthly spend, Behind by, Unused commit, Comparison group (holdout), Impact (lift),
-  Top reasons, Alerts (flags), Team capacity (capacity/headcount), New builders (new developers), Days to renewal (renewal window),
-  Type of help (quadrant), Help plan (motion). Keep "Propensity score" and "Pool of funds" exactly; never "headroom".
-- Types of help: Deep engagement (SA + FDE), Scaled SA programs, Strategic Bet, Digital / self-serve (names live in pipeline.py)
-- Pages: index (Lifecycle), prioritization, engagement, programs, executive, decisions (Decision Log). No Methodology or Questions page; faq.json feeds the inline "?" items only.
-- `validate.py` runs last in the pipeline; it must pass. `data/raw/overrides.csv` holds logged type-of-help overrides.
-- Featured accounts (one per quadrant): Northwind Commerce, Contoso Media, Fabrikam Health, Tailspin Games
+- `generate_data.py` → `data/raw/*.csv`: Salesforce-style extracts (accounts incl. duplicates/child accounts,
+  contracts, opportunities, activities), monthly usage by product, self-serve signups. Seed 42; 4 featured accounts planted.
+- `data/raw/overrides.csv` — hand-written type-of-help overrides; each needs reason, owner, date.
+- `pipeline.py` → clean and combine, bucket propensity score, pool of funds, six alerts, type of help, slot-based team capacity,
+  programs, comparison group; writes `data/processed/*`, `data/output/salesforce_writeback.csv`, `docs/data/accounts.json`,
+  and only the count fields in `docs/data/content.json`. Ends by running `validate.py`, which must pass.
+- `docs/data/content.json` (hand-edited copy), `glossary.json` (ⓘ), `decisions.json` (decision log on How this works),
+  `faq.json` (inline "?" answers), `jd_mapping.json` (JD keywords — keep exact). `{placeholders}` are filled from accounts.json.
+- Pages: index (Lifecycle), prioritization, engagement, programs, executive, how-this-works. Preview: `python3 -m http.server 8000 -d docs`.
+- Shared JS: `docs/assets/common.js` (one money formatter `GTM.usd`, tooltips, capacity fill mirroring the pipeline), `lifecycle.js`.
+- Cross-page state is URL-only: `?account=<slug>&step=<1-8>`.
+
+## Model (source of truth: the "How this works" text the owner supplied)
+- Propensity weights 35/30/15/20 with bucket scores; cut-offs score 60+, pool of funds $250K+.
+- Types of help: Deep engagement (SA + FDE), Strategic bet, Scaled SA programs, Digital / self-serve.
+- Team capacity: 10 SAs × 3, 4 FDEs × 2. Six alerts. On-track bands 90% / 70%.
+
+## Wording rules (owner decisions 2026-10-10)
+- Plain on-screen labels; keep "Propensity score" and "Pool of funds" exactly; never "headroom"; never "I'd".
+- Collaborative phrasing ("we could", "possibly we can"). Built-with-AI credit stays at the top.

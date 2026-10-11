@@ -634,10 +634,10 @@
         handoff: `<ul>${content.program.handoff.ready_when.map((r) => `<li>${esc(r)}.</li>`).join("")}</ul>`,
         "nw-data": table(["Field", "Value"], [
           ["Segment, industry, region", `${nw.segment}, ${esc(nw.industry)}, ${nw.region}`],
-          ["Annual commit", `$${nw.annual_commit_usd.toLocaleString("en-US")}`],
-          ["Amount used so far", `$${nw.commit_consumed_usd.toLocaleString("en-US")}`],
+          ["Annual commit", GTM.usdFull(nw.annual_commit_usd)],
+          ["Amount used so far", GTM.usdFull(nw.commit_consumed_usd)],
           ["Contract time passed", `${pct(nw.contract_elapsed_share)} (about ${elapsedMonths.toFixed(1)} of 12 months)`],
-          ["Days to renewal", nw.days_to_renewal], ["Open pipeline", `$${nw.open_pipeline_usd.toLocaleString("en-US")}`],
+          ["Days to renewal", nw.days_to_renewal], ["Open pipeline", GTM.usdFull(nw.open_pipeline_usd)],
           [`New builders, last ${meta.signal_windows.new_builders_days} days`, nw.new_builders_60d],
           [`Usage growth, last ${meta.signal_windows.usage_growth_months} months`, `${nw.usage_growth_3m >= 0 ? "+" : ""}${pct(nw.usage_growth_3m)}`],
           [`Meetings and calls, last ${meta.signal_windows.engagement_days} days`, nw.meetings_90d],
